@@ -7,7 +7,7 @@ import Total from './Total';
 
 export default function Modal({
   children,
-  modalType,
+  modalType = 'total',
   isOpen = false,
   shouldCloseToClickOutside = true,
   focusTrap = false,

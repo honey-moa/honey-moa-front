@@ -1,5 +1,10 @@
 import { TotalProps } from '../type';
+import * as S from './style';
 
 export default function Total({ children, handleClose }: TotalProps) {
-  return <div onClick={handleClose}>{children}</div>;
+  return (
+    <S.ModalWrapper onClick={handleClose} className="modal-dimmed">
+      {children}
+    </S.ModalWrapper>
+  );
 }

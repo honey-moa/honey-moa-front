@@ -1,9 +1,9 @@
 export interface ModalProps {
   children: React.ReactNode;
-  modalType: 'box' | 'total';
-  isOpen: boolean;
-  shouldCloseToClickOutside: boolean;
-  focusTrap: boolean;
+  modalType?: 'box' | 'total';
+  isOpen?: boolean;
+  shouldCloseToClickOutside?: boolean;
+  focusTrap?: boolean;
   onClose?: () => void;
   onOpen?: () => void;
 }
