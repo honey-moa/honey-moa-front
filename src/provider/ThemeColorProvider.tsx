@@ -1,5 +1,6 @@
 import { ThemeProvider } from 'styled-components';
 import { mainThemeColor } from '../styles/theme';
+import { ThemeColorProviderProps } from './type';
 
 /**
  * 테마지정을 위한 Provider
@@ -20,8 +21,6 @@ import { mainThemeColor } from '../styles/theme';
  */
 export default function ThemeColorProvider({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+}: ThemeColorProviderProps) {
   return <ThemeProvider theme={mainThemeColor}>{children}</ThemeProvider>;
 }
