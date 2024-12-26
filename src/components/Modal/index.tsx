@@ -19,11 +19,15 @@ export default function Modal({
 
   const handleClose = (ev: React.MouseEvent) => {
     const target = ev.target as HTMLElement;
-    if (
-      !shouldCloseToClickOutside ||
-      !target.classList.contains('modal-dimmed')
-    )
-      return;
+    if (modalType === 'total') {
+      if (
+        !shouldCloseToClickOutside ||
+        !target.classList.contains('modal-dimmed')
+      )
+        return;
+    } else {
+      if (!target.classList.contains('close-btn')) return;
+    }
     setShow(false);
     rest.onClose?.();
   };
