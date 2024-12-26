@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 export const ModalWrapper = styled.div`
   display: flex;
-  flex-direction: row;
   position: fixed;
   top: 0;
   left: 0;
@@ -13,8 +12,4 @@ export const ModalWrapper = styled.div`
   border: none;
   justify-content: center;
   align-items: center;
-
-  * {
-    z-index: 9999;
-  }
 `;

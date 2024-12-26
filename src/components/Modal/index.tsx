@@ -2,12 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { ModalProps } from './type';
 import FocusTrapReact from 'focus-trap-react';
 import { createPortal } from 'react-dom';
-import Box from './Box';
-import Total from './Total';
+import * as S from './style';
 
 export default function Modal({
   children,
-  modalType = 'total',
   isOpen = false,
   shouldCloseToClickOutside = true,
   focusTrap = false,
@@ -19,15 +17,12 @@ export default function Modal({
 
   const handleClose = (ev: React.MouseEvent) => {
     const target = ev.target as HTMLElement;
-    if (modalType === 'total') {
-      if (
-        !shouldCloseToClickOutside ||
-        !target.classList.contains('modal-dimmed')
-      )
-        return;
-    } else {
-      if (!target.classList.contains('close-btn')) return;
-    }
+    if (
+      !shouldCloseToClickOutside ||
+      !target.classList.contains('modal-dimmed')
+    )
+      return;
+
     setShow(false);
     rest.onClose?.();
   };
@@ -48,11 +43,9 @@ export default function Modal({
     <>
       {createPortal(
         <FocusTrap>
-          {modalType === 'box' ? (
-            <Box handleClose={handleClose}>{children}</Box>
-          ) : (
-            <Total handleClose={handleClose}>{children}</Total>
-          )}
+          <S.ModalWrapper onClick={handleClose} className="modal-dimmed">
+            {children}
+          </S.ModalWrapper>
         </FocusTrap>,
         document.body
       )}
