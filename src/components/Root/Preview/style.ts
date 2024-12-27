@@ -28,6 +28,10 @@ export const PreviewDiv = styled.div`
   border-radius: 16px;
   display: flex;
   flex-direction: column;
+  transition: all 0.2s;
+  &:hover {
+    box-shadow: 0px 5px 15px 5px ${({ theme }) => theme.hover_03};
+  }
 `;
 
 export const PreviewHeader = styled.div`

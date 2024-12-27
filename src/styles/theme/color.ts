@@ -14,6 +14,7 @@ export const mainThemeColor: DefaultTheme = {
 
   hover_01: '#f9fafb',
   hover_02: '#e11d48',
+  hover_03: '#D3D3D3',
 
   text_01: '#000000',
   text_02: '#FFFFFF',
