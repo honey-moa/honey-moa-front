@@ -5,13 +5,13 @@ export default function Story() {
     <S.PreviewDiv>
       <S.PreviewHeader>
         <div>
-          <img src="images/previewProfile1.jpg" alt="커플프로필"></img>
+          <img src="images/previewProfile1.jpg" alt="커플프로필" />
         </div>
         <span>커플 이름</span>
       </S.PreviewHeader>
       <S.PreviewContent>
         <div>
-          <img src="images/previewImage1.jpg"></img>
+          <img src="images/previewImage1.jpg" />
         </div>
         <div>
           <h3>행복한 순간들</h3>

@@ -18,7 +18,7 @@ export default function Landing() {
           <button>시작하기</button>
         </S.IntroLeft>
         <S.IntroRight>
-          <img src="images/introImage.jpg"></img>
+          <img src="images/introImage.jpg" />
         </S.IntroRight>
       </S.IntroWrapper>
     </>

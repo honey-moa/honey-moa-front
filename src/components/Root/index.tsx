@@ -1,4 +1,4 @@
-import RootHeader from './Header';
+import RootHeader from './RootHeader';
 import Landing from './Landing';
 import Preview from './Preview';
 
