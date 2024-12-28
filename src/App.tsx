@@ -4,6 +4,7 @@ import AppProvider from './provider/AppProvider';
 import { Route } from 'react-router-dom';
 import ThemeColorProvider from './provider/ThemeColorProvider';
 import Root from './components/Root';
+import Main from './components/Main';
 
 function App() {
   const [totalOpen, setTotalOpen] = useState<boolean>(false);
@@ -13,6 +14,7 @@ function App() {
       <ThemeColorProvider>
         <AppProvider>
           <Route path="/root" element={<Root />}></Route>
+          <Route path="/honeyJar" element={<Main />}></Route>
         </AppProvider>
       </ThemeColorProvider>
       <button onClick={() => setTotalOpen(!totalOpen)}>모달테스트</button>

@@ -65,3 +65,37 @@ export const AuthContainer = styled.div`
     }
   }
 `;
+
+export const SettingContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 20px 24px;
+  & > button {
+    background-color: inherit;
+  }
+  //공개글 보러가기 버튼
+  & > button:nth-child(1) {
+    color: ${({ theme }) => theme.text_01};
+    width: 180px;
+    height: 100%;
+    margin: 0px 8px;
+    border-radius: 16px;
+    font-size: 24px;
+    border: 1px solid ${({ theme }) => theme.border_05};
+    color: ${({ theme }) => theme.text_05};
+    cursor: pointer;
+    background-color: ${({ theme }) => theme.btn_05};
+    margin-right: 25px;
+  }
+  //설정 버튼
+  & > button:nth-child(2) {
+    border: none;
+    border-radius: 50%;
+    padding: 12px;
+    margin: 0px 12px;
+    &:hover {
+      background-color: ${({ theme }) => theme.hover_03};
+    }
+  }
+`;
