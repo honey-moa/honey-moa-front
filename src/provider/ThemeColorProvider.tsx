@@ -1,6 +1,7 @@
 import { ThemeProvider } from 'styled-components';
 import { mainThemeColor } from '../styles/theme';
 import { ThemeColorProviderProps } from './type';
+import { GlobalStyles } from '../styles/GlobalStyles';
 
 /**
  * 테마지정을 위한 Provider
@@ -22,5 +23,10 @@ import { ThemeColorProviderProps } from './type';
 export default function ThemeColorProvider({
   children,
 }: ThemeColorProviderProps) {
-  return <ThemeProvider theme={mainThemeColor}>{children}</ThemeProvider>;
+  return (
+    <ThemeProvider theme={mainThemeColor}>
+      <GlobalStyles />
+      {children}
+    </ThemeProvider>
+  );
 }
