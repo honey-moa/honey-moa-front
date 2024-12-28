@@ -1,11 +1,11 @@
-import RootHeader from './RootHeader';
 import Landing from './Landing';
 import Preview from './Preview';
+import { Header } from '../Layouts';
 
 export default function Root() {
   return (
     <>
-      <RootHeader />
+      <Header.RootHeader />
       <Landing />
       <Preview />
     </>
