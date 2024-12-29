@@ -5,6 +5,7 @@ import { DefaultTheme } from 'styled-components';
  */
 export const mainThemeColor: DefaultTheme = {
   bg_01: '#FFFFFF',
+  bg_02: '#FFFFFF80',
 
   main_01: '#FFF78D',
   sub_100: '#E5E3C3',
