@@ -20,12 +20,12 @@ export const mainThemeColor: DefaultTheme = {
   btn_05: '#ffe4e6',
 
   hover_01: '#f9fafb',
-  hover_02: '#e11d48', //red button background hover
-  hover_03: '#D3D3D3', //button background hover
-  hover_04: '#f3f4f6', //svg hover
+  hover_02: '#e11d48', //빨강 버튼 hover
+  hover_03: '#D3D3D3', //흰 버튼 hover
+  hover_04: '#f3f4f6', //svg 배경 hover
 
-  text_01: '#000000',
-  text_02: '#FFFFFF',
-  text_03: '#808080', //연한 회색
-  text_05: '#e11d48',
+  text_01: '#000000', //기본 텍스트
+  text_02: '#FFFFFF', //배경 어두울 시 텍스트
+  text_03: '#808080', //추가 설명 텍스트
+  text_05: '#e11d48', //빨강 버튼 텍스트
 };

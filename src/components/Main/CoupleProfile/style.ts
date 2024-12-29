@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const ProfileWrapper = styled.div`
   height: 300px;
-  padding: 12px;
+  padding: 24px;
   position: relative;
 `;
 
@@ -21,11 +21,10 @@ export const CoupleInfoWrapper = styled.div`
   width: 60%;
   background-color: ${({ theme }) => theme.bg_02};
   border-radius: 16px;
-  padding: 12px;
   left: 0;
-  top: 24px;
+  top: 36px;
   right: 0;
-  bottom: 24px;
+  bottom: 36px;
   margin: auto;
   display: flex;
   flex-direction: column;
