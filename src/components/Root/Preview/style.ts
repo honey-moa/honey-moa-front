@@ -24,13 +24,13 @@ export const PreviewGrid = styled.div`
 export const PreviewDiv = styled.div`
   width: 100%;
   height: 400px;
-  border: 1px solid ${({ theme }) => theme.border_01};
+  border: 1px solid ${({ theme }) => theme.border.primary};
   border-radius: 16px;
   display: flex;
   flex-direction: column;
   transition: all 0.2s;
   &:hover {
-    box-shadow: 0px 5px 15px 5px ${({ theme }) => theme.hover_03};
+    box-shadow: 0px 5px 15px 5px ${({ theme }) => theme.shadow.primary};
   }
 `;
 
@@ -44,7 +44,7 @@ export const PreviewHeader = styled.div`
   & > :nth-child(1) {
     width: 45px;
     height: 45px;
-    border: 1px solid ${({ theme }) => theme.border_01};
+    border: 1px solid ${({ theme }) => theme.border.primary};
     border-radius: 50%;
     overflow: hidden;
   }
@@ -68,7 +68,7 @@ export const PreviewContent = styled.div`
   & > :nth-child(1) {
     width: 100%;
     height: 200px;
-    /* border: 1px solid ${({ theme }) => theme.border_01}; */
+    /* border: 1px solid ${({ theme }) => theme.border.primary}; */
     border-radius: 16px;
     overflow: hidden;
   }
@@ -94,6 +94,6 @@ export const PreviewContent = styled.div`
   p {
     margin-top: 12px;
     font-size: 16px;
-    color: ${({ theme }) => theme.text_03};
+    color: ${({ theme }) => theme.text.tertiary};
   }
 `;

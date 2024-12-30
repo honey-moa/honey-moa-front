@@ -9,7 +9,7 @@ export default function SideNavigate() {
       <S.NavItemListContainer>
         <li>
           <S.ItemButton>
-            <Svg.LikeIcon size={36} color={theme.btn_02} />
+            <Svg.LikeIcon size={36} color={theme.button.primary.base} />
           </S.ItemButton>
         </li>
         <li>

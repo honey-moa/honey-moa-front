@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const NavWrapper = styled.div`
   width: 150px;
   height: 100dvh;
-  border-right: 1px solid ${({ theme }) => theme.border_01};
+  border-right: 1px solid ${({ theme }) => theme.border.primary};
   display: flex;
   justify-content: center;
   padding: 50px 12px 0px 12px;
@@ -22,6 +22,6 @@ export const ItemButton = styled.button`
   border-radius: 50%;
   cursor: pointer;
   &:hover {
-    background-color: ${({ theme }) => theme.hover_04};
+    background-color: ${({ theme }) => theme.button.quaternary.hover};
   }
 `;

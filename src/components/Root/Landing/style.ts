@@ -20,12 +20,12 @@ export const IntroLeft = styled.div`
     font-size: 64px;
     font-weight: bold;
     line-height: 1.1;
-    color: ${({ theme }) => theme.text_01};
+    color: ${({ theme }) => theme.text.primary};
   }
   //intro 설명
   & > p {
     font-size: 24px;
-    color: ${({ theme }) => theme.text_01};
+    color: ${({ theme }) => theme.text.primary};
     margin-top: 24px;
   }
   //시작하기 버튼
@@ -35,12 +35,12 @@ export const IntroLeft = styled.div`
     height: 60px;
     border-radius: 16px;
     font-size: 24px;
-    border: 1px solid ${({ theme }) => theme.border_02};
-    background-color: ${({ theme }) => theme.btn_02};
-    color: ${({ theme }) => theme.text_02};
+    border: none;
+    background-color: ${({ theme }) => theme.button.primary.base};
+    color: ${({ theme }) => theme.text.secondary};
     cursor: pointer;
     &:hover {
-      background-color: ${({ theme }) => theme.hover_02};
+      background-color: ${({ theme }) => theme.button.primary.hover};
     }
   }
 `;
