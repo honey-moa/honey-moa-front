@@ -29,7 +29,7 @@ export default function HoneyList() {
         <S.HoneyListMonths>
           {Array.from({ length: 12 })
             .map((_, index) => index + 1)
-            .map(ele => {
+            .map(month => {
               return (
                 <S.HoneyMonthItem
                   onClick={() => onClickMonth(ele)}
