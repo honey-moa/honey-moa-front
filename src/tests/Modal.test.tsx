@@ -30,7 +30,5 @@ describe('Modal test', () => {
 
     expect(modalHeader).toBeDefined();
   });
-  //추후 추가
-  // it('3. Modal 영역 외부를 클릭하면 Modal 창이 닫힌다.', () => {
-  // });
+  it.todo('3. Modal 영역 외부를 클릭하면 Modal 창이 닫힌다.');
 });
