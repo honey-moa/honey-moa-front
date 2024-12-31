@@ -1,7 +1,7 @@
 import * as S from './style';
 import Modal from '../Modal';
-import Image from '../Image/Image';
 import { AuthModalProps } from './auth';
+import Image from '../Image';
 
 export default function RegisterModal({ isOpen, onClose }: AuthModalProps) {
   return (
