@@ -1,4 +1,4 @@
-import { Auth } from '../..';
+import Auth from '../../Auth';
 import * as S from './style';
 
 export default function RootHeader() {
@@ -9,8 +9,7 @@ export default function RootHeader() {
         <h1>우리들의 이야기 - 꿀모아</h1>
       </S.TitleContainer>
       <S.AuthContainer>
-        <Auth.Login />
-        <Auth.Register />
+        <Auth />
       </S.AuthContainer>
     </S.HeaderWrapper>
   );

@@ -1,16 +1,12 @@
-import { useState } from 'react';
 import * as S from './style';
 import Modal from '../Modal';
 import Image from '../Image/Image';
+import { AuthModalProps } from './auth';
 
-export default function Register() {
-  const [totalOpen, setTotalOpen] = useState<boolean>(false);
+export default function RegisterModal({ isOpen, onClose }: AuthModalProps) {
   return (
     <>
-      <S.RegisterButton onClick={() => setTotalOpen(!totalOpen)}>
-        회원가입
-      </S.RegisterButton>
-      <Modal isOpen={totalOpen}>
+      <Modal isOpen={isOpen}>
         <S.ModalWrapper>
           <S.ModalHeader>
             <Image
@@ -49,7 +45,9 @@ export default function Register() {
           </S.AuthForm>
           <S.ModalBottom>
             <span>이미 계정이 있으신가요?</span>
-            <S.LinkedInButton>로그인</S.LinkedInButton>
+            <S.LinkedInButton onClick={() => onClose('login')}>
+              로그인
+            </S.LinkedInButton>
           </S.ModalBottom>
         </S.ModalWrapper>
       </Modal>
