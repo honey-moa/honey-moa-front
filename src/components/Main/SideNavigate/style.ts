@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const NavWrapper = styled.div`
-  width: 150px;
+  width: 120px;
   height: 100dvh;
   border-right: 1px solid ${({ theme }) => theme.border.primary};
   display: flex;
@@ -21,6 +21,9 @@ export const ItemButton = styled.button`
   padding: 12px;
   border-radius: 50%;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   &:hover {
     background-color: ${({ theme }) => theme.button.quaternary.hover};
   }
