@@ -9,6 +9,7 @@ export default defineConfig({
     browser: {
       enabled: true,
       name: 'chromium', // 크롬 브라우저 사용중
+      provider: 'playwright',
     },
   },
 });
