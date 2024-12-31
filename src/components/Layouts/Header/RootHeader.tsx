@@ -1,3 +1,4 @@
+import Auth from '../../Auth';
 import * as S from './style';
 
 export default function RootHeader() {
@@ -8,8 +9,7 @@ export default function RootHeader() {
         <h1>우리들의 이야기 - 꿀모아</h1>
       </S.TitleContainer>
       <S.AuthContainer>
-        <button>로그인</button>
-        <button>회원가입</button>
+        <Auth />
       </S.AuthContainer>
     </S.HeaderWrapper>
   );
