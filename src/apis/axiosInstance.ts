@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const BeforeAuthInstance = axios.create({
-  baseURL: `http://app-prod-load-balancer-1596393594.ap-northeast-2.elb.amazonaws.com/api/v1`,
+  baseURL: `${import.meta.env.VITE_BASE_URL}/api/v1`,
   headers: {
     'Content-Type': 'application/json',
   },
