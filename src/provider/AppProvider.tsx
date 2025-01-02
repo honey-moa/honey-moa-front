@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, Routes } from 'react-router-dom';
 import { AppProviderProps } from './type';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const queryClient = new QueryClient();
 
@@ -13,6 +14,7 @@ export default function AppProvider({ children }: AppProviderProps) {
       <BrowserRouter>
         <Routes>{children}</Routes>
       </BrowserRouter>
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }

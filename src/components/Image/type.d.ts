@@ -12,13 +12,13 @@ export interface ImageComponentProps {
 }
 
 export interface StyledImageProps {
-  width?: string;
-  height?: string;
-  fit?: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down';
-  borderRadius?: string;
+  $width?: string;
+  $height?: string;
+  $fit?: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down';
+  $borderRadius?: string;
 }
 
 export interface PlaceholderProps {
-  width: string;
-  height: string;
+  $width: string;
+  $height: string;
 }
