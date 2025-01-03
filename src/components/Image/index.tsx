@@ -69,10 +69,10 @@ export default function Image({
     <S.StyledImage
       src={`images/${src}`}
       alt={alt}
-      width={width}
-      height={height}
-      fit={fit}
-      borderRadius={borderRadius}
+      $width={width}
+      $height={height}
+      $fit={fit}
+      $borderRadius={borderRadius}
       onLoad={e => {
         setIsLoaded(true);
         if (onLoad) {
@@ -84,8 +84,8 @@ export default function Image({
   ) : (
     <S.Placeholder
       ref={imgRef}
-      width={width || '100%'}
-      height={height || '100%'}
+      $width={width || '100%'}
+      $height={height || '100%'}
     />
   );
 }
