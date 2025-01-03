@@ -70,7 +70,7 @@ export function SettingIcon({ color, size = '24' }: SvgProps) {
   );
 }
 
-export function InfoIcon({ color, size = '24' }: SvgProps) {
+export function InfoIcon({ size = '24' }: SvgProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
