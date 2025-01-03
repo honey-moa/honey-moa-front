@@ -32,11 +32,11 @@ export default function HoneyList() {
             .map(month => {
               return (
                 <S.HoneyMonthItem
-                  onClick={() => onClickMonth(ele)}
-                  isNowMonth={nowMonth === ele}
-                  key={`${ele}월`}
+                  onClick={() => onClickMonth(month)}
+                  isNowMonth={nowMonth === month}
+                  key={`${month}월`}
                 >
-                  {ele}월
+                  {month}월
                 </S.HoneyMonthItem>
               );
             })}
