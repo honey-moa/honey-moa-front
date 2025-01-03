@@ -5,7 +5,7 @@ export default {
   plugins: [react()],
   test: {
     browser: {
-      provider: 'playwright',
+      provider: 'preview',
       enabled: true,
       name: 'chromium',
     },
