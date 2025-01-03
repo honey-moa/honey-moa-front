@@ -5,9 +5,9 @@ export default {
   plugins: [react()],
   test: {
     browser: {
+      provider: 'playwright',
       enabled: true,
       name: 'chromium',
     },
-    provider: 'playwright',
   },
 };
