@@ -6,6 +6,7 @@ import { Svg } from '../Svg';
 import { useMutation } from '@tanstack/react-query';
 import { Auth } from '../../apis/auth';
 import { RegisterRequest } from '../../apis/auth/type';
+import { onChangeTextInfo, toggleCheckBox } from './utils';
 
 export default function RegisterModal({ setStep }: ModalProps) {
   const [registerInfo, setRegisterInfo] = useState<RegisterInfo>({
@@ -16,26 +17,14 @@ export default function RegisterModal({ setStep }: ModalProps) {
     conditions: false,
   });
 
-  const onChangeRegisterInfo: React.ChangeEventHandler<
-    HTMLInputElement
-  > = e => {
-    const value = e.target.value;
-    setRegisterInfo(prev => {
-      return {
-        ...prev,
-        [e.target.id]: value,
-      };
-    });
-  };
+  const onChangeRegisterInfo = onChangeTextInfo<RegisterInfo>({
+    setState: setRegisterInfo,
+  });
 
-  const toggleConditions = () => {
-    setRegisterInfo(prev => {
-      return {
-        ...prev,
-        conditions: !prev.conditions,
-      };
-    });
-  };
+  const toggleConditions = toggleCheckBox<RegisterInfo>({
+    setState: setRegisterInfo,
+    key: 'conditions',
+  });
 
   //유효성 검사
   const validationInfo = () => {

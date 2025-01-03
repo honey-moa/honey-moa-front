@@ -6,6 +6,7 @@ import { useMutation } from '@tanstack/react-query';
 import { Auth } from '../../apis/auth';
 import { useNavigate } from 'react-router-dom';
 import { LoginRequest } from '../../apis/auth/type';
+import { onChangeTextInfo, toggleCheckBox } from './utils';
 
 export default function LoginModal({ setStep }: ModalProps) {
   const navigate = useNavigate();
@@ -15,24 +16,16 @@ export default function LoginModal({ setStep }: ModalProps) {
     isAutoLogin: false,
   });
 
-  const onChangeLoginInfo: React.ChangeEventHandler<HTMLInputElement> = e => {
-    const value = e.target.value;
-    setLoginInfo(prev => {
-      return {
-        ...prev,
-        [e.target.id]: value,
-      };
-    });
-  };
+  //로그인 정보 변경 핸들러
+  const onChangeLoginInfo = onChangeTextInfo<LoginInfo>({
+    setState: setLoginInfo,
+  });
 
-  const toggleAutoLogin = () => {
-    setLoginInfo(prev => {
-      return {
-        ...prev,
-        isAutoLogin: !prev.isAutoLogin,
-      };
-    });
-  };
+  //로그인 상태 저장 토글
+  const toggleAutoLogin = toggleCheckBox<LoginInfo>({
+    setState: setLoginInfo,
+    key: 'isAutoLogin',
+  });
 
   const validationInfo = () => {
     if (!loginInfo.email || !loginInfo.password) {
