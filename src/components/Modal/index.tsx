@@ -28,7 +28,7 @@ export default function Modal({
   };
 
   useEffect(() => {
-    setShow(isOpen);
+    setShow(prev => !prev);
   }, [isOpen]);
 
   useEffect(() => {

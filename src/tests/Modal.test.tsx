@@ -1,24 +1,30 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import Modal from '../components/Modal';
-import { expect, describe, beforeAll, it } from 'vitest';
+import { expect, describe, it } from 'vitest';
+import { useState } from 'react';
 
-beforeAll(() => {
-  render(
+const ModalTestWrapper = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
     <div>
-      <button onClick={() => console.log(1)}>Click</button>
-      <Modal isOpen={true} data-testid="outside">
+      <button onClick={() => setIsOpen(prev => !prev)}>Toggle Modal</button>
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        data-testid="modal"
+      >
         <div>
           <h1>testHeader</h1>
-          <div>
-            <p>testBody</p>
-          </div>
+          <p>testBody</p>
         </div>
       </Modal>
     </div>
   );
-});
+};
 describe('Modal test', () => {
-  it('1. isOpen 값을 true 로 전달하면 Modal 창이 열린다.', () => {
+  render(<ModalTestWrapper />);
+  it('1. isOpen 값을 state prev=>!prev 로 전달하면 Modal 창이 열린다.', () => {
     const modalHeader = screen.getByText('testHeader');
 
     expect(modalHeader).toBeDefined();
