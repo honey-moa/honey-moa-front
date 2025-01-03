@@ -27,11 +27,6 @@ export async function postToken(loginInfo: LoginRequest): Promise<LoginReturn> {
 export async function postUserRegister(
   registerInfo: RegisterRequest
 ): Promise<RegisterReturn> {
-  const response = await BeforeAuthInstance.post('/users', {
-    email: registerInfo.email,
-    password: registerInfo.password,
-    nickname: registerInfo.nickname,
-    mbti: null,
-  });
+  const response = await BeforeAuthInstance.post('/users', registerInfo);
   return response.data;
 }

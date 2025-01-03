@@ -36,7 +36,7 @@ export default function RegisterModal({ setStep }: ModalProps) {
     const isValid = validationRegisterInfo(registerInfo);
     if (isValid.result) {
       //api호출
-      mutation.mutate({ email, password, nickname });
+      mutation.mutate({ email, password, nickname , mbti: null});
     }
   };
 
