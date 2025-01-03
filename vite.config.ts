@@ -5,9 +5,10 @@ export default {
   plugins: [react()],
   test: {
     browser: {
-      provider: 'preview',
+      provider: 'playwright',
       enabled: true,
       name: 'chromium',
+      headless: true,
     },
   },
 };
