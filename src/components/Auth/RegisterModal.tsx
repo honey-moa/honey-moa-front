@@ -3,10 +3,12 @@ import Image from '../Image';
 import { ModalProps, RegisterInfo } from './type';
 import { useState } from 'react';
 import { Svg } from '../Svg';
-import { useMutation } from '@tanstack/react-query';
-import { Auth } from '../../apis/auth';
-import { RegisterRequest } from '../../apis/auth/type';
-import { onChangeTextInfo, toggleCheckBox } from './utils';
+import { AuthQueries } from '../../apis/auth';
+import {
+  onChangeTextInfo,
+  toggleCheckBox,
+  validationRegisterInfo,
+} from './utils';
 
 export default function RegisterModal({ setStep }: ModalProps) {
   const [registerInfo, setRegisterInfo] = useState<RegisterInfo>({
@@ -26,44 +28,13 @@ export default function RegisterModal({ setStep }: ModalProps) {
     key: 'conditions',
   });
 
-  //유효성 검사
-  const validationInfo = () => {
-    if (registerInfo.password !== registerInfo.passwordCheck) {
-      alert('비밀번호가 일치하지 않습니다.');
-      return false;
-    }
-    if (!registerInfo.conditions) {
-      alert('이용약관과 개인정보처리방침에 동의해주세요.');
-      return false;
-    }
-    if (
-      !registerInfo.email ||
-      !registerInfo.password ||
-      !registerInfo.nickname
-    ) {
-      alert('모든 항목을 입력해주세요.');
-      return false;
-    }
-    return true;
-  };
-
-  const mutation = useMutation({
-    mutationFn: (registerInfo: RegisterRequest) =>
-      Auth.postUserRegister(registerInfo),
-    onSuccess: data => {
-      console.log('회원가입 성공:', data);
-      alert('회원가입 성공!');
-    },
-    onError: (error: unknown) => {
-      console.error('회원가입 실패:', error);
-      alert('회원가입 실패. 다시 시도해주세요.');
-    },
-  });
+  const mutation = AuthQueries.RegisterQuery();
 
   const onSubmitRegister: React.FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
     const { email, password, nickname } = registerInfo;
-    if (validationInfo()) {
+    const isValid = validationRegisterInfo(registerInfo);
+    if (isValid.result) {
       //api호출
       mutation.mutate({ email, password, nickname });
     }
@@ -97,7 +68,10 @@ export default function RegisterModal({ setStep }: ModalProps) {
             />
           </S.ContentInputContainer>
           <S.ContentInputContainer>
-            <label htmlFor="password">비밀번호</label>
+            <div>
+              <label htmlFor="password">비밀번호</label>
+              <Svg.InfoIcon size={15} />
+            </div>
             <input
               type="password"
               id="password"

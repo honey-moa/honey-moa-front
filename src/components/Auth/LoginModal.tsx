@@ -2,14 +2,10 @@ import * as S from './style';
 import Image from '../Image';
 import { LoginInfo, ModalProps } from './type';
 import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
-import { Auth } from '../../apis/auth';
-import { useNavigate } from 'react-router-dom';
-import { LoginRequest } from '../../apis/auth/type';
+import { AuthQueries } from '../../apis/auth';
 import { onChangeTextInfo, toggleCheckBox } from './utils';
 
 export default function LoginModal({ setStep }: ModalProps) {
-  const navigate = useNavigate();
   const [loginInfo, setLoginInfo] = useState<LoginInfo>({
     email: '',
     password: '',
@@ -35,17 +31,7 @@ export default function LoginModal({ setStep }: ModalProps) {
     return true;
   };
 
-  const mutation = useMutation({
-    mutationFn: (loginInfo: LoginRequest) => Auth.postToken(loginInfo),
-    onSuccess: data => {
-      console.log('로그인 성공:', data);
-      navigate('/honeyJar');
-    },
-    onError: (error: unknown) => {
-      console.error('로그인 실패:', error);
-      alert('로그인 실패 아이디 비번을 확인');
-    },
-  });
+  const mutation = AuthQueries.LoginQuery();
 
   const onSubmit: React.FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();

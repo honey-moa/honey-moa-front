@@ -1,1 +1,2 @@
-export * as Auth from './auth';
+export * as AuthEndPoint from './endpoint';
+export * as AuthQueries from './queries';
