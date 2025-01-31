@@ -3,7 +3,8 @@ import SideNavigate from './SideNavigate';
 import * as S from './style';
 import { Contents, Profile } from '.';
 
-const connected = false;
+const connected = true;
+// 유저정보에 연결정보 포함된 후 수정
 const connectedContents = connected ? (
   <>
     <Profile.CoupleProfile />

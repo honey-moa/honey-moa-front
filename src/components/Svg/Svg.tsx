@@ -417,3 +417,137 @@ export function CameraIcon({ color, size = 24 }: SvgProps) {
     </svg>
   );
 }
+
+export function ChatIcon({ color, size = 24 }: SvgProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 50 43"
+      fill="none"
+      style={{ color }}
+    >
+      <path
+        d="M41.6667 3.3077L8.33333 3.30776C5.5719 3.30776 3.33333 5.52915 3.33333 8.26931V24.8078C3.33333 27.5482 5.5719 29.7693 8.33333 29.7693H25.0001C25.4421 29.7693 25.8661 29.9436 26.1786 30.2539L33.3333 37.3535V31.4231C33.3333 30.5099 34.0797 29.7693 35 29.7693H41.6667C44.428 29.7693 46.6667 27.5482 46.6667 24.8078V8.26924C46.6667 5.52905 44.428 3.3077 41.6667 3.3077ZM8.3333 6.62438e-05L41.6667 0C46.269 0 50 3.70227 50 8.26924V24.8078C50 29.3747 46.269 33.077 41.6667 33.077H36.6667V41.3462C36.6667 42.015 36.2607 42.618 35.6377 42.874C35.015 43.1301 34.298 42.9885 33.8213 42.5158L24.3097 33.077H8.33333C3.73097 33.077 0 29.3747 0 24.8078V8.26931C0 3.70234 3.73093 9.93208e-05 8.3333 6.62438e-05Z"
+        fill="black"
+      />
+    </svg>
+  );
+}
+
+export function CloseIcon({ color, size = 24 }: SvgProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 20 20"
+      fill="none"
+      style={{ color }}
+    >
+      <path
+        d="M15 5L5 15"
+        stroke="#6B7280"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M5 5L15 15"
+        stroke="#6B7280"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function FullIcon({ color, size = 24 }: SvgProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 20 20"
+      fill="none"
+      style={{ color }}
+    >
+      <path
+        d="M2 8V3H7M12 3H17V8M2 13V18H7M17 13V18H12"
+        stroke="#6B7280"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function EmojiIcon({ color, size = 24 }: SvgProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 20 21"
+      fill="none"
+      style={{ color }}
+    >
+      <g>
+        <path
+          d="M10.0001 18.5339C14.6025 18.5339 18.3334 14.8029 18.3334 10.2005C18.3334 5.59815 14.6025 1.86719 10.0001 1.86719C5.39771 1.86719 1.66675 5.59815 1.66675 10.2005C1.66675 14.8029 5.39771 18.5339 10.0001 18.5339Z"
+          stroke="#6B7280"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M6.66675 11.8672C6.66675 11.8672 7.91675 13.5339 10.0001 13.5339C12.0834 13.5339 13.3334 11.8672 13.3334 11.8672"
+          stroke="#6B7280"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M7.5 7.70117H7.50833"
+          stroke="#6B7280"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M12.5 7.70117H12.5083"
+          stroke="#6B7280"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </g>
+    </svg>
+  );
+}
+
+export function FileIcon({ color, size = 24 }: SvgProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 20 21"
+      fill="none"
+      style={{ color }}
+    >
+      <g>
+        <path
+          d="M17.8666 9.40923L10.2082 17.0676C9.27005 18.0058 7.99757 18.5328 6.67075 18.5328C5.34393 18.5328 4.07145 18.0058 3.13325 17.0676C2.19505 16.1294 1.66797 14.8569 1.66797 13.5301C1.66797 12.2032 2.19505 10.9308 3.13325 9.99256L10.2749 2.8509C10.9004 2.22432 11.7491 1.87188 12.6345 1.8711C13.5198 1.87031 14.3692 2.22126 14.9957 2.84673C15.6223 3.4722 15.9748 4.32095 15.9755 5.20628C15.9763 6.09161 15.6254 6.94099 14.9999 7.56756L7.84158 14.7092C7.52885 15.022 7.10469 15.1977 6.66242 15.1977C6.22014 15.1977 5.79598 15.022 5.48325 14.7092C5.17051 14.3965 4.99482 13.9723 4.99482 13.5301C4.99482 13.0878 5.17051 12.6636 5.48325 12.3509L12.5582 5.28423"
+          stroke="#6B7280"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </g>
+    </svg>
+  );
+}
