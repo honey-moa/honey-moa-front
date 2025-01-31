@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const ChatBox = styled.div`
   position: fixed;
   right: 5%;
-  bottom: 12%;
+  bottom: 14%;
   z-index: 999;
   height: 400px;
   width: 300px;
@@ -37,6 +37,7 @@ export const ChatName = styled.h3``;
 
 export const ChatControl = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 export const ChatBody = styled.div`

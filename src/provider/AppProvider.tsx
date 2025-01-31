@@ -26,7 +26,7 @@ export default function AppProvider({ children }: AppProviderProps) {
               <Routes>{children}</Routes>
               {/* Todo 로그인 & 연결 여부 분기처리 */}
               <Chat.ChatButton setIsOpen={setIsOpen} />
-              <Chat.ChatModal isOpen={isOpen} />
+              <Chat.ChatModal setIsOpen={setIsOpen} isOpen={isOpen} />
               {/*  */}
             </ScrollToTop>
           </BrowserRouter>
