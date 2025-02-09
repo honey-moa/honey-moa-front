@@ -14,6 +14,7 @@ export default function ChatBox({ isOpen, setIsOpen }: ChatBoxProps) {
 
   const { value: token } = useLocalStorage('accessToken');
 
+  console.log(connectionInfo);
   if (!token) return;
 
   return (
