@@ -43,7 +43,12 @@ export default function ChatPage() {
           <h3>우리의 대화</h3>
         </S.PrevBox>
         <S.PartnerBox>
-          <Image src={''} alt="상대프사" width="30px" height="30px" />
+          <Image
+            src="/images/introImage.jpg"
+            alt="상대프사"
+            width="30px"
+            height="30px"
+          />
           <S.PartnerName>이름</S.PartnerName>
         </S.PartnerBox>
         <div>
