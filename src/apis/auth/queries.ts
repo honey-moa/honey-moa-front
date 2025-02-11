@@ -62,3 +62,19 @@ export const ChangePasswordQuery = () => {
     onError: (error: AxiosError) => error,
   });
 };
+
+/**토큰 재발급 */
+export const ReissueAccessTokenMutate = () => {
+  const { set: setToken } = useLocalStorage('accessToken');
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: AuthEndPoint.reissueAccessToken,
+    onSuccess: data => {
+      setToken(data.accessToken);
+      return queryClient.invalidateQueries({
+        queryKey: ['reissue-access-token'],
+      });
+    },
+    onError: (error: AxiosError) => error,
+  });
+};

@@ -1,11 +1,12 @@
 import { EmailForChangePwType } from '@/components/Auth/type';
-import { commonInstance } from '../axiosInstance';
+import { commonInstance, instanceToken } from '../axiosInstance';
 import {
   ChangePasswordRequest,
   LoginRequest,
   LoginReturn,
   RegisterRequest,
   RegisterReturn,
+  ReissueAccessTokenReturn,
 } from './type';
 
 //로그인 api
@@ -70,5 +71,10 @@ export async function putChangePassword({
       timeout: 5000,
     }
   );
+  return response.data;
+}
+
+export async function reissueAccessToken(): Promise<ReissueAccessTokenReturn> {
+  const response = await instanceToken.post('/auth/reissue/access-token');
   return response.data;
 }
