@@ -28,11 +28,14 @@ export default function BlogContents() {
   const pastYear = useMemo(() => {
     const now = new Date();
     const coupleDDay = bloggerInfo?.dDayStartDate.split('-');
-    const coupleYear = now.getFullYear() - Number(coupleDDay![0]);
-    if (coupleYear === 0) {
-      return '1년 미만';
+    console.log(coupleDDay);
+    if (coupleDDay) {
+      const coupleYear = now.getFullYear() - Number(coupleDDay[0]);
+      if (coupleYear === 0) {
+        return '1년 미만';
+      }
+      return `${coupleYear}년`;
     }
-    return `${coupleYear}년`;
   }, [bloggerInfo]);
 
   return (
@@ -59,7 +62,7 @@ export default function BlogContents() {
           <S.DateAndLocationWrapper>
             <span>{honeyData?.date}</span>
             <p>
-              <Svg.LocationIcon />
+              <Svg.LocationIcon color={theme.button.primary.base} />
               {honeyData?.location}
             </p>
           </S.DateAndLocationWrapper>

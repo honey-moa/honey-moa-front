@@ -46,7 +46,8 @@ export const TagsWrapper = styled.div`
   justify-content: start;
   gap: 8px;
   & > :nth-child(n) {
-    background-color: ${({ theme }) => theme.bg.secondary};
+    color: ${({ theme }) => theme.text.secondary};
+    background-color: ${({ theme }) => theme.button.primary.base};
     padding: 4px 12px;
     border-radius: 25px;
   }
@@ -55,6 +56,7 @@ export const TagsWrapper = styled.div`
 export const HoneyTitleH1 = styled.h1`
   font-size: 3rem;
   margin-top: 12px;
+  color: ${({ theme }) => theme.text.primary};
 `;
 
 export const DateAndLocationWrapper = styled.div`
@@ -63,6 +65,7 @@ export const DateAndLocationWrapper = styled.div`
   gap: 12px;
   align-items: center;
   margin-top: 12px;
+  color: ${({ theme }) => theme.text.secondary};
 `;
 
 export const CoupleProfileWrapper = styled.div`
@@ -80,6 +83,7 @@ export const CoupleProfileWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    color: ${({ theme }) => theme.text.primary};
   }
 `;
 

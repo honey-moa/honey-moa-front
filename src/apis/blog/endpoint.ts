@@ -37,6 +37,6 @@ export async function CreateNewBlogPost({
 export async function getBlogHoney({
   id,
 }: Pick<BlogHoneyType, 'id'>): Promise<BlogHoneyType> {
-  const response = await instanceToken.get(`/blogs/${id}/blog-posts`);
+  const response = await instanceToken.get(`/blog-posts/${id}`);
   return response.data;
 }
