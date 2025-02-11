@@ -1,7 +1,6 @@
 import { Error } from '@/components';
 import ChangePassword from '@/components/Auth/ChangePassword';
 import { Main } from '@/components/Main';
-import { Honey } from '@/components/Main/Contents';
 import { Post } from '@/components/Blog/Post';
 import Root from '@/components/Root';
 import { Setting } from '@/components/Setting';
@@ -10,6 +9,7 @@ import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import AccessAuth from './AccessAuth';
 import { RouteListType } from './type';
 import Blog from '@/components/Blog/Blog';
+import { Honey } from '@/components/Blog/Honey';
 
 const routesList: RouteListType[] = [
   {

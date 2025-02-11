@@ -17,6 +17,9 @@ export interface BlogSingleInfoReturn {
   createdAt: string;
   updatedAt: string;
   name: string;
+  description: string;
+  backgroundUrl: string;
+  dDayStartDate: string;
   createdBy: number; //블로그 생성 유저
   connectionId: number;
   members: {
@@ -41,4 +44,24 @@ export interface CreateNewBLogPostParams {
 
 export interface CreateNewBlogPostReturn {
   id: string;
+}
+
+//블로그 Honey(unit) 타입
+export interface BlogHoneyType {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  userId: string;
+  blogId: string;
+  title: string;
+  contents: object[];
+  date: string;
+  location: string;
+  isPublic: boolean;
+  tags: {
+    id: string;
+    createdAt: string;
+    updatedAt: string;
+    name: string;
+  }[];
 }
