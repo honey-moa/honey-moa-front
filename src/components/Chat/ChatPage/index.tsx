@@ -5,6 +5,7 @@ import { ChatQueries } from '@/apis/chat';
 import { useEffect } from 'react';
 import { ConnectionQueries } from '@/apis/connection';
 import { useChatStore } from '@/store/chatStore/useChatStore';
+import { io } from 'socket.io-client';
 
 export default function ChatPage() {
   const connectionInfo = ConnectionQueries.GetConnectionListPaginationQuery({
@@ -15,6 +16,13 @@ export default function ChatPage() {
   const { setChatId } = useChatStore();
 
   const chatInfo = ChatQueries.GetChatRoomQuery();
+
+  const socket = io(`${import.meta.env.VITE_BASE_URL}`, {
+    extraHeaders: {
+      token: `Bearer ${window.localStorage.getItem('accessToken')}`,
+    },
+    // Authrization
+  });
 
   function makeChatRoom() {
     if (chatInfo?.id) return;
