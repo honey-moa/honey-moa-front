@@ -67,7 +67,7 @@ export default function BlogContents() {
             <Profile.TogetherImage members={bloggerInfo?.members} />
             <div>
               <p>{coupleName}</p>
-              <p>{pastYear} 커플</p>
+              <p>{pastYear}커플</p>
             </div>
           </S.CoupleProfileWrapper>
         </S.HoneyHeader>
