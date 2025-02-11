@@ -36,13 +36,15 @@ export function GetChatRoomQuery() {
 }
 
 // 채팅 메세지 내역 조회 쿼리
-export function GetChatMessageQuery() {
+export function GetChatMessageQuery(id: string) {
   const { data, isError, error } = useQuery({
-    queryKey: ['get-chat-message'],
-    queryFn: id => ChatEndPoint.getChatMessage(id),
+    queryKey: ['get-chat-message', id],
+    queryFn: () => ChatEndPoint.getChatMessage(id),
   });
 
   if (isError && axios.isAxiosError(error)) {
     toast.error(GetChatMessageErrorHandler(error));
   }
+
+  return data;
 }

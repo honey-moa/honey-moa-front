@@ -12,7 +12,7 @@ export default function ChatPage() {
     type: 'requested',
   });
 
-  const { chatId, setChatId } = useChatStore();
+  const { setChatId } = useChatStore();
 
   const chatInfo = ChatQueries.GetChatRoomQuery();
 
