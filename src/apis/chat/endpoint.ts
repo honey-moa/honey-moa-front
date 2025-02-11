@@ -1,12 +1,12 @@
 import { instanceToken } from '../axiosInstance';
 import {
-  PostChatRoomReturn,
+  PostCreateChateRoomRetrun,
   GetChatRoomReturn,
   GetChatMessageReturn,
 } from './type';
 
 // 최초 채팅방 생성 api
-export async function postChatRoom(): Promise<PostChatRoomReturn> {
+export async function postCreateChatRoom(): Promise<PostCreateChateRoomRetrun> {
   const response = await instanceToken.post('/chat-rooms');
 
   return response.data;

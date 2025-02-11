@@ -7,20 +7,24 @@ import {
   GetChatRoomErrorHandler,
   PostChatRoomErrorHandler,
 } from './error';
+import { useQueryClient, useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 
 // 채팅방 생성 쿼리
-export function ChatRoomQuery() {
-  const { data, isError, error } = useQuery({
-    queryKey: ['make-chat-room'],
-    queryFn: () => ChatEndPoint.postChatRoom(),
+export function CreateChatRoomMutate() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ChatEndPoint.postCreateChatRoom,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['make-chat-room'],
+      });
+    },
+    onError: (error: AxiosError) => {
+      toast.error(PostChatRoomErrorHandler(error));
+    },
   });
-  if (isError && axios.isAxiosError(error)) {
-    toast.error(PostChatRoomErrorHandler(error));
-    return;
-  }
-  return data;
 }
-
 // 내 채팅방 정보 조회 쿼리
 export function GetChatRoomQuery() {
   const { data, isError, error } = useQuery({

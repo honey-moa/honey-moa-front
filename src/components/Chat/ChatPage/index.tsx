@@ -27,19 +27,14 @@ export default function ChatPage() {
   function makeChatRoom() {
     if (chatInfo?.id) return;
     if (!connectionInfo?.contents) return;
-    const roomId = ChatQueries.ChatRoomQuery()?.id;
-
-    return roomId;
+    ChatQueries.CreateChatRoomMutate();
   }
 
   useEffect(() => {
     if (!chatInfo?.id) {
-      //@ts-ignore 추후수정
-      setChatId(makeChatRoom());
-    } else {
-      setChatId(chatInfo.id);
-    }
-  }, []);
+      makeChatRoom();
+    } else setChatId(chatInfo?.id);
+  }, [chatInfo]);
   return (
     <S.Wrap>
       <S.LeftContainer>
@@ -48,7 +43,7 @@ export default function ChatPage() {
           <h3>우리의 대화</h3>
         </S.PrevBox>
         <S.PartnerBox>
-          <Image src={''} alt="상대프사" />
+          <Image src={''} alt="상대프사" width="30px" height="30px" />
           <S.PartnerName>이름</S.PartnerName>
         </S.PartnerBox>
         <div>

@@ -1,7 +1,6 @@
-export interface PostChatRoomReturn {
+type PostCreateChateRoomRetrun = {
   id: string;
-}
-
+};
 export interface GetChatRoomReturn {
   id: string;
   createdAt: string;
@@ -13,17 +12,16 @@ export interface GetChatRoomReturn {
 export interface GetChatMessageReturn {
   totalCount: number;
   limit: number;
-  contents: [
-    {
-      id: string;
-      createdAt: string;
-      updatedAt: string;
-      roomId: number;
-      senderId: number;
-      message: string;
-      blogPostUrl: string;
-    }
-  ];
+  contents: {
+    id: string;
+    createdAt: string;
+    updatedAt: string;
+    roomId: number;
+    senderId: number;
+    message: string;
+    blogPostUrl: string;
+  }[];
+
   nextCursor: {
     id: string;
     createdAt: string;
