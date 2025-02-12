@@ -4,12 +4,11 @@ import BlogContents from './BlogContents';
 import { useLocation } from 'react-router-dom';
 import { HoneyContentType } from './type';
 import { BlogQueries } from '@/apis/blog';
+import LeftSideNav from './LeftSideNav';
 import * as S from './style';
-import { useTheme } from 'styled-components';
-import { Svg } from '@/components/Svg';
+import RightSideNav from './RightSideNav';
 
 export default function Honey() {
-  const theme = useTheme();
   const { pathname } = useLocation();
   const honeyId = pathname.split('/')[pathname.split('/').length - 1];
 
@@ -28,18 +27,11 @@ export default function Honey() {
   return (
     <>
       <Header.BlogHeader />
-      <S.LeftSideFloatingNavWrapper>
-        <div>
-          <S.LikeWrapper>
-            <Svg.LikeIcon color={theme.button.primary.base} fill={false} />
-            {999}
-          </S.LikeWrapper>
-          <div>
-            <Svg.ShareIcon color={theme.button.primary.base} />
-          </div>
-        </div>
-      </S.LeftSideFloatingNavWrapper>
-      <BlogContents {...honeyContents} />
+      <S.HoneyContentsDivLeftAndRight>
+        <LeftSideNav />
+        <BlogContents {...honeyContents} />
+        <RightSideNav />
+      </S.HoneyContentsDivLeftAndRight>
       <BlogComments />
     </>
   );

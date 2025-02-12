@@ -55,38 +55,36 @@ export default function BlogContents(honeyData: Partial<HoneyContentType>) {
 
   return (
     <S.HoneyWrapper>
-      <S.HoneyContainer>
-        <S.HoneyHeader>
-          <S.TagsWrapper>
-            {honeyData.tags &&
-              honeyData.tags.map(tag => (
-                <div key={`${tag.id}-tag`}>#{tag.name}</div>
-              ))}
-          </S.TagsWrapper>
-          <S.HoneyTitleH1>{honeyData?.title}</S.HoneyTitleH1>
-          <S.DateAndLocationWrapper>
-            <span>{honeyData?.date}</span>
-            <p>
-              <Svg.LocationIcon color={theme.button.primary.base} />
-              {honeyData?.location}
-            </p>
-          </S.DateAndLocationWrapper>
-          <S.CoupleProfileWrapper>
-            <Profile.TogetherImage members={bloggerInfo?.members} />
-            <div>
-              <p>{coupleName}</p>
-              <p>{pastYear} 커플</p>
-            </div>
-          </S.CoupleProfileWrapper>
-        </S.HoneyHeader>
-        <S.BlockNoteWrapper>
-          <BlockNoteView
-            editor={editor}
-            editable={false}
-            theme={themeColor === 'dark' ? darkTheme : lightTheme}
-          />
-        </S.BlockNoteWrapper>
-      </S.HoneyContainer>
+      <S.HoneyHeader>
+        <S.TagsWrapper>
+          {honeyData.tags &&
+            honeyData.tags.map(tag => (
+              <div key={`${tag.id}-tag`}>#{tag.name}</div>
+            ))}
+        </S.TagsWrapper>
+        <S.HoneyTitleH1>{honeyData?.title}</S.HoneyTitleH1>
+        <S.DateAndLocationWrapper>
+          <span>{honeyData?.date}</span>
+          <p>
+            <Svg.LocationIcon color={theme.button.primary.base} />
+            {honeyData?.location}
+          </p>
+        </S.DateAndLocationWrapper>
+        <S.CoupleProfileWrapper>
+          <Profile.TogetherImage members={bloggerInfo?.members} />
+          <div>
+            <p>{coupleName}</p>
+            <p>{pastYear} 커플</p>
+          </div>
+        </S.CoupleProfileWrapper>
+      </S.HoneyHeader>
+      <S.BlockNoteWrapper>
+        <BlockNoteView
+          editor={editor}
+          editable={false}
+          theme={themeColor === 'dark' ? darkTheme : lightTheme}
+        />
+      </S.BlockNoteWrapper>
     </S.HoneyWrapper>
   );
 }
