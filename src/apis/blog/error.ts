@@ -39,7 +39,7 @@ export function getBlogHoneyErrorHandler(error: AxiosError) {
   const responseData = error.response?.data as ErrorResponse;
   const code = responseData?.code;
   if (code === 'INVALID_REQUEST_PARAMETER')
-    return '해당 이야기를 불러오는데 실패했습니다.';
+    return '해당 이야기 주소가 잘못되었거나, 존재하지 않습니다.';
   if (code === 'INVALID_TOKEN')
     return '유효하지 않은 토큰입니다. 다시 시도해주세요.';
   if (code === 'YOU_ARE_NOT_PART_OF_A_CONNECTION')

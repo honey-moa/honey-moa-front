@@ -9,6 +9,8 @@ import {
 } from './error';
 import { AxiosError } from 'axios';
 import { BlogHoneyType } from './type';
+import { ErrorResponse } from '../type';
+import { useNavigate } from 'react-router-dom';
 
 //블로그 생성 mutation
 export const CreateBlogMutate = () => {
@@ -60,6 +62,7 @@ export const CreateNewBlogPostMutate = () => {
 
 //블로그 꿀(unit) 조회 query
 export const GetBlogHoneyQuery = ({ id }: Pick<BlogHoneyType, 'id'>) => {
+  const navigate = useNavigate();
   const { data, isError, error } = useQuery({
     queryKey: ['blog-honey'],
     queryFn: () => BlogEndpoint.getBlogHoney({ id }),
@@ -67,7 +70,15 @@ export const GetBlogHoneyQuery = ({ id }: Pick<BlogHoneyType, 'id'>) => {
     refetchOnWindowFocus: false,
   });
   if (isError) {
-    toast.error(getBlogHoneyErrorHandler(error as AxiosError));
+    const err = error as AxiosError;
+    toast.error(getBlogHoneyErrorHandler(err), { toastId: 'blog-honey-1' });
+    const resError = err.response?.data as ErrorResponse;
+    if (
+      resError?.code === 'RESOURCE_NOT_FOUND' ||
+      resError?.code === 'INVALID_REQUEST_PARAMETER'
+    ) {
+      navigate(-1);
+    }
     return;
   }
   return data;

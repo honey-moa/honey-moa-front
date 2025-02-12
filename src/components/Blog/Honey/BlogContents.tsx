@@ -1,25 +1,37 @@
-import { useCreateBlockNote } from '@blocknote/react';
 import * as S from './style';
 import { BlockNoteView } from '@blocknote/mantine';
 import { Svg } from '@/components/Svg';
 import { useTheme } from 'styled-components';
 import { BlogQueries } from '@/apis/blog';
-import { useLocation } from 'react-router-dom';
 import { Profile } from '@/components/Layouts';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { darkTheme, lightTheme } from '../Post/Editor';
 import useLocalStorage from '@/hook/useLocalStorage';
+import { BlockNoteEditor, PartialBlock } from '@blocknote/core';
+import { HoneyContentType } from './type';
 
-export default function BlogContents() {
+export default function BlogContents(honeyData: Partial<HoneyContentType>) {
   const theme = useTheme();
   const { value: themeColor } = useLocalStorage('theme');
-  const { pathname } = useLocation();
-  const honeyId = pathname.split('/')[pathname.split('/').length - 1];
-  const honeyData = BlogQueries.GetBlogHoneyQuery({ id: honeyId });
+
   const bloggerInfo = BlogQueries.GetSingleBlogQuery(honeyData?.userId);
-  const editor = useCreateBlockNote({
-    initialContent: honeyData?.contents,
-  });
+
+  const [initialContent, setInitialContent] = useState<
+    PartialBlock[] | undefined | 'loading'
+  >('loading');
+
+  useEffect(() => {
+    if (honeyData) {
+      setInitialContent(honeyData.contents);
+    }
+  }, [honeyData]);
+
+  const editor = useMemo(() => {
+    if (initialContent === 'loading') {
+      return undefined;
+    }
+    return BlockNoteEditor.create({ initialContent });
+  }, [initialContent]);
 
   const coupleName = useMemo(() => {
     return bloggerInfo?.members.map(member => member.nickname).join(' & ');
@@ -28,7 +40,6 @@ export default function BlogContents() {
   const pastYear = useMemo(() => {
     const now = new Date();
     const coupleDDay = bloggerInfo?.dDayStartDate.split('-');
-    console.log(coupleDDay);
     if (coupleDDay) {
       const coupleYear = now.getFullYear() - Number(coupleDDay[0]);
       if (coupleYear === 0) {
@@ -38,25 +49,19 @@ export default function BlogContents() {
     }
   }, [bloggerInfo]);
 
+  if (editor === undefined) {
+    return 'Loading content...';
+  }
+
   return (
     <S.HoneyWrapper>
-      <S.LeftSideFloatingNavWrapper>
-        <div>
-          <S.LikeWrapper>
-            <Svg.LikeIcon color={theme.button.primary.base} fill={false} />
-            {999}
-          </S.LikeWrapper>
-          <div>
-            <Svg.ShareIcon color={theme.button.primary.base} />
-          </div>
-        </div>
-      </S.LeftSideFloatingNavWrapper>
       <S.HoneyContainer>
         <S.HoneyHeader>
           <S.TagsWrapper>
-            {honeyData?.tags.map(tag => (
-              <div key={`${tag.id}-tag`}>#{tag.name}</div>
-            ))}
+            {honeyData.tags &&
+              honeyData.tags.map(tag => (
+                <div key={`${tag.id}-tag`}>#{tag.name}</div>
+              ))}
           </S.TagsWrapper>
           <S.HoneyTitleH1>{honeyData?.title}</S.HoneyTitleH1>
           <S.DateAndLocationWrapper>

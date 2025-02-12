@@ -34,6 +34,7 @@ export const LikeWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   cursor: pointer;
+  color: ${({ theme }) => theme.text.primary};
 `;
 
 export const HoneyHeader = styled.div`
@@ -62,16 +63,24 @@ export const HoneyTitleH1 = styled.h1`
 export const DateAndLocationWrapper = styled.div`
   display: flex;
   justify-content: start;
-  gap: 12px;
   align-items: center;
+  gap: 12px;
   margin-top: 12px;
-  color: ${({ theme }) => theme.text.secondary};
+  color: ${({ theme }) => theme.text.primary};
+  p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 export const CoupleProfileWrapper = styled.div`
   display: flex;
-  margin: 24px 0;
+  margin-top: 12px;
   gap: 16px;
+  & > :nth-child(1) {
+    width: 80px;
+  }
   img {
     width: 50px;
     height: 50px;
@@ -81,8 +90,6 @@ export const CoupleProfileWrapper = styled.div`
   & > :nth-child(2) {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     color: ${({ theme }) => theme.text.primary};
   }
 `;
