@@ -4,20 +4,7 @@ import path from 'path';
 
 // https://vite.dev/config/
 export default {
-  plugins: [
-    react(),
-    {
-      name: 'rewrite-middleware',
-      configureServer(serve: any) {
-        serve.middlewares.use((req: any, res: any, next: any) => {
-          if (req.url.startsWith('/nested/')) {
-            req.url = '/nested/';
-          }
-          next();
-        });
-      },
-    },
-  ],
+  plugins: [react()],
   test: {
     browser: {
       provider: 'webdriverio',
