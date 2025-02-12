@@ -17,9 +17,10 @@ export default {
   server: {
     proxy: {
       '/api/v1': {
-        target: `http://app-prod-load-balancer-1596393594.ap-northeast-2.elb.amazonaws.com`,
+        target:
+          'http://app-prod-load-balancer-1596393594.ap-northeast-2.elb.amazonaws.com',
         changeOrigin: true,
-        secure: false, // HTTPS → HTTP 허용
+        secure: false,
       },
     },
   },
