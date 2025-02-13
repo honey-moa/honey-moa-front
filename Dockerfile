@@ -19,9 +19,6 @@ RUN npm run build
 # 2. Nginx 이미지 설정 (실제 배포용)
 FROM nginx:1.25.1-alpine3.17-slim
 
-# 작업 디렉토리 설정
-WORKDIR /app
-
 
 # 리액트 빌드 파일을 nginx/html로 복사
 COPY --from=builder /app/dist /usr/share/nginx/html
