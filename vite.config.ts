@@ -18,11 +18,10 @@ export default {
   server: {
     proxy: {
       '/api': {
-        target:
-          'http://app-prod-load-balancer-1596393594.ap-northeast-2.elb.amazonaws.com',
-        rewrite: (path: any) => path.replace(/^\/api/, ''),
+        target: 'http://honeymoa.kr:8088',
         changeOrigin: true,
         secure: false,
+        rewrite: (path: string) => path.replace(/^\/api/, ''),
       },
     },
   },
