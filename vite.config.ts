@@ -16,6 +16,7 @@ export default {
     alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
   },
   server: {
-    host: true,
+    host: '0.0.0.0',
+    port: 3000,
   },
 };
