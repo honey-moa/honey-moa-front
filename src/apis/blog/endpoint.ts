@@ -1,5 +1,6 @@
 import { instanceToken } from '../axiosInstance';
 import {
+  BlogHoneyType,
   BlogSingleInfoReturn,
   BlogSingleParamsType,
   CreateBlogParams,
@@ -30,5 +31,12 @@ export async function CreateNewBlogPost({
   ...params
 }: CreateNewBLogPostParams): Promise<CreateNewBlogPostReturn> {
   const response = await instanceToken.post(`/blogs/${id}/blog-posts`, params);
+  return response.data;
+}
+
+export async function getBlogHoney({
+  id,
+}: Pick<BlogHoneyType, 'id'>): Promise<BlogHoneyType> {
+  const response = await instanceToken.get(`/blog-posts/${id}`);
   return response.data;
 }

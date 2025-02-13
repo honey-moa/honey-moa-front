@@ -3,5 +3,11 @@ export interface CoupleProfileProps {
 }
 
 export interface TogetherImageProps {
-  myId: string;
+  members?: {
+    id: string;
+    createdAt: string;
+    updatedAt: string;
+    nickname: string;
+    profileImageUrl: string;
+  }[];
 }
