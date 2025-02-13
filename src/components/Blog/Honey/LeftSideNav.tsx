@@ -19,7 +19,6 @@ export default function LeftSideNav() {
   const onClickShareHandler = (type: 'share' | 'copy') => {
     const obj = {
       share: () => {
-        console.log('123132');
         if (confirm('연인에게 해당 이야기를 공유하시겠습니까?')) {
           //공유 로직
           toast.success('연인에게 공유되었습니다.');
