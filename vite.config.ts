@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import react from '@vitejs/plugin-react-swc';
 import path from 'path';
 
@@ -13,5 +14,9 @@ export default {
   },
   resolve: {
     alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
+  },
+  server: {
+    port: 3000,
+    host: true,
   },
 };
