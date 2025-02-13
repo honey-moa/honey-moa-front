@@ -26,7 +26,7 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
 
 # 80번 포트를 노출
-EXPOSE 80
+EXPOSE 3000
 
 # nginx 백그라운드 실행
 CMD ["nginx", "-g", "daemon off;"]
