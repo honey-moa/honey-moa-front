@@ -7,6 +7,14 @@ RUN npm install
 COPY . .
 RUN npm run build
 
+ARG VITE_API_URL
+ARG VITE_CHANGE_PW_URL
+ARG VITE_API_KEY
+
+ENV VITE_API_URL=${VITE_API_URL}
+ENV VITE_CHANGE_PW_URL=${VITE_CHANGE_PW_URL}
+ENV VITE_API_KEY=${VITE_API_KEY}
+
 # 실제 배포용: Nginx 기반의 정적 파일 서버 (3000번 포트에서 동작)
 FROM nginx:1.25.1-alpine3.17-slim
 

@@ -15,7 +15,11 @@ jobs:
           password: ${{secrets.DOCKERHUB_TOKEN}} # 도커 허브 access token
       - name: Build and Release
         run: |
-          docker build -t ${{secrets.DOCKERHUB_REPO}} .
+          docker build \
+            --build-arg VITE_BASE_URL=${{secrets.VITE_BASE_URL}} \
+            --build-arg VITE_CHANGE_PW_URL=${{secrets.VITE_CHANGE_PW_URL}} \
+            --build-arg VITE_API_KEY=${{secrets.VITE_API_KEY}} \
+            -t ${{secrets.DOCKERHUB_REPO}} .
           docker tag ${{secrets.DOCKERHUB_REPO}}:latest ${{secrets.DOCKERHUB_USERNAME}}/${{secrets.DOCKERHUB_REPO}}:latest
           docker push ${{secrets.DOCKERHUB_USERNAME}}/${{secrets.DOCKERHUB_REPO}}:latest
       - name: Deploy to server
