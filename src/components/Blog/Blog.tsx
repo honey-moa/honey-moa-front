@@ -1,16 +1,17 @@
 import * as S from './style';
-import { useLocation } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { Header, SideNavigate } from '../Layouts';
 import { UserQueries } from '@/apis/user';
 import { Contents, Profile } from '../Main';
 import { BlogQueries } from '@/apis/blog';
 
 export default function Blog() {
-  const { pathname } = useLocation();
-  const pathArr = pathname.split('/');
-  const id = pathArr[pathArr.length - 1];
   const myInfo = UserQueries.GetMyInfoQuery();
   const getBlogInfo = BlogQueries.GetSingleBlogQuery(myInfo?.id);
+
+  if (!getBlogInfo) {
+    return <Navigate to="/honeyJar" />;
+  }
 
   return (
     <>
@@ -22,7 +23,6 @@ export default function Blog() {
           <Contents.HoneyList />
         </div>
       </S.ContentsWrapper>
-      <h1>{id}Blog</h1>
     </>
   );
 }

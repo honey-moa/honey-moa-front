@@ -29,7 +29,6 @@ export const CoupleProfileWrapper = styled.div`
 export const EachImageContainer = styled.div`
   display: flex;
   position: relative;
-  width: 110px;
   img {
     position: absolute;
     &:nth-child(1) {
