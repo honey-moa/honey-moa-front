@@ -16,13 +16,7 @@ export default {
     alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
   },
   server: {
-    proxy: {
-      '/api': {
-        target: 'http://honeymoa.kr:8088',
-        changeOrigin: true,
-        secure: false,
-        rewrite: (path: string) => path.replace(/^\/api/, ''),
-      },
-    },
+    port: 3000,
+    host: true,
   },
 };

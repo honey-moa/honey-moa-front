@@ -10,7 +10,6 @@ export const commonInstance = axios.create({
   baseURL: `${import.meta.env.VITE_BASE_URL}/api/v1`,
   headers: {
     'Content-Type': 'application/json',
-    'Content-Security-Policy': 'upgrade-insecure-requests',
   },
 });
 
@@ -18,7 +17,6 @@ export const instanceToken = axios.create({
   baseURL: `${import.meta.env.VITE_BASE_URL}/api/v1`,
   headers: {
     'Content-Type': 'application/json',
-    'Content-Security-Policy': 'upgrade-insecure-requests',
   },
 });
 
