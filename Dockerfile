@@ -1,32 +1,22 @@
-# node 버전 20.9를 베이스 이미지로 사용
+# node 버전 20.9를 베이스 이미지로 사용 (빌드 스테이지)
 FROM node:20.9.0 as builder
 
-# 작업 디렉토리 설정
 WORKDIR /app
-
-# 현재 프로젝트의 package*.json을 app으로 복사
 COPY package*.json ./
-
-# 의존성 설치
 RUN npm install
-
-# 현재 디렉토리의 모든 파일을 app으로 복사
 COPY . .
-
-# 프로젝트 빌드
 RUN npm run build
 
-# 2. Nginx 이미지 설정 (실제 배포용)
+# 실제 배포용: Nginx 기반의 정적 파일 서버 (3000번 포트에서 동작)
 FROM nginx:1.25.1-alpine3.17-slim
 
-
-# 리액트 빌드 파일을 nginx/html로 복사
+# 빌드 결과물을 복사
 COPY --from=builder /app/dist /usr/share/nginx/html
-# 내가 작성한 conf 파일을 nginx로 복사
-COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
 
-# 80번 포트를 노출
+# 프론트 컨테이너용 Nginx 설정 파일 복사 (3000번 포트에서 서빙)
+COPY ./nginx/client-default.conf /etc/nginx/conf.d/default.conf
+
+# 3000번 포트를 노출
 EXPOSE 3000
 
-# nginx 백그라운드 실행
 CMD ["nginx", "-g", "daemon off;"]
