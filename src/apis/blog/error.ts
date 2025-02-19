@@ -46,3 +46,16 @@ export function getBlogHoneyErrorHandler(error: AxiosError) {
     return '해당 이야기를 읽을 권한이 없습니다.';
   if (code === 'RESOURCE_NOT_FOUND') return '해당 블로그는 존재하지 않습니다.';
 }
+
+export function PaginationErrorHandler(error: AxiosError) {
+  const responseData = error.response?.data as ErrorResponse;
+  const code = responseData?.code;
+  if (code === 'INVALID_REQUEST_PARAMETER')
+    return '잘못된 요청입니다. 새로고침 후 다시 시도해 주세요.';
+  if (code === 'YOU_ARE_NOT_PART_OF_A_CONNECTION') {
+    return '해당 블로그를 읽을 권한지 존재하지 않습니다.';
+  }
+  if (code === 'RESOURCE_NOT_FOUND') {
+    return '해당 블로그는 삭제되었거나, 존재하지 않습니다.';
+  }
+}

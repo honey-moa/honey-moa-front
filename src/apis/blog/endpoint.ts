@@ -7,6 +7,9 @@ import {
   CreateBlogReturn,
   CreateNewBLogPostParams,
   CreateNewBlogPostReturn,
+  PaginationCursorType,
+  PaginationOffsetType,
+  PrivateBlogPaginationType,
 } from './type';
 
 //블로그 생성 api
@@ -38,5 +41,24 @@ export async function getBlogHoney({
   id,
 }: Pick<BlogHoneyType, 'id'>): Promise<BlogHoneyType> {
   const response = await instanceToken.get(`/blog-posts/${id}`);
+  return response.data;
+}
+
+//private 블로그 pagination
+export async function getPrivateBlogListPagination({
+  id,
+  limit = 10,
+  showPrivatePosts = true,
+  ...params
+}: PrivateBlogPaginationType): Promise<
+  PaginationOffsetType | PaginationCursorType
+> {
+  const response = await instanceToken.get(`/blogs/${id}/blog-posts`, {
+    params: {
+      limit,
+      showPrivatePosts,
+      ...params,
+    },
+  });
   return response.data;
 }

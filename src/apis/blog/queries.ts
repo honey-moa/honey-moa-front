@@ -6,9 +6,10 @@ import {
   createNewBlogPostErrorHandler,
   getBlogHoneyErrorHandler,
   getSingleBlogErrorHandler,
+  PaginationErrorHandler,
 } from './error';
 import { AxiosError } from 'axios';
-import { BlogHoneyType } from './type';
+import { BlogHoneyType, PrivateBlogPaginationType } from './type';
 import { ErrorResponse } from '../type';
 import { useNavigate } from 'react-router-dom';
 
@@ -79,6 +80,24 @@ export const GetBlogHoneyQuery = ({ id }: Pick<BlogHoneyType, 'id'>) => {
     ) {
       navigate(-1);
     }
+    return;
+  }
+  return data;
+};
+
+export const GetPrivateBlogPaginationQuery = (
+  params: PrivateBlogPaginationType
+) => {
+  const { data, isError, error } = useQuery({
+    queryKey: ['private-blog-pagination', params.page, params.datePeriod],
+    queryFn: () => BlogEndpoint.getPrivateBlogListPagination(params),
+    retry: false,
+    refetchOnWindowFocus: false,
+    enabled: !!params.id,
+    staleTime: 2000,
+  });
+  if (isError) {
+    toast.error(PaginationErrorHandler(error as AxiosError));
     return;
   }
   return data;

@@ -1,0 +1,68 @@
+import * as S from './style';
+
+import { useCreateBlockNote } from '@blocknote/react';
+import { PaginationContents } from './type';
+import { BlockNoteView } from '@blocknote/mantine';
+import { date } from '@/utils';
+import { darkTheme, lightTheme } from '../Post/Editor';
+import useLocalStorage from '@/hook/useLocalStorage';
+import { useMemo } from 'react';
+import Image from '@/components/Image';
+
+export function BlogListEachHoneyCard(props: PaginationContents) {
+  const editor = useCreateBlockNote({
+    initialContent: props.contents,
+  });
+  const { value: theme } = useLocalStorage('theme');
+  const thumbnail = useMemo(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const temp: any[] = props.contents.filter(
+      content => content.type === 'image'
+    );
+    if (!temp[0]) return null;
+    return temp[0].props.url;
+  }, [props.contents]);
+  const postDate = date.getDateString({ date: props.createdAt, type: '월일' });
+
+  return (
+    <S.BlogHoneyCardWrapper to={`/honeyJar/${props.blogId}/honey/${props.id}`}>
+      {thumbnail ? (
+        <div>
+          <S.HoneyInfoWrapper>
+            <h3>{props.title}</h3>
+            <span>{postDate}</span>
+          </S.HoneyInfoWrapper>
+          <S.HoneyCardSummary>
+            <BlockNoteView
+              editor={editor}
+              editable={false}
+              theme={theme === 'dark' ? darkTheme : lightTheme}
+            />
+          </S.HoneyCardSummary>
+        </div>
+      ) : (
+        <div>
+          <div>
+            <Image
+              src={thumbnail}
+              alt="thumbnail"
+              width="100%"
+              height="250px"
+            />
+          </div>
+          <S.HoneyInfoWrapper>
+            <h3>{props.title}</h3>
+            <span>{postDate}</span>
+          </S.HoneyInfoWrapper>
+          <S.HoneyCardSummary>
+            <BlockNoteView
+              editor={editor}
+              editable={false}
+              theme={theme === 'dark' ? darkTheme : lightTheme}
+            />
+          </S.HoneyCardSummary>
+        </div>
+      )}
+    </S.BlogHoneyCardWrapper>
+  );
+}

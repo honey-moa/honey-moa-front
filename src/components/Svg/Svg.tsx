@@ -135,7 +135,7 @@ export function KeyIcon({ size = '24' }: SvgProps) {
   );
 }
 
-export function PrevIcon({ size = '24' }: SvgProps) {
+export function PrevIcon({ color, size = '24' }: SvgProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -149,13 +149,14 @@ export function PrevIcon({ size = '24' }: SvgProps) {
       strokeLinejoin="round"
       className="lucide lucide-chevron-left w-6 h-6 text-gray-600"
       data-id="element-4"
+      style={{ color: color }}
     >
       <path d="m15 18-6-6 6-6"></path>
     </svg>
   );
 }
 
-export function NextIcon({ size = '24' }: SvgProps) {
+export function NextIcon({ size = '24', color }: SvgProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -169,6 +170,7 @@ export function NextIcon({ size = '24' }: SvgProps) {
       strokeLinejoin="round"
       className="lucide lucide-chevron-right w-5 h-5"
       data-id="element-38"
+      style={{ color: color }}
     >
       <path d="m9 18 6-6-6-6"></path>
     </svg>
