@@ -25,7 +25,7 @@ export function BlogListEachHoneyCard(props: PaginationContents) {
     return temp[0].props.url;
   }, [props.contents]);
   const postDate = useMemo(
-    () => date.getDateString({ date: props.createdAt, type: '월일' }),
+    () => date.getFormattingDate({ date: props.createdAt, formatType: '월일' }),
     [props.date]
   );
 

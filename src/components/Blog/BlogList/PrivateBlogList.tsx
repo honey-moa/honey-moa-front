@@ -72,7 +72,10 @@ export default function PrivateBlogList({ id }: { id: string }) {
     const newDate = new Date(e.target.value);
     setSelectDate({
       year: newDate.getFullYear().toString(),
-      month: date.getDateString({ date: newDate.getMonth() + 1, type: 'MM' }),
+      month: date.getFormattingDate({
+        date: newDate.getMonth() + 1,
+        formatType: 'MM',
+      }),
     });
   };
 
@@ -105,11 +108,11 @@ export default function PrivateBlogList({ id }: { id: string }) {
               key={`${i + 1}-month-filter`}
               $isSelectedMonth={
                 selectDate.month ===
-                date.getDateString({ date: i + 1, type: 'MM' })
+                date.getFormattingDate({ date: i + 1, formatType: 'MM' })
               }
               onClick={() =>
                 onClickMonthHandler(
-                  date.getDateString({ date: i + 1, type: 'MM' })
+                  date.getFormattingDate({ date: i + 1, formatType: 'MM' })
                 )
               }
             >
