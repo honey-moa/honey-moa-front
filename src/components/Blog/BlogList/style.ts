@@ -127,6 +127,7 @@ export const BlogHoneyCardWrapper = styled(Link)`
   border-radius: 8px;
   padding: 8px 16px;
   min-height: 400px;
+  max-height: 400px;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
   &:hover {
@@ -145,7 +146,12 @@ export const HoneyInfoWrapper = styled.div`
   }
 `;
 
-export const HoneyCardSummary = styled.div`
+export const HoneyCardSummary = styled.div<{ $isImage: boolean }>`
+  height: ${({ $isImage }) => ($isImage ? '90px' : '300px')};
+  overflow: hidden;
+  flex-grow: 1;
+  .bn-container {
+  }
   .bn-editor {
     padding-inline: 0px;
   }
@@ -154,4 +160,55 @@ export const HoneyCardSummary = styled.div`
     font-weight: 500;
     color: ${({ theme }) => theme.text.tertiary};
   }
+`;
+
+export const HoneyCardTagsWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  height: 36px;
+  overflow: hidden;
+  gap: 8px;
+  margin-top: 8px;
+  & > span {
+    font-size: 1rem;
+    font-weight: bold;
+    color: ${({ theme }) => theme.text.primary};
+    margin-right: 8px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    background-color: ${({ theme }) => theme.bg.secondary};
+  }
+`;
+
+export const HoneyCardSkeletonWrapper = styled.div`
+  border: 1px solid ${({ theme }) => theme.border.primary};
+  border-radius: 8px;
+  padding: 8px 16px;
+  min-height: 400px;
+  max-height: 400px;
+  transition: all 0.3s ease-in-out;
+  background-color: ${({ theme }) => theme.bg.tertiary};
+`;
+
+export const NoBlogPleaseAddToBlogWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: ${({ theme }) => theme.text.primary};
+  height: 300px;
+  & > :nth-child(2) {
+    margin-top: 16px;
+    font-weight: bold;
+    color: ${({ theme }) => theme.button.primary.base};
+  }
+`;
+
+export const ListObserver = styled.div`
+  height: 120px;
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+  border: none;
+  background-color: transparent;
 `;

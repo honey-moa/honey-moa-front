@@ -26,19 +26,24 @@ export function BlogListEachHoneyCard(props: PaginationContents) {
 
   return (
     <S.BlogHoneyCardWrapper to={`/honeyJar/${props.blogId}/honey/${props.id}`}>
-      {thumbnail ? (
+      {!thumbnail ? (
         <div>
           <S.HoneyInfoWrapper>
             <h3>{props.title}</h3>
             <span>{postDate}</span>
           </S.HoneyInfoWrapper>
-          <S.HoneyCardSummary>
+          <S.HoneyCardSummary $isImage={thumbnail}>
             <BlockNoteView
               editor={editor}
               editable={false}
               theme={theme === 'dark' ? darkTheme : lightTheme}
             />
           </S.HoneyCardSummary>
+          <S.HoneyCardTagsWrapper>
+            {props.tags?.map(tag => (
+              <span key={tag.id}>{tag.name}</span>
+            ))}
+          </S.HoneyCardTagsWrapper>
         </div>
       ) : (
         <div>
@@ -47,20 +52,25 @@ export function BlogListEachHoneyCard(props: PaginationContents) {
               src={thumbnail}
               alt="thumbnail"
               width="100%"
-              height="250px"
+              height="200px"
             />
           </div>
           <S.HoneyInfoWrapper>
             <h3>{props.title}</h3>
             <span>{postDate}</span>
           </S.HoneyInfoWrapper>
-          <S.HoneyCardSummary>
+          <S.HoneyCardSummary $isImage={!thumbnail}>
             <BlockNoteView
               editor={editor}
               editable={false}
               theme={theme === 'dark' ? darkTheme : lightTheme}
             />
           </S.HoneyCardSummary>
+          <S.HoneyCardTagsWrapper>
+            {props.tags?.map(tag => (
+              <span key={tag.id}>{tag.name}</span>
+            ))}
+          </S.HoneyCardTagsWrapper>
         </div>
       )}
     </S.BlogHoneyCardWrapper>

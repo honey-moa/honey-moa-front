@@ -7,7 +7,6 @@ import {
   CreateBlogReturn,
   CreateNewBLogPostParams,
   CreateNewBlogPostReturn,
-  PaginationCursorType,
   PaginationOffsetType,
   PrivateBlogPaginationType,
 } from './type';
@@ -47,12 +46,10 @@ export async function getBlogHoney({
 //private 블로그 pagination
 export async function getPrivateBlogListPagination({
   id,
-  limit = 10,
+  limit = 12,
   showPrivatePosts = true,
   ...params
-}: PrivateBlogPaginationType): Promise<
-  PaginationOffsetType | PaginationCursorType
-> {
+}: PrivateBlogPaginationType): Promise<PaginationOffsetType> {
   const response = await instanceToken.get(`/blogs/${id}/blog-posts`, {
     params: {
       limit,

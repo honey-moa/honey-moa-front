@@ -1,21 +1,50 @@
 import { Svg } from '@/components/Svg';
 import * as S from './style';
-import { BlogQueries } from '@/apis/blog';
 import { BlogListEachHoneyCard } from './BlogListEachHoneyCard';
 import { useTheme } from 'styled-components';
-import { useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { date } from '@/utils';
+import { GetPrivateBlogPaginationQuery } from '@/apis/blog/queries';
+import { Link } from 'react-router-dom';
 
 export default function PrivateBlogList({ id }: { id: string }) {
+  const theme = useTheme();
+
   const [selectDate, setSelectDate] = useState({
     year: date.getNowDate.year,
     month: date.getNowDate.month,
   });
-  const theme = useTheme();
-  const getBlogList = BlogQueries.GetPrivateBlogPaginationQuery({
-    id,
-    datePeriod: `${selectDate.year}-${selectDate.month}`,
-  });
+
+  const obsRef = useRef<HTMLDivElement>(null);
+  const preventRef = useRef(true); //옵저버 중복 방지
+
+  const getBlogFilter = useMemo(
+    () => ({
+      id: id,
+      datePeriod: `${selectDate.year}-${selectDate.month}`,
+    }),
+    [id, selectDate.year, selectDate.month]
+  );
+
+  const getBlogInfo = GetPrivateBlogPaginationQuery(getBlogFilter);
+
+  //옵저버 생성
+  useEffect(() => {
+    const observer = new IntersectionObserver(handleObs, { threshold: 0.1 });
+    if (obsRef.current) observer.observe(obsRef.current);
+    return () => {
+      observer.disconnect();
+    };
+  }, [obsRef]);
+
+  const handleObs: IntersectionObserverCallback = entries => {
+    const target = entries[0];
+    if (target.isIntersecting) {
+      //옵저버 중복 실행 방지
+      preventRef.current = false; //옵저버 중복 실행 방지
+      getBlogInfo?.fetchNextPage();
+    }
+  };
 
   const onClickMonthHandler = (month: string) => {
     setSelectDate(prev => ({ ...prev, month }));
@@ -35,6 +64,9 @@ export default function PrivateBlogList({ id }: { id: string }) {
       };
     });
   };
+
+  const flattenedContents =
+    getBlogInfo?.data?.pages.flatMap(page => page.contents) || [];
 
   const onChangeYearHandler: React.ChangeEventHandler<HTMLInputElement> = e => {
     const newDate = new Date(e.target.value);
@@ -87,15 +119,48 @@ export default function PrivateBlogList({ id }: { id: string }) {
         </div>
       </S.BlogListHeaderWrapper>
       <S.BlogSelectMonthSpan>{1}월</S.BlogSelectMonthSpan>
-      {getBlogList?.totalCount ? (
+      {getBlogInfo?.data?.pages[0].contents.length !== 0 ? (
         <S.BlogListPaginationWrapper>
-          {getBlogList.contents.map(blog => {
-            return <BlogListEachHoneyCard {...blog} key={blog.id} />;
-          })}
+          {getBlogInfo?.isInitialLoading && (
+            <>
+              <S.HoneyCardSkeletonWrapper></S.HoneyCardSkeletonWrapper>
+              <S.HoneyCardSkeletonWrapper></S.HoneyCardSkeletonWrapper>
+              <S.HoneyCardSkeletonWrapper></S.HoneyCardSkeletonWrapper>
+              <S.HoneyCardSkeletonWrapper></S.HoneyCardSkeletonWrapper>
+              <S.HoneyCardSkeletonWrapper></S.HoneyCardSkeletonWrapper>
+              <S.HoneyCardSkeletonWrapper></S.HoneyCardSkeletonWrapper>
+            </>
+          )}
+          {getBlogInfo?.isRefetching && (
+            <>
+              <S.HoneyCardSkeletonWrapper></S.HoneyCardSkeletonWrapper>
+              <S.HoneyCardSkeletonWrapper></S.HoneyCardSkeletonWrapper>
+              <S.HoneyCardSkeletonWrapper></S.HoneyCardSkeletonWrapper>
+            </>
+          )}
+          {!getBlogInfo?.isInitialLoading &&
+            !getBlogInfo?.isRefetching &&
+            getBlogInfo?.isSuccess &&
+            flattenedContents.map(blog => {
+              return <BlogListEachHoneyCard {...blog} key={blog.id} />;
+            })}
+          {getBlogInfo?.isFetching && (
+            <>
+              <S.HoneyCardSkeletonWrapper></S.HoneyCardSkeletonWrapper>
+              <S.HoneyCardSkeletonWrapper></S.HoneyCardSkeletonWrapper>
+              <S.HoneyCardSkeletonWrapper></S.HoneyCardSkeletonWrapper>
+            </>
+          )}
         </S.BlogListPaginationWrapper>
       ) : (
-        <div>아직 이야기가 존재하지 않습니다.</div>
+        <S.NoBlogPleaseAddToBlogWrapper>
+          <span>아직 달콯한 이야기가 존재하지 않습니다😭</span>
+          <Link to={`/new/${id}/post`}>
+            <span>👉달콤한 이야기 추가하기👈</span>
+          </Link>
+        </S.NoBlogPleaseAddToBlogWrapper>
       )}
+      <S.ListObserver ref={obsRef}></S.ListObserver>
     </S.BlogListWrapper>
   );
 }
