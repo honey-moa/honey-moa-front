@@ -1,6 +1,6 @@
 type FormatDateType = {
   date: string | number | Date;
-  type:
+  formatType:
     | '년월일'
     | '월일'
     | '일'
@@ -18,7 +18,7 @@ type FormatDateType = {
 /**
  *
  * @param date 날짜 입력 string | number | Date
- * @param type 날짜 포맷 타입
+ * @param format 날짜 포맷 타입
  *
  *
  * @returns
@@ -35,7 +35,7 @@ type FormatDateType = {
  * - MM: 09
  * - DD: 14
  */
-export default function formatDate({ date, type }: FormatDateType) {
+export default function formatDate({ date, formatType }: FormatDateType) {
   let newDate = new Date(date);
   if (typeof date === 'number') {
     newDate = new Date(`2025-${date}-01`);
@@ -62,5 +62,5 @@ export default function formatDate({ date, type }: FormatDateType) {
     MM: `${month}`,
     DD: `${day}`,
   } as const;
-  return monthObj[type];
+  return monthObj[formatType];
 }
