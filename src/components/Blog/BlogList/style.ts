@@ -133,13 +133,13 @@ export const BlogHoneyCardWrapper = styled(Link)`
   transition: all 0.3s ease-in-out;
   display: flex;
   flex-direction: column;
+  position: relative;
   &:hover {
     box-shadow: 0px 0px 10px 5px ${({ theme }) => theme.shadow.primary};
   }
 `;
 
 export const HoneyInfoWrapper = styled.div`
-  position: relative;
   flex: 1;
   > h3 {
     color: ${({ theme }) => theme.text.primary};
@@ -154,8 +154,8 @@ export const HoneyInfoWrapper = styled.div`
     width: 20%;
     height: 20px;
     position: absolute;
-    right: 0;
-    top: 0;
+    right: 16px;
+    top: 8px;
     display: flex;
     justify-content: center;
     align-items: center;

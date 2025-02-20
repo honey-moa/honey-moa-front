@@ -24,7 +24,10 @@ export function BlogListEachHoneyCard(props: PaginationContents) {
     if (!temp[0]) return null;
     return temp[0].props.url;
   }, [props.contents]);
-  const postDate = date.getDateString({ date: props.createdAt, type: '월일' });
+  const postDate = useMemo(
+    () => date.getDateString({ date: props.createdAt, type: '월일' }),
+    [props.date]
+  );
 
   return (
     <S.BlogHoneyCardWrapper to={`/honeyJar/${props.blogId}/honey/${props.id}`}>
