@@ -51,6 +51,7 @@ export const BlogSelectYearButtonWrapper = styled.div`
   }
   input {
     width: 80px;
+    background-color: ${({ theme }) => theme.bg.primary};
   }
   input[type='date'] {
     border: none;
@@ -130,26 +131,42 @@ export const BlogHoneyCardWrapper = styled(Link)`
   max-height: 400px;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
   &:hover {
     box-shadow: 0px 0px 10px 5px ${({ theme }) => theme.shadow.primary};
   }
 `;
 
 export const HoneyInfoWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: ${({ theme }) => theme.text.primary};
+  position: relative;
+  flex: 1;
   > h3 {
+    color: ${({ theme }) => theme.text.primary};
     font-size: 1.5rem;
     font-weight: bold;
+    width: 100%;
+  }
+  > span {
+    font-size: 0.6rem;
+    font-weight: 500;
+    color: ${({ theme }) => theme.text.primary};
+    width: 20%;
+    height: 20px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px;
+    background-color: ${({ theme }) => theme.button.secondary.base};
   }
 `;
 
-export const HoneyCardSummary = styled.div<{ $isImage: boolean }>`
-  height: ${({ $isImage }) => ($isImage ? '90px' : '300px')};
+export const HoneyCardSummary = styled.div`
   overflow: hidden;
-  flex-grow: 1;
+  flex: 1;
   .bn-container {
   }
   .bn-editor {
@@ -176,7 +193,7 @@ export const HoneyCardTagsWrapper = styled.div`
     margin-right: 8px;
     padding: 4px 8px;
     border-radius: 8px;
-    background-color: ${({ theme }) => theme.bg.secondary};
+    background-color: ${({ theme }) => theme.button.secondary.base};
   }
 `;
 

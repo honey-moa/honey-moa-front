@@ -101,9 +101,9 @@ export const GetPrivateBlogPaginationQuery = (
         ...params,
       }),
     initialPageParam: 1,
-    getNextPageParam: (lastPage, allPages) => {
-      return allPages.length < allPages[0].lastPage
-        ? allPages.length + 1
+    getNextPageParam: allPages => {
+      return allPages.currentPage < allPages.lastPage
+        ? allPages.currentPage + 1
         : undefined;
     },
     retry: false,

@@ -11,7 +11,9 @@ import Image from '@/components/Image';
 
 export function BlogListEachHoneyCard(props: PaginationContents) {
   const editor = useCreateBlockNote({
-    initialContent: props.contents,
+    initialContent: props.contents.filter(
+      content => content.type === 'paragraph'
+    ),
   });
   const { value: theme } = useLocalStorage('theme');
   const thumbnail = useMemo(() => {
@@ -26,13 +28,13 @@ export function BlogListEachHoneyCard(props: PaginationContents) {
 
   return (
     <S.BlogHoneyCardWrapper to={`/honeyJar/${props.blogId}/honey/${props.id}`}>
-      {!thumbnail ? (
-        <div>
+      {thumbnail ? (
+        <>
           <S.HoneyInfoWrapper>
             <h3>{props.title}</h3>
             <span>{postDate}</span>
           </S.HoneyInfoWrapper>
-          <S.HoneyCardSummary $isImage={thumbnail}>
+          <S.HoneyCardSummary>
             <BlockNoteView
               editor={editor}
               editable={false}
@@ -44,22 +46,15 @@ export function BlogListEachHoneyCard(props: PaginationContents) {
               <span key={tag.id}>{tag.name}</span>
             ))}
           </S.HoneyCardTagsWrapper>
-        </div>
+        </>
       ) : (
-        <div>
-          <div>
-            <Image
-              src={thumbnail}
-              alt="thumbnail"
-              width="100%"
-              height="200px"
-            />
-          </div>
+        <>
+          <Image src={thumbnail} alt="thumbnail" width="100%" height="45%" />
           <S.HoneyInfoWrapper>
             <h3>{props.title}</h3>
             <span>{postDate}</span>
           </S.HoneyInfoWrapper>
-          <S.HoneyCardSummary $isImage={!thumbnail}>
+          <S.HoneyCardSummary>
             <BlockNoteView
               editor={editor}
               editable={false}
@@ -71,7 +66,7 @@ export function BlogListEachHoneyCard(props: PaginationContents) {
               <span key={tag.id}>{tag.name}</span>
             ))}
           </S.HoneyCardTagsWrapper>
-        </div>
+        </>
       )}
     </S.BlogHoneyCardWrapper>
   );
