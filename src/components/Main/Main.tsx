@@ -1,6 +1,6 @@
-import { Header, SideNavigate } from '../Layouts';
+import { Header, Profile, SideNavigate } from '../Layouts';
 import * as S from './style';
-import { Contents, Profile } from '.';
+import { Contents } from '.';
 import { Navigate } from 'react-router-dom';
 import Modal from '../Modal';
 import CreateBlogModal from './CreateBlogModal';

@@ -1,9 +1,9 @@
 import * as S from './style';
 import { Navigate } from 'react-router-dom';
-import { Header, SideNavigate } from '../Layouts';
+import { Header, Profile, SideNavigate } from '../Layouts';
 import { UserQueries } from '@/apis/user';
-import { Contents, Profile } from '../Main';
 import { BlogQueries } from '@/apis/blog';
+import PrivateBlogList from './BlogList/PrivateBlogList';
 
 export default function Blog() {
   const myInfo = UserQueries.GetMyInfoQuery();
@@ -18,10 +18,10 @@ export default function Blog() {
       <Header.BlogHeader blogName={getBlogInfo?.name} />
       <S.ContentsWrapper>
         <SideNavigate.AbleBlogSideNav />
-        <div>
+        <S.BlogWrapper>
           <Profile.CoupleProfile myId={myInfo?.id} />
-          <Contents.HoneyList />
-        </div>
+          <PrivateBlogList id={getBlogInfo.id} />
+        </S.BlogWrapper>
       </S.ContentsWrapper>
     </>
   );

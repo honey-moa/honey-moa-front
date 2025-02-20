@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { BlogEndpoint } from '.';
 import { toast } from 'react-toastify';
 import {
@@ -6,9 +11,10 @@ import {
   createNewBlogPostErrorHandler,
   getBlogHoneyErrorHandler,
   getSingleBlogErrorHandler,
+  PaginationErrorHandler,
 } from './error';
 import { AxiosError } from 'axios';
-import { BlogHoneyType } from './type';
+import { BlogHoneyType, PrivateBlogPaginationType } from './type';
 import { ErrorResponse } from '../type';
 import { useNavigate } from 'react-router-dom';
 
@@ -82,4 +88,32 @@ export const GetBlogHoneyQuery = ({ id }: Pick<BlogHoneyType, 'id'>) => {
     return;
   }
   return data;
+};
+
+export const GetPrivateBlogPaginationQuery = (
+  params: PrivateBlogPaginationType
+) => {
+  const response = useInfiniteQuery({
+    queryKey: ['private-blog-pagination', params.datePeriod],
+    queryFn: ({ pageParam = 1 }) =>
+      BlogEndpoint.getPrivateBlogListPagination({
+        page: pageParam,
+        ...params,
+      }),
+    initialPageParam: 1,
+    getNextPageParam: allPages => {
+      return allPages.currentPage < allPages.lastPage
+        ? allPages.currentPage + 1
+        : undefined;
+    },
+    retry: false,
+    refetchOnWindowFocus: false,
+    enabled: !!params.id,
+    staleTime: 2000,
+  });
+  if (response.isError) {
+    toast.error(PaginationErrorHandler(response.error as AxiosError));
+    return;
+  }
+  return response;
 };

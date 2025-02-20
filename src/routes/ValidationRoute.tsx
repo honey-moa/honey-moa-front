@@ -44,7 +44,7 @@ const routesList: RouteListType[] = [
   },
   {
     id: 'route--honey',
-    path: '/honey/:id',
+    path: 'honeyJar/:blogId/honey/:honeyId',
     private: true,
     element: <Honey />,
   },

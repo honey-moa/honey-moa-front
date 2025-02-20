@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const ProfileWrapper = styled.div`
+  width: 100%;
   height: 300px;
   padding: 24px;
   position: relative;
@@ -8,7 +9,7 @@ export const ProfileWrapper = styled.div`
 
 export const CoupleInfoWrapper = styled.div`
   position: absolute;
-  width: 60%;
+  width: 100%;
   background-color: ${({ theme }) => theme.bg_02};
   border-radius: 16px;
   left: 0;

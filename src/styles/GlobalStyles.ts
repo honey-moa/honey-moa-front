@@ -19,6 +19,7 @@ export const GlobalStyles = createGlobalStyle<GlobalStylesProps>`
   body {
     background-color: ${({ color }) => (color ? '#212121' : '#FFFFFF')};
     width: 100%;
+    height: auto;
     max-width: 100dvw;
     overflow-x: hidden;
   }
@@ -36,3 +37,9 @@ export const GlobalStyles = createGlobalStyle<GlobalStylesProps>`
     margin: 0;
   } 
 `;
+
+export const breakpoints = {
+  small: '@media (max-width: 600px)',
+  medium: '@media (max-width: 960px)',
+  large: '@media (max-width: 1280px)',
+};
