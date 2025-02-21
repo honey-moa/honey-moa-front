@@ -66,7 +66,6 @@ export default function CreateBlogPostModal(data: CreateBlogPostModalProps) {
     HTMLFormElement
   > = e => {
     e.preventDefault();
-    console.log(createBlogPostInfo);
     createBlogPostMutate.mutate(createBlogPostInfo, {
       onSuccess: res => {
         toast.success(
