@@ -8,6 +8,8 @@ import '@blocknote/core/fonts/inter.css';
 import '@blocknote/mantine/style.css';
 import { EditorProps } from './type';
 import useLocalStorage from '@/hook/useLocalStorage';
+import { AttachmentsQueries } from '@/apis/attachment';
+import { toast } from 'react-toastify';
 
 export const lightTheme = {
   colors: {
@@ -98,19 +100,22 @@ const locale = locales['ko'];
 export const Editor = ({ setContents }: EditorProps) => {
   const { value: theme } = useLocalStorage('theme');
 
+  const attachmentsMutation = AttachmentsQueries.useNewAttachmentMutation();
+
   const uploadFile = async (file: File) => {
     const formData = new FormData();
-    formData.append('file', file);
-    //공식문서에서 제공하는 api
-    //나중에 자체 이미지 선 업로드 로직으로 바꿔야 함
-    const ret = await fetch('https://tmpfiles.org/api/v1/upload', {
-      method: 'POST',
-      body: formData,
-    });
-    return (await ret.json()).data.url.replace(
-      'tmpfiles.org/',
-      'tmpfiles.org/dl/'
+    formData.append('files', file);
+    formData.append('uploadType', 'IMAGE');
+    const response = attachmentsMutation.mutateAsync(
+      { formData },
+      {
+        onSuccess: () => {
+          toast.success('파일 업로드 성공');
+        },
+      }
     );
+
+    return response;
   };
 
   const editor = useCreateBlockNote({

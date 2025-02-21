@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Image from '@/components/Image';
 import * as S from './style';
 import {
@@ -27,18 +28,16 @@ export default function CreateBlogPostModal(data: CreateBlogPostModalProps) {
       fileUrls: [],
     });
   const thumbnail = useMemo(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const temp: any[] = data.contents.filter(
-      content => content.type === 'image'
-    );
+    const temp: any[] = data.contents
+      .filter(content => content.type === 'image')
+      .map((ele: any) => ele.props?.url);
     //저장한 이미지를 배열 형태로 보냄(백엔드에서 확인하는 용도)
     setCreateBlogPostInfo(prev => ({ ...prev, fileUrls: temp }));
     if (!temp[0]) return null;
-    return temp[0].props.url;
+    return temp[0];
   }, [data.contents]);
 
   const shortDescription = useMemo(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const temp: any[] = data.contents
       .filter(
         content => content.type === 'paragraph' && content.content?.length !== 0
@@ -67,6 +66,7 @@ export default function CreateBlogPostModal(data: CreateBlogPostModalProps) {
     HTMLFormElement
   > = e => {
     e.preventDefault();
+    console.log(createBlogPostInfo);
     createBlogPostMutate.mutate(createBlogPostInfo, {
       onSuccess: res => {
         toast.success(
