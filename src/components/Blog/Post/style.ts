@@ -286,12 +286,14 @@ export const ToastWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  color: ${({ theme }) => theme.text.primary};
   gap: 12px;
 `;
 
 export const ToastButtonContainer = styled.div`
   display: flex;
   gap: 10px;
+  color: ${({ theme }) => theme.text.primary};
   & > button {
     padding: 8px 5px;
     border-radius: 5px;
