@@ -88,6 +88,7 @@ export const TagsWrapper = styled.div`
   display: flex;
   justify-content: start;
   gap: 8px;
+  flex-wrap: wrap;
   & > :nth-child(n) {
     color: ${({ theme }) => theme.text.secondary};
     background-color: ${({ theme }) => theme.button.primary.base};

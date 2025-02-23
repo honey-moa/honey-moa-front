@@ -12,3 +12,5 @@ export type BlogCommentType = {
     profileImage: string;
   };
 };
+
+export type HoneyLeftSideNavProps = Pick<HoneyContentType, 'id' | 'blogId'>;

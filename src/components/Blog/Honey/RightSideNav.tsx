@@ -1,3 +1,3 @@
 export default function RightSideNav() {
-  return <div>오른쪽</div>;
+  return <div style={{ position: 'fixed' }}>오른쪽</div>;
 }
