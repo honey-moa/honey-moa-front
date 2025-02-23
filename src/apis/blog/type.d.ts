@@ -33,15 +33,28 @@ export interface BlogSingleInfoReturn {
   }[];
 }
 
-export interface CreateNewBLogPostParams {
-  id: string;
+export interface BlogPostHandlerType {
   title: string;
   contents: object[];
   date: string;
   location: string;
-  isPublic?: boolean;
   tagNames?: string[];
   fileUrls?: string[];
+  isPublic?: boolean;
+}
+
+export interface CreateNewBLogPostParams extends BlogPostHandlerType {
+  id: string;
+}
+
+export interface UpdateBlogPostParams extends BlogPostHandlerType {
+  blogId: string;
+  postId: string;
+}
+
+export interface DeleteBlogPostParams {
+  blogId: string;
+  postId: string;
 }
 
 export interface CreateNewBlogPostReturn {

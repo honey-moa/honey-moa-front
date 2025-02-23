@@ -7,8 +7,10 @@ import {
   CreateBlogReturn,
   CreateNewBLogPostParams,
   CreateNewBlogPostReturn,
+  DeleteBlogPostParams,
   PaginationOffsetType,
   PrivateBlogPaginationType,
+  UpdateBlogPostParams,
 } from './type';
 
 //블로그 생성 api
@@ -33,6 +35,27 @@ export async function CreateNewBlogPost({
   ...params
 }: CreateNewBLogPostParams): Promise<CreateNewBlogPostReturn> {
   const response = await instanceToken.post(`/blogs/${id}/blog-posts`, params);
+  return response.data;
+}
+
+//블로그 게시글 수정
+export async function updateBlogPost({
+  blogId,
+  postId,
+  ...params
+}: UpdateBlogPostParams): Promise<void> {
+  const response = await instanceToken.patch(
+    `/blogs/${blogId}/blog-posts/${postId}`,
+    params
+  );
+  return response.data;
+}
+
+//블로그 게시글 삭제
+export async function deleteBlogPost({ blogId, postId }: DeleteBlogPostParams) {
+  const response = await instanceToken.delete(
+    `/blogs/${blogId}/blog-posts/${postId}`
+  );
   return response.data;
 }
 

@@ -66,6 +66,38 @@ export const CreateNewBlogPostMutate = () => {
   });
 };
 
+//블로그 게시글 수정 mutation
+export const UpdateBlogPostMutate = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: BlogEndpoint.updateBlogPost,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['update-blog-post'],
+      });
+    },
+    onError: (error: AxiosError) => {
+      toast.error(createNewBlogPostErrorHandler(error));
+    },
+  });
+};
+
+//블로그 게시글 삭제 mutation
+export const DeleteBlogPostMutate = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: BlogEndpoint.deleteBlogPost,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['delete-blog-post'],
+      });
+    },
+    onError: (error: AxiosError) => {
+      toast.error(createNewBlogPostErrorHandler(error));
+    },
+  });
+};
+
 //블로그 꿀(unit) 조회 query
 export const GetBlogHoneyQuery = ({ id }: Pick<BlogHoneyType, 'id'>) => {
   const navigate = useNavigate();
