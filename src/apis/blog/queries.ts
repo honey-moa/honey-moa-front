@@ -127,7 +127,11 @@ export const GetPrivateBlogPaginationQuery = (
   params: PrivateBlogPaginationType
 ) => {
   const response = useInfiniteQuery({
-    queryKey: ['private-blog-pagination', params.datePeriod],
+    queryKey: [
+      'private-blog-pagination',
+      params.datePeriod,
+      params.showPrivatePosts,
+    ],
     queryFn: ({ pageParam = 1 }) =>
       BlogEndpoint.getPrivateBlogListPagination({
         page: pageParam,

@@ -10,9 +10,10 @@ import { Link } from 'react-router-dom';
 export default function PrivateBlogList({ id }: { id: string }) {
   const theme = useTheme();
 
-  const [selectDate, setSelectDate] = useState({
+  const [selectFilter, setSelectFilter] = useState({
     year: date.getNowDate.year,
     month: date.getNowDate.month,
+    filter: 'all',
   });
 
   const obsRef = useRef<HTMLDivElement>(null);
@@ -21,12 +22,19 @@ export default function PrivateBlogList({ id }: { id: string }) {
   const getBlogFilter = useMemo(
     () => ({
       id: id,
-      datePeriod: `${selectDate.year}-${selectDate.month}`,
+      datePeriod: `${selectFilter.year}-${selectFilter.month}`,
+      showPrivatePosts: selectFilter.filter === 'all' ? true : false,
     }),
-    [id, selectDate.year, selectDate.month]
+    [id, selectFilter.year, selectFilter.month, selectFilter.filter]
   );
 
   const getBlogInfo = GetPrivateBlogPaginationQuery(getBlogFilter);
+
+  const onFilterHandler: React.ChangeEventHandler<HTMLSelectElement> = e => {
+    const value = e.target.value;
+    console.log(value);
+    setSelectFilter(prev => ({ ...prev, filter: value }));
+  };
 
   //옵저버 생성
   useEffect(() => {
@@ -47,17 +55,17 @@ export default function PrivateBlogList({ id }: { id: string }) {
   };
 
   const onClickMonthHandler = (month: string) => {
-    setSelectDate(prev => ({ ...prev, month }));
+    setSelectFilter(prev => ({ ...prev, month }));
   };
 
   const onClickYearPrevAndNextHandler = (location: 'prev' | 'next') => {
-    const date = new Date(`${selectDate.year}-${selectDate.month}-01`);
+    const date = new Date(`${selectFilter.year}-${selectFilter.month}-01`);
     if (location === 'prev') {
       date.setFullYear(date.getFullYear() - 1);
     } else {
       date.setFullYear(date.getFullYear() + 1);
     }
-    setSelectDate(prev => {
+    setSelectFilter(prev => {
       return {
         ...prev,
         year: date.getFullYear().toString(),
@@ -70,20 +78,27 @@ export default function PrivateBlogList({ id }: { id: string }) {
 
   const onChangeYearHandler: React.ChangeEventHandler<HTMLInputElement> = e => {
     const newDate = new Date(e.target.value);
-    setSelectDate({
+    setSelectFilter(prev => ({
+      ...prev,
       year: newDate.getFullYear().toString(),
       month: date.getFormattingDate({
         date: newDate.getMonth() + 1,
         formatType: 'MM',
       }),
-    });
+    }));
   };
 
   return (
     <S.BlogListWrapper>
       <S.BlogListHeaderWrapper>
         <div>
-          <div>콤보박스</div>
+          <S.BlogListFilterSelect
+            onChange={onFilterHandler}
+            value={selectFilter.filter}
+          >
+            <option value="all">전체</option>
+            <option value="public">공개글</option>
+          </S.BlogListFilterSelect>
           <S.BlogSelectYearButtonWrapper>
             <button onClick={() => onClickYearPrevAndNextHandler('prev')}>
               <Svg.PrevIcon color={theme.text.primary} />
@@ -93,7 +108,7 @@ export default function PrivateBlogList({ id }: { id: string }) {
                 type="date"
                 id="selectYear"
                 onChange={onChangeYearHandler}
-                placeholder={selectDate.year}
+                placeholder={selectFilter.year}
               />
               년 의 달콤한 이야기
             </span>
@@ -107,7 +122,7 @@ export default function PrivateBlogList({ id }: { id: string }) {
             <S.BlogSelectMonthButton
               key={`${i + 1}-month-filter`}
               $isSelectedMonth={
-                selectDate.month ===
+                selectFilter.month ===
                 date.getFormattingDate({ date: i + 1, formatType: 'MM' })
               }
               onClick={() =>

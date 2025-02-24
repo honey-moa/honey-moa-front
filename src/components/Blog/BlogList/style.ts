@@ -25,6 +25,17 @@ export const BlogListHeaderWrapper = styled.div`
   }
 `;
 
+export const BlogListFilterSelect = styled.select`
+  width: 150px;
+  border: solid 1px ${({ theme }) => theme.button.primary.base};
+  border-radius: 16px;
+  padding: 8px 16px;
+  outline: none;
+  option {
+    color: ${({ theme }) => theme.text.primary};
+  }
+`;
+
 export const BlogSelectYearButtonWrapper = styled.div`
   display: flex;
   justify-content: space-between;

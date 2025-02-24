@@ -70,7 +70,7 @@ export async function getBlogHoney({
 export async function getPrivateBlogListPagination({
   id,
   limit = 12,
-  showPrivatePosts = true,
+  showPrivatePosts,
   ...params
 }: PrivateBlogPaginationType): Promise<PaginationOffsetType> {
   const response = await instanceToken.get(`/blogs/${id}/blog-posts`, {

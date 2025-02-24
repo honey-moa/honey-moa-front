@@ -12,8 +12,8 @@ export const NavItemListContainer = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 24px;
-  position: sticky;
-  top: 0;
+  position: fixed;
+  top: 150px;
 `;
 
 const itemButtonStyle = css`
