@@ -6,19 +6,22 @@ import {
   CreateBlogPostState,
   onTogglePublicHandlerParams,
 } from './type';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Svg } from '@/components/Svg';
 import { DefaultBlockSchema } from '@blocknote/core';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { BlogQueries } from '@/apis/blog';
 import { toast } from 'react-toastify';
 import { SuccessNewBlogPostToast } from './SuccessNewBlogPostToast';
+import { AttachmentsQueries } from '@/apis/attachment';
+import { changeInfo } from '@/utils';
 
 export default function CreateBlogPostModal(data: CreateBlogPostModalProps) {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const [createBlogPostInfo, setCreateBlogPostInfo] =
     useState<CreateBlogPostState>({
-      id: pathname.split('/')[pathname.split('/').length - 2],
+      id: pathname.split('/')[pathname.split('/').length - 3],
       title: data.title,
       contents: data.contents,
       date: data.date,
@@ -26,30 +29,45 @@ export default function CreateBlogPostModal(data: CreateBlogPostModalProps) {
       isPublic: false,
       tagNames: data.tagNames,
       fileUrls: [],
+      summary: '',
+      thumbnailImageUrl: '',
     });
-  const thumbnail = useMemo(() => {
+
+  const [editBlogPostInfo, setEditBlogPostInfo] = useState({
+    blogId: '',
+    postId: '',
+  });
+
+  const onChangeSummaryText = changeInfo.text({
+    setState: setCreateBlogPostInfo,
+  });
+
+  useMemo(() => {
     const temp: any[] = data.contents
       .filter(content => content.type === 'image')
       .map((ele: any) => ele.props?.url);
     //저장한 이미지를 배열 형태로 보냄(백엔드에서 확인하는 용도)
     setCreateBlogPostInfo(prev => ({ ...prev, fileUrls: temp }));
     if (!temp[0]) return null;
-    return temp[0];
+    return setCreateBlogPostInfo(prev => ({
+      ...prev,
+      thumbnailImageUrl: temp[0],
+    }));
   }, [data.contents]);
 
-  const shortDescription = useMemo(() => {
+  useMemo(() => {
     const temp: any[] = data.contents
       .filter(
         content => content.type === 'paragraph' && content.content?.length !== 0
       )
       .splice(0, 2) as unknown as DefaultBlockSchema['paragraph'][];
 
-    return (
-      temp
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return setCreateBlogPostInfo(prev => ({
+      ...prev,
+      summary: temp
         .map(content => content.content?.map((data: any) => data.text).join(''))
-        .join('\n')
-    );
+        .join('\n'),
+    }));
   }, [data.contents]);
 
   const onTogglePublicHandler = (status: onTogglePublicHandlerParams) => {
@@ -60,23 +78,72 @@ export default function CreateBlogPostModal(data: CreateBlogPostModalProps) {
     }
   };
 
+  const attachmentImage = AttachmentsQueries.useNewAttachmentMutation();
+
+  const uploadThumbnailImageHandler: React.ChangeEventHandler<
+    HTMLInputElement
+  > = e => {
+    const image = e.target.files?.[0];
+    const formData = new FormData();
+    formData.append('files', image as File);
+    formData.append('uploadType', 'IMAGE');
+    attachmentImage.mutate(
+      { formData },
+      {
+        onSuccess: res => {
+          setCreateBlogPostInfo(prev => ({
+            ...prev,
+            thumbnailImageUrl: res,
+          }));
+        },
+      }
+    );
+  };
+
   const createBlogPostMutate = BlogQueries.CreateNewBlogPostMutate();
+  const editBlogPostMutate = BlogQueries.UpdateBlogPostMutate();
 
   const onSubmitCreateBlogPostHandler: React.FormEventHandler<
     HTMLFormElement
   > = e => {
     e.preventDefault();
-    createBlogPostMutate.mutate(createBlogPostInfo, {
-      onSuccess: res => {
-        toast.success(
-          <SuccessNewBlogPostToast
-            postId={res.id}
-            blogHome={createBlogPostInfo.id}
-          />
-        );
-      },
-    });
+    if (pathname.split('/')[pathname.split('/').length - 1] !== 'edit') {
+      createBlogPostMutate.mutate(createBlogPostInfo, {
+        onSuccess: res => {
+          toast.success(
+            <SuccessNewBlogPostToast
+              postId={res.id}
+              blogHome={createBlogPostInfo.id}
+            />
+          );
+        },
+      });
+    } else {
+      editBlogPostMutate.mutate(
+        {
+          blogId: editBlogPostInfo.blogId,
+          postId: editBlogPostInfo.postId,
+          ...createBlogPostInfo,
+        },
+        {
+          onSuccess: () => {
+            toast.success('게시글이 수정되었습니다.');
+            navigate(
+              `/blog/${editBlogPostInfo.blogId}/post/${editBlogPostInfo.postId}`
+            );
+          },
+        }
+      );
+    }
   };
+
+  useEffect(() => {
+    const tempId = pathname.split('/');
+    setEditBlogPostInfo({
+      postId: tempId[tempId.length - 2],
+      blogId: tempId[tempId.length - 4],
+    });
+  }, [pathname]);
 
   return (
     <S.CreateBlogPostModalWrapper>
@@ -85,9 +152,22 @@ export default function CreateBlogPostModal(data: CreateBlogPostModalProps) {
           <label>제목</label>
           <h2>{data.title}</h2>
           <label>섬네일</label>
-          {thumbnail ? (
+          {createBlogPostInfo.thumbnailImageUrl ? (
             <S.ThumbnailWrapper>
-              <Image src={thumbnail} width="100%" height="100%" fit="contain" />
+              <label htmlFor="thumbnail">
+                <Image
+                  src={createBlogPostInfo.thumbnailImageUrl}
+                  width="100%"
+                  height="100%"
+                  fit="contain"
+                />
+              </label>
+              <input
+                type="file"
+                id="thumbnail"
+                hidden
+                onChange={uploadThumbnailImageHandler}
+              />
             </S.ThumbnailWrapper>
           ) : (
             <S.ThumbnailWrapper>
@@ -96,11 +176,20 @@ export default function CreateBlogPostModal(data: CreateBlogPostModalProps) {
                 이미지 등록하기
                 <Svg.UploadIcon />
               </label>
-              <input type="file" id="thumbnail" hidden />
+              <input
+                type="file"
+                id="thumbnail"
+                hidden
+                onChange={uploadThumbnailImageHandler}
+              />
             </S.ThumbnailWrapper>
           )}
           <label>짧은 설명</label>
-          <S.ShortDescriptionTextArea value={shortDescription} readOnly />
+          <S.ShortDescriptionTextArea
+            value={createBlogPostInfo.summary}
+            id="summary"
+            onChange={onChangeSummaryText}
+          />
         </div>
         <div>
           <label>공개 비공개 여부</label>

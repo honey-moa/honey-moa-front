@@ -8,7 +8,7 @@ import { useState } from 'react';
 import CreateBlogPostModal from './CreateBlogPostModal';
 import { toast } from 'react-toastify';
 
-export default function PostHeader(data: PostContentsType) {
+export default function PostHeader({ ...data }: PostContentsType) {
   const theme = useTheme();
   const navigate = useNavigate();
   const [isCreateBlogModalOpen, setIsCreateBlogModalOpen] = useState(false);
@@ -56,13 +56,6 @@ export default function PostHeader(data: PostContentsType) {
           나가기
         </S.ActionButton>
         <div>
-          <S.ActionButton
-            $bgColor={theme.bg.primary}
-            $color={theme.text.primary}
-            $hoverColor={theme.button.tertiary.hover}
-          >
-            임시 저장
-          </S.ActionButton>
           <S.ActionButton
             $bgColor={theme.button.primary.base}
             $color={theme.text.secondary}

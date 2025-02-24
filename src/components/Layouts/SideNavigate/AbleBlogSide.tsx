@@ -22,7 +22,7 @@ export default function AbleBlogSideNav() {
           </S.ItemButton>
         </li>
         <li>
-          <Link to={`/new/${blogId}/post`}>
+          <Link to={`/blog/${blogId}/post/create`}>
             <S.ItemButton>
               <Svg.WriteIcon size={36} />
             </S.ItemButton>

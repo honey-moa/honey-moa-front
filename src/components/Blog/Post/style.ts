@@ -111,7 +111,7 @@ export const TagsWrapper = styled.div`
     color: ${({ theme }) => theme.text.primary};
     font-weight: bold;
   }
-  .new-tag {
+  span {
     background-color: ${({ theme }) => theme.button.primary.base};
     color: ${({ theme }) => theme.text.secondary};
     padding: 5px 10px;
@@ -183,6 +183,8 @@ export const ThumbnailWrapper = styled.div`
   align-items: center;
   gap: 10px;
   & > label {
+    width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -3,52 +3,56 @@ import { Svg } from '@/components/Svg';
 import * as S from './style';
 import { TagsProps } from './type';
 import { toast } from 'react-toastify';
+import { useState } from 'react';
+import { changeInfo } from '@/utils';
 
 export default function Tags({ tags, setContents }: TagsProps) {
+  const [tagInfo, setTagInfo] = useState({
+    tag: '',
+  });
+
+  const onChangeTagText = changeInfo.text({ setState: setTagInfo });
   const makeNewTagHandler: React.KeyboardEventHandler<HTMLInputElement> = e => {
     //Enter시 태그 생성
     if (e.key === 'Enter') {
-      const tagInput = document.querySelector('#tag') as HTMLInputElement;
-      const tag = tagInput.value;
-      if (tag.length > 20) {
+      if (tagInfo.tag.length > 20) {
         toast.error('태그는 20자 이하로 입력해주세요.');
         return;
       }
-      if (!tag) return;
-      if (tags.includes(tag)) {
-        tagInput.value = '';
+      if (tagInfo.tag.trim() === '') {
+        toast.error('태그를 입력해 주세요.');
         return;
       }
-
-      setContents(prev => ({ ...prev, tagNames: [...prev.tagNames, tag] }));
-
-      const newTag = document.createElement('div');
-      newTag.textContent = tag;
-      newTag.className = 'new-tag';
-      tagInput.value = '';
-      tagInput.before(newTag);
-      newTag.addEventListener('click', () => {
-        newTag.remove();
-        setContents(prev => ({
-          ...prev,
-          tags: prev.tagNames.filter(target => target !== tag),
-        }));
-      });
+      if (tags.includes(tagInfo.tag)) {
+        toast.error('같은 태그를 등록할 수 없습니다.');
+        return;
+      }
+      setContents(prev => ({
+        ...prev,
+        tagNames: [...prev.tagNames, tagInfo.tag],
+      }));
+      setTagInfo({ tag: '' });
     }
     //backspace시 태그 삭제
     if (e.key === 'Backspace') {
-      const tagInput = document.querySelector('#tag') as HTMLInputElement;
-      if (tagInput.value === '') {
-        const tags = document.querySelectorAll('.new-tag');
-        const lastTag = tags[tags.length - 1];
-        lastTag.remove();
+      if (tagInfo.tag === '') {
+        tags.pop();
         setContents(prev => ({
           ...prev,
-          tags: prev.tagNames.slice(0, -1),
+          tagNames: tags,
         }));
       }
     }
   };
+
+  const onClickDeleteTag = (index: number) => {
+    const delTagsFilter = tags.filter((_, idx) => idx !== index);
+    setContents(prev => ({
+      ...prev,
+      tagNames: delTagsFilter,
+    }));
+  };
+
   return (
     <>
       <S.TagsWrapper>
@@ -58,12 +62,19 @@ export default function Tags({ tags, setContents }: TagsProps) {
         >
           <Svg.InfoIcon />
         </PopUp.Tooltip>
+        {tags.map((tag, idx) => (
+          <span key={`${tag}-${idx}`} onClick={() => onClickDeleteTag(idx)}>
+            {tag}
+          </span>
+        ))}
         <input
           type="text"
           name="tag"
           id="tag"
+          value={tagInfo.tag}
           placeholder="태그를 입력하세요"
           onKeyDown={makeNewTagHandler}
+          onChange={onChangeTagText}
         />
       </S.TagsWrapper>
     </>

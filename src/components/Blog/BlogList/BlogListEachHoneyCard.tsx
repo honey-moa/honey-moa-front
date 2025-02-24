@@ -30,7 +30,7 @@ export function BlogListEachHoneyCard(props: PaginationContents) {
   );
 
   return (
-    <S.BlogHoneyCardWrapper to={`/honeyJar/${props.blogId}/honey/${props.id}`}>
+    <S.BlogHoneyCardWrapper to={`/blog/${props.blogId}/post/${props.id}`}>
       {thumbnail ? (
         <>
           <S.HoneyInfoWrapper>

@@ -17,7 +17,7 @@ export default function Main() {
   const getBlogInfo = BlogQueries.GetSingleBlogQuery(getMyInfo?.id as string);
 
   if (getBlogInfo) {
-    return <Navigate to={`/honeyJar/${getBlogInfo.id}`} />;
+    return <Navigate to={`/blog/${getBlogInfo.id}`} />;
   }
 
   return (
