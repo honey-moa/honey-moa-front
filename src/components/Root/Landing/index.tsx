@@ -16,7 +16,7 @@ export default function Landing() {
             <br />
             당신의 이야기가 시작되는 곳 입니다.
           </p>
-          <Link to="/honeyJar">
+          <Link to="/blog">
             <button>시작하기</button>
           </Link>
         </S.IntroLeft>

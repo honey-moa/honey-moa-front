@@ -28,7 +28,7 @@ export default function VerificationEmailModal() {
         </S.ExtraInfoDiv>
         <S.EmailAuthBottom>
           <p>이메일이 보이지 않는경우 스팸함을 확인해 보세요.</p>
-          <button onClick={() => navigate('/honeyJar')}>확인했습니다</button>
+          <button onClick={() => navigate('/blog')}>확인했습니다</button>
           <button>이메일 재전송</button>
           <p>프로필 설정에서 언제든지 이메일 인증을 진행할 수 있습니다.</p>
         </S.EmailAuthBottom>

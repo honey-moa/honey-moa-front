@@ -6,6 +6,7 @@ export interface PostContentsType {
   date: string;
   location: string;
   contents: PartialBlock[];
+  isEdit?: boolean;
 }
 
 export type PostContentsPropsType = React.Dispatch<
@@ -19,6 +20,7 @@ export interface TagsProps {
 
 export interface EditorProps {
   setContents: PostContentsPropsType;
+  initializedContents?: object[];
 }
 
 export interface CreateBlogPostModalProps {
@@ -29,6 +31,8 @@ export interface CreateBlogPostModalProps {
   isPublic?: boolean;
   tagNames?: string[];
   fileUrls?: string[];
+  summary?: string;
+  thumbnailImageUrl?: string | null;
 }
 
 export interface CreateBlogPostState extends CreateBlogPostModalProps {

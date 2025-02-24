@@ -97,7 +97,7 @@ const schema = BlockNoteSchema.create({
 
 const locale = locales['ko'];
 
-export const Editor = ({ setContents }: EditorProps) => {
+export const Editor = ({ setContents, initializedContents }: EditorProps) => {
   const { value: theme } = useLocalStorage('theme');
 
   const attachmentsMutation = AttachmentsQueries.useNewAttachmentMutation();
@@ -124,6 +124,7 @@ export const Editor = ({ setContents }: EditorProps) => {
       ...locale,
     },
     uploadFile,
+    initialContent: initializedContents,
   });
   const onChangeBlockNoteHandler = () => {
     setContents(prev => {
@@ -133,6 +134,10 @@ export const Editor = ({ setContents }: EditorProps) => {
       };
     });
   };
+
+  if (editor === undefined) {
+    return 'Loading content...';
+  }
 
   return (
     <>

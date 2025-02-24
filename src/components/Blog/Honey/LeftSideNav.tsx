@@ -41,7 +41,9 @@ export default function LeftSideNav({ id, blogId }: HoneyLeftSideNavProps) {
 
   const onClickEditHandler = (type: 'edit' | 'delete') => {
     const obj = {
-      edit: () => {},
+      edit: () => {
+        navigation(`/blog/${blogId}/post/${id}/edit`);
+      },
       delete: () => {
         if (confirm('해당 이야기를 삭제하시겠습니까?')) {
           deleteMutation.mutate(
@@ -51,7 +53,7 @@ export default function LeftSideNav({ id, blogId }: HoneyLeftSideNavProps) {
             },
             {
               onSuccess: () => {
-                navigation(`/honeyJar/${blogId}`);
+                navigation(`/blog/${blogId}`);
               },
             }
           );

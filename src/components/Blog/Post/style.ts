@@ -111,7 +111,7 @@ export const TagsWrapper = styled.div`
     color: ${({ theme }) => theme.text.primary};
     font-weight: bold;
   }
-  .new-tag {
+  span {
     background-color: ${({ theme }) => theme.button.primary.base};
     color: ${({ theme }) => theme.text.secondary};
     padding: 5px 10px;
@@ -176,13 +176,14 @@ export const CreateBlogPostModalWrapper = styled.div`
 export const ThumbnailWrapper = styled.div`
   width: 100%;
   height: 230px;
-  border: 1px solid ${({ theme }) => theme.button.primary.base};
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 10px;
   & > label {
+    width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -41,6 +41,8 @@ export interface BlogPostHandlerType {
   tagNames?: string[];
   fileUrls?: string[];
   isPublic?: boolean;
+  thumbnailImageUrl?: string | null;
+  summary?: string;
 }
 
 export interface CreateNewBLogPostParams extends BlogPostHandlerType {
