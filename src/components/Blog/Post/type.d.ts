@@ -32,7 +32,7 @@ export interface CreateBlogPostModalProps {
   tagNames?: string[];
   fileUrls?: string[];
   summary?: string;
-  thumbnailImageUrl?: string;
+  thumbnailImageUrl?: string | null;
 }
 
 export interface CreateBlogPostState extends CreateBlogPostModalProps {

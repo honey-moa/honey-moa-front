@@ -176,7 +176,6 @@ export const CreateBlogPostModalWrapper = styled.div`
 export const ThumbnailWrapper = styled.div`
   width: 100%;
   height: 230px;
-  border: 1px solid ${({ theme }) => theme.button.primary.base};
   display: flex;
   flex-direction: column;
   justify-content: center;

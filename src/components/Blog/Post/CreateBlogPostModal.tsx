@@ -30,7 +30,7 @@ export default function CreateBlogPostModal(data: CreateBlogPostModalProps) {
       tagNames: data.tagNames,
       fileUrls: [],
       summary: '',
-      thumbnailImageUrl: '',
+      thumbnailImageUrl: null,
     });
 
   const [editBlogPostInfo, setEditBlogPostInfo] = useState({
@@ -49,10 +49,6 @@ export default function CreateBlogPostModal(data: CreateBlogPostModalProps) {
     //저장한 이미지를 배열 형태로 보냄(백엔드에서 확인하는 용도)
     setCreateBlogPostInfo(prev => ({ ...prev, fileUrls: temp }));
     if (!temp[0]) return null;
-    return setCreateBlogPostInfo(prev => ({
-      ...prev,
-      thumbnailImageUrl: temp[0],
-    }));
   }, [data.contents]);
 
   useMemo(() => {
@@ -113,7 +109,7 @@ export default function CreateBlogPostModal(data: CreateBlogPostModalProps) {
           toast.success(
             <SuccessNewBlogPostToast
               postId={res.id}
-              blogHome={createBlogPostInfo.id}
+              blogHome={pathname.split('/')[pathname.split('/').length - 3]}
             />
           );
         },

@@ -9,6 +9,8 @@ export interface PaginationContents {
   title: string;
   contents: PartialBlock[];
   date: string;
+  thumbnailImageUrl: string;
+  summary: string;
   location: string;
   isPublic: boolean;
   tags?: TagsType[];

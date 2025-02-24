@@ -41,7 +41,7 @@ export interface BlogPostHandlerType {
   tagNames?: string[];
   fileUrls?: string[];
   isPublic?: boolean;
-  thumbnailImageUrl?: string;
+  thumbnailImageUrl?: string | null;
   summary?: string;
 }
 
