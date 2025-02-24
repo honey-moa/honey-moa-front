@@ -1,4 +1,5 @@
 import {
+  keepPreviousData,
   useInfiniteQuery,
   useMutation,
   useQuery,
@@ -141,7 +142,7 @@ export const GetPrivateBlogPaginationQuery = (
     retry: false,
     refetchOnWindowFocus: false,
     enabled: !!params.id,
-    staleTime: 2000,
+    placeholderData: keepPreviousData,
   });
   if (response.isError) {
     toast.error(PaginationErrorHandler(response.error as AxiosError));

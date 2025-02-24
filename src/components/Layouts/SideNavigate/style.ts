@@ -3,9 +3,9 @@ import styled, { css } from 'styled-components';
 export const NavWrapper = styled.div`
   width: 120px;
   display: flex;
+  flex-shrink: 0;
   justify-content: center;
   padding: 50px 12px 0px 12px;
-  position: relative;
 `;
 
 export const NavItemListContainer = styled.ul`

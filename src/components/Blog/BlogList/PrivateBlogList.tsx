@@ -124,7 +124,7 @@ export default function PrivateBlogList({ id }: { id: string }) {
       <S.BlogSelectMonthSpan>{1}월</S.BlogSelectMonthSpan>
       {getBlogInfo?.data?.pages[0].contents.length !== 0 ? (
         <S.BlogListPaginationWrapper>
-          {getBlogInfo?.isInitialLoading && (
+          {getBlogInfo?.isPlaceholderData && (
             <>
               <S.HoneyCardSkeletonWrapper></S.HoneyCardSkeletonWrapper>
               <S.HoneyCardSkeletonWrapper></S.HoneyCardSkeletonWrapper>
@@ -141,7 +141,7 @@ export default function PrivateBlogList({ id }: { id: string }) {
               <S.HoneyCardSkeletonWrapper></S.HoneyCardSkeletonWrapper>
             </>
           )}
-          {!getBlogInfo?.isInitialLoading &&
+          {!getBlogInfo?.isPlaceholderData &&
             !getBlogInfo?.isRefetching &&
             getBlogInfo?.isSuccess &&
             flattenedContents.map(blog => {

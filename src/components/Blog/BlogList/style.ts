@@ -127,6 +127,7 @@ export const BlogHoneyCardWrapper = styled(Link)`
   border: 1px solid ${({ theme }) => theme.border.primary};
   border-radius: 8px;
   padding: 8px 16px;
+  width: 100%;
   min-height: 400px;
   max-height: 400px;
   cursor: pointer;
@@ -146,6 +147,7 @@ export const HoneyInfoWrapper = styled.div`
     font-size: 1.5rem;
     font-weight: bold;
     width: 100%;
+    height: 100%;
   }
   > span {
     font-size: 0.6rem;
@@ -167,31 +169,21 @@ export const HoneyInfoWrapper = styled.div`
 export const HoneyCardSummary = styled.div`
   overflow: hidden;
   flex: 1;
-  .bn-container {
-  }
-  .bn-editor {
-    padding-inline: 0px;
-  }
-  .bn-inline-content {
-    font-size: 1rem;
-    font-weight: 500;
-    color: ${({ theme }) => theme.text.tertiary};
-  }
 `;
 
 export const HoneyCardTagsWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  height: 36px;
   overflow: hidden;
   gap: 8px;
-  margin-top: 8px;
   & > span {
     font-size: 1rem;
     font-weight: bold;
     color: ${({ theme }) => theme.text.primary};
-    margin-right: 8px;
     padding: 4px 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 8px;
     background-color: ${({ theme }) => theme.button.secondary.base};
   }
