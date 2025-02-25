@@ -64,7 +64,10 @@ export default function PostHeader({ ...data }: PostContentsType) {
           >
             게시하기
           </S.ActionButton>
-          <Modal isOpen={isCreateBlogModalOpen}>
+          <Modal
+            isShow={isCreateBlogModalOpen}
+            setIsShow={setIsCreateBlogModalOpen}
+          >
             <CreateBlogPostModal {...data} />
           </Modal>
         </div>
