@@ -23,7 +23,7 @@ export default function PrivateBlogList({ id }: { id: string }) {
     () => ({
       id: id,
       datePeriod: `${selectFilter.year}-${selectFilter.month}`,
-      showPrivatePosts: selectFilter.filter === 'all' ? true : false,
+      showPrivatePosts: selectFilter.filter === 'all',
     }),
     [id, selectFilter.year, selectFilter.month, selectFilter.filter]
   );
