@@ -1,6 +1,7 @@
-export interface ModalProps {
+export interface ModalProps<T = boolean> {
   children: React.ReactNode;
-  isOpen?: boolean;
+  isShow?: boolean;
+  setIsShow?: React.Dispatch<React.SetStateAction<T>>;
   shouldCloseToClickOutside?: boolean;
   focusTrap?: boolean;
   blur?: boolean;

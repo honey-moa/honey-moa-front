@@ -8,11 +8,17 @@ import { AuthFunnelStep, UseFunnelReturn } from './type';
 export function AuthFunnelModal({
   Funnel,
   setStep,
-  isOpen,
+  isShow,
+  setIsShow,
   outSideClick = true,
 }: UseFunnelReturn<AuthFunnelStep>) {
   return (
-    <Modal blur={true} isOpen={isOpen} shouldCloseToClickOutside={outSideClick}>
+    <Modal
+      blur={true}
+      isShow={isShow}
+      setIsShow={setIsShow}
+      shouldCloseToClickOutside={outSideClick}
+    >
       <Funnel>
         <Funnel.Step name="로그인">
           <LoginModal setStep={setStep} />

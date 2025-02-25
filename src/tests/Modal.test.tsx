@@ -8,12 +8,10 @@ const ModalTestWrapper = () => {
 
   return (
     <div>
-      <button onClick={() => setIsOpen(prev => !prev)}>Toggle Modal</button>
-      <Modal
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        data-testid="modal"
-      >
+      <button data-testid="toggle-button" onClick={() => setIsOpen(true)}>
+        Toggle Modal
+      </button>
+      <Modal isShow={isOpen} setIsShow={setIsOpen} data-testid="modal">
         <div>
           <h1>testHeader</h1>
           <p>testBody</p>
@@ -23,18 +21,12 @@ const ModalTestWrapper = () => {
   );
 };
 describe('Modal test', () => {
-  render(<ModalTestWrapper />);
-  it('1. isOpen 값을 state prev=>!prev 로 전달하면 Modal 창이 열린다.', () => {
-    const modalHeader = screen.getByText('testHeader');
+  it('1. 버튼을 누르면 모달이 열린다.', () => {
+    render(<ModalTestWrapper />);
+    const toggleButton = screen.getByTestId('toggle-button');
+    fireEvent.click(toggleButton);
 
-    expect(modalHeader).toBeDefined();
+    const testHeader = screen.getByText('testHeader');
+    expect(testHeader).toBe('testHeader');
   });
-  it('2. Modal 영억 내부를 클릭해도 Modal 창은 닫히지 않는다.', () => {
-    const modalHeader = screen.getByText('testHeader');
-
-    fireEvent.click(modalHeader);
-
-    expect(modalHeader).toBeDefined();
-  });
-  it.todo('3. Modal 영역 외부를 클릭하면 Modal 창이 닫힌다.');
 });

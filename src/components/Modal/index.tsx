@@ -1,19 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { ModalProps } from './type';
 import FocusTrapReact from 'focus-trap-react';
 import { createPortal } from 'react-dom';
 import * as S from './style';
 
-export default function Modal({
+export default function Modal<T = boolean>({
   children,
-  isOpen = false,
+  isShow = false,
+  setIsShow,
   shouldCloseToClickOutside = true,
   focusTrap = false,
   blur = false,
   ...rest
-}: ModalProps) {
-  const [show, setShow] = useState<boolean>(isOpen);
-
+}: ModalProps<T>) {
   const FocusTrap = focusTrap ? FocusTrapReact : React.Fragment;
 
   const handleClose = (ev: React.MouseEvent) => {
@@ -24,21 +23,17 @@ export default function Modal({
     )
       return;
 
-    setShow(false);
+    setIsShow?.(false as T);
     rest.onClose?.();
   };
 
   useEffect(() => {
-    setShow(prev => !prev);
-  }, [isOpen]);
-
-  useEffect(() => {
-    if (show) {
+    if (isShow) {
       rest.onOpen?.();
     }
-  }, [show]);
+  }, [isShow]);
 
-  if (!show) return;
+  if (!isShow) return null;
 
   return (
     <>

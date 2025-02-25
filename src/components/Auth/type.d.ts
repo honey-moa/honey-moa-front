@@ -55,7 +55,8 @@ interface FunnelComponent extends FC<FunnelProps> {
 type UseFunnelReturn<T> = {
   setStep: (step: T) => void;
   Funnel: React.FunnelComponent;
-  isOpen?: boolean;
+  isShow?: boolean;
+  setIsShow?: React.Dispatch<React.SetStateAction<boolean>>;
   outSideClick?: boolean;
   blur?: boolean;
 };

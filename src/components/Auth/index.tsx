@@ -27,7 +27,12 @@ export default function Auth() {
       >
         회원가입
       </S.RegisterButton>
-      <AuthFunnelModal Funnel={Funnel} setStep={setStep} isOpen={authOpen} />
+      <AuthFunnelModal
+        Funnel={Funnel}
+        setStep={setStep}
+        isShow={authOpen}
+        setIsShow={setAuthOpen}
+      />
     </>
   );
 }
