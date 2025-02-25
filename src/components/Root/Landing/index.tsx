@@ -10,7 +10,7 @@ export default function Landing() {
     if (!token || token === '' || token === 'undefined') {
       return toast.error('로그인이 필요합니다.');
     }
-    navigate('/honeyJar');
+    navigate('/blog');
   };
 
   return (
