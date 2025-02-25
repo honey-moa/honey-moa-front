@@ -8,6 +8,7 @@ import {
   CreateNewBLogPostParams,
   CreateNewBlogPostReturn,
   DeleteBlogPostParams,
+  PaginationBaseType,
   PaginationOffsetType,
   PrivateBlogPaginationType,
   UpdateBlogPostParams,
@@ -77,6 +78,20 @@ export async function getPrivateBlogListPagination({
     params: {
       limit,
       showPrivatePosts,
+      ...params,
+    },
+  });
+  return response.data;
+}
+
+//공개된 블로그 게시글 pagination
+export async function getPublicBlogListPagination({
+  limit = 12,
+  ...params
+}: Omit<PaginationBaseType, 'id'>): Promise<PaginationOffsetType> {
+  const response = await instanceToken.get('/blog-posts', {
+    params: {
+      limit,
       ...params,
     },
   });

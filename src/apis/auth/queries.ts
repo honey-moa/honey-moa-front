@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 /** 로그인 쿼리 */
 export const LoginQuery = () => {
   const { set: setToken } = useLocalStorage('accessToken');
+  const { set: setRefreshToken } = useLocalStorage('refreshToken');
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: AuthEndPoint.postToken,
@@ -15,6 +16,7 @@ export const LoginQuery = () => {
         queryKey: ['auth-sign-in'],
       });
       setToken(data.accessToken);
+      setRefreshToken(data.refreshToken);
       toast.success('로그인 성공');
     },
     onError: (error: AxiosError) => error,
@@ -65,12 +67,10 @@ export const ChangePasswordQuery = () => {
 
 /**토큰 재발급 */
 export const ReissueAccessTokenMutate = () => {
-  const { set: setToken } = useLocalStorage('accessToken');
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: AuthEndPoint.reissueAccessToken,
-    onSuccess: data => {
-      setToken(data.accessToken);
+    onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: ['reissue-access-token'],
       });

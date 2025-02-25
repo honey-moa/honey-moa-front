@@ -150,18 +150,3 @@ export interface PaginationCursorType extends PaginationReturnBaseType {
     updatedAt: string;
   };
 }
-
-export interface InfiniteScrollReturnType {
-  data?: PaginationOffsetType | unknown;
-  hasNextPage?: boolean;
-  isFetching?: boolean;
-  isFetchingNextPage?: boolean;
-  fetchNextPage?: (
-    options?: FetchNextPageOptions | undefined
-  ) => Promise<
-    InfiniteQueryObserverResult<
-      InfiniteData<PaginationOffsetType | PaginationCursorType, unknown>,
-      Error
-    >
-  >;
-}

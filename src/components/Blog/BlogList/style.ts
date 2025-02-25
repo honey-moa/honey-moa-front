@@ -232,3 +232,14 @@ export const ListObserver = styled.div`
   border: none;
   background-color: transparent;
 `;
+
+export const PublicContentsWrapper = styled.div`
+  display: flex;
+`;
+
+export const PublicPaginationWrapper = styled.div`
+  flex-grow: 1;
+  height: 100dvh;
+  border-left: 1px solid ${({ theme }) => theme.border.primary};
+  padding: 16px;
+`;

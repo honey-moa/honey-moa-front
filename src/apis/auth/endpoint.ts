@@ -75,6 +75,15 @@ export async function putChangePassword({
 }
 
 export async function reissueAccessToken(): Promise<ReissueAccessTokenReturn> {
-  const response = await instanceToken.post('/auth/reissue/access-token');
+  const refreshToken = window.localStorage.getItem('refreshToken');
+  const response = await instanceToken.post(
+    '/auth/reissue/access-token',
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${refreshToken}`,
+      },
+    }
+  );
   return response.data;
 }

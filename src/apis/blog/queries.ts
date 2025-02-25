@@ -15,7 +15,11 @@ import {
   PaginationErrorHandler,
 } from './error';
 import { AxiosError } from 'axios';
-import { BlogHoneyType, PrivateBlogPaginationType } from './type';
+import {
+  BlogHoneyType,
+  PaginationBaseType,
+  PrivateBlogPaginationType,
+} from './type';
 import { ErrorResponse } from '../type';
 import { useNavigate } from 'react-router-dom';
 
@@ -146,6 +150,33 @@ export const GetPrivateBlogPaginationQuery = (
     retry: false,
     refetchOnWindowFocus: false,
     enabled: !!params.id,
+    placeholderData: keepPreviousData,
+  });
+  if (response.isError) {
+    toast.error(PaginationErrorHandler(response.error as AxiosError));
+    return;
+  }
+  return response;
+};
+
+export const GetPublicBlogPaginationQuery = (
+  params: Omit<PaginationBaseType, 'id'>
+) => {
+  const response = useInfiniteQuery({
+    queryKey: ['public-blog-pagination', params.title],
+    queryFn: ({ pageParam = 1 }) =>
+      BlogEndpoint.getPublicBlogListPagination({
+        page: pageParam,
+        ...params,
+      }),
+    initialPageParam: 1,
+    getNextPageParam: allPages => {
+      return allPages.currentPage < allPages.lastPage
+        ? allPages.currentPage + 1
+        : undefined;
+    },
+    retry: false,
+    refetchOnWindowFocus: false,
     placeholderData: keepPreviousData,
   });
   if (response.isError) {
