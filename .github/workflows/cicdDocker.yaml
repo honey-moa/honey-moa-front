@@ -1,0 +1,37 @@
+name: Frontend CD with Docker Hub
+on:
+  push:
+    branches:
+      - develop # develop에 push되었을 때 yml 실행
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{secrets.DOCKERHUB_USERNAME}} # 도커 허브 이름
+          password: ${{secrets.DOCKERHUB_TOKEN}} # 도커 허브 access token
+      - name: Build and Release
+        run: |
+          docker build \
+            --build-arg VITE_BASE_URL=${{secrets.VITE_BASE_URL}} \
+            --build-arg VITE_CHANGE_PW_URL=${{secrets.VITE_CHANGE_PW_URL}} \
+            --build-arg VITE_API_KEY=${{secrets.VITE_API_KEY}} \
+            -t ${{secrets.DOCKERHUB_REPO}} .
+          docker tag ${{secrets.DOCKERHUB_REPO}}:latest ${{secrets.DOCKERHUB_USERNAME}}/${{secrets.DOCKERHUB_REPO}}:latest
+          docker push ${{secrets.DOCKERHUB_USERNAME}}/${{secrets.DOCKERHUB_REPO}}:latest
+      - name: Deploy to server
+        uses: appleboy/ssh-action@master
+        id: deploy
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }} # pem키
+          script: |
+            sudo docker-compose stop client
+            sudo docker-compose rm client
+            sudo docker rmi ${{secrets.DOCKERHUB_USERNAME}}/${{secrets.DOCKERHUB_REPO}}:latest # 이미지 찾아서 삭제
+            sudo docker pull ${{secrets.DOCKERHUB_USERNAME}}/${{secrets.DOCKERHUB_REPO}}:latest
+            sudo docker-compose up -d client

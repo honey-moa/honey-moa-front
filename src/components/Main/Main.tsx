@@ -1,6 +1,6 @@
-import { Header, SideNavigate } from '../Layouts';
+import { Header, Profile, SideNavigate } from '../Layouts';
 import * as S from './style';
-import { Contents, Profile } from '.';
+import { Contents } from '.';
 import { Navigate } from 'react-router-dom';
 import Modal from '../Modal';
 import CreateBlogModal from './CreateBlogModal';
@@ -19,7 +19,7 @@ export default function Main() {
   const getBlogInfo = BlogQueries.GetSingleBlogQuery(getMyInfo?.id as string);
 
   if (getBlogInfo) {
-    return <Navigate to={`/honeyJar/${getBlogInfo.id}`} />;
+    return <Navigate to={`/blog/${getBlogInfo.id}`} />;
   }
 
   if (!token || token === '' || token === 'undefined') {

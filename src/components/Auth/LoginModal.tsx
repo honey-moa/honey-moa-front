@@ -40,7 +40,7 @@ export default function LoginModal({ setStep }: ModalProps<AuthFunnelStep>) {
       mutation.mutate(
         { email, password },
         {
-          onSuccess: () => navigate('/honeyJar'),
+          onSuccess: () => navigate('/blog'),
           onError: error => {
             toast.error(LoginErrorHandler(error));
           },

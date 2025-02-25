@@ -23,7 +23,7 @@ export default function CoupleProfile({ myId }: CoupleProfileProps) {
           borderRadius="16px"
         />
         <S.CoupleInfoWrapper>
-          <TogetherImage myId={myId!} />
+          <TogetherImage members={getBlogInfo?.members} />
           <S.CoupleShortIntroduction>
             <h2>{coupleName}</h2>
             <p>

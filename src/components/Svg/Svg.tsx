@@ -135,7 +135,7 @@ export function KeyIcon({ size = '24' }: SvgProps) {
   );
 }
 
-export function PrevIcon({ size = '24' }: SvgProps) {
+export function PrevIcon({ color, size = '24' }: SvgProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -149,13 +149,14 @@ export function PrevIcon({ size = '24' }: SvgProps) {
       strokeLinejoin="round"
       className="lucide lucide-chevron-left w-6 h-6 text-gray-600"
       data-id="element-4"
+      style={{ color: color }}
     >
       <path d="m15 18-6-6 6-6"></path>
     </svg>
   );
 }
 
-export function NextIcon({ size = '24' }: SvgProps) {
+export function NextIcon({ size = '24', color }: SvgProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -169,6 +170,7 @@ export function NextIcon({ size = '24' }: SvgProps) {
       strokeLinejoin="round"
       className="lucide lucide-chevron-right w-5 h-5"
       data-id="element-38"
+      style={{ color: color }}
     >
       <path d="m9 18 6-6-6-6"></path>
     </svg>
@@ -561,12 +563,12 @@ export function FileIcon({ color, size = 24 }: SvgProps) {
       height={size}
       viewBox="0 0 20 21"
       fill="none"
-      style={{ color }}
+      style={{ color: color }}
     >
       <g>
         <path
           d="M17.8666 9.40923L10.2082 17.0676C9.27005 18.0058 7.99757 18.5328 6.67075 18.5328C5.34393 18.5328 4.07145 18.0058 3.13325 17.0676C2.19505 16.1294 1.66797 14.8569 1.66797 13.5301C1.66797 12.2032 2.19505 10.9308 3.13325 9.99256L10.2749 2.8509C10.9004 2.22432 11.7491 1.87188 12.6345 1.8711C13.5198 1.87031 14.3692 2.22126 14.9957 2.84673C15.6223 3.4722 15.9748 4.32095 15.9755 5.20628C15.9763 6.09161 15.6254 6.94099 14.9999 7.56756L7.84158 14.7092C7.52885 15.022 7.10469 15.1977 6.66242 15.1977C6.22014 15.1977 5.79598 15.022 5.48325 14.7092C5.17051 14.3965 4.99482 13.9723 4.99482 13.5301C4.99482 13.0878 5.17051 12.6636 5.48325 12.3509L12.5582 5.28423"
-          stroke="#6B7280"
+          stroke="currentColor"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"

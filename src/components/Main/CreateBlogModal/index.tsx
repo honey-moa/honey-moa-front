@@ -29,7 +29,7 @@ export default function CreateBlogModal() {
     e.preventDefault();
     createBlogMutate.mutate(blogInfo, {
       onSuccess: data => {
-        navigate(`/honeyJar/${data.id}`);
+        navigate(`/blog/${data.id}`);
       },
     });
   };

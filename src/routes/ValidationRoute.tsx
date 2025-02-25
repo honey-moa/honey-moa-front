@@ -1,7 +1,6 @@
 import { Error } from '@/components';
 import ChangePassword from '@/components/Auth/ChangePassword';
 import { Main } from '@/components/Main';
-import { Honey } from '@/components/Main/Contents';
 import { Post } from '@/components/Blog/Post';
 import Root from '@/components/Root';
 import { Setting } from '@/components/Setting';
@@ -10,6 +9,8 @@ import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import AccessAuth from './AccessAuth';
 import { RouteListType } from './type';
 import Blog from '@/components/Blog/Blog';
+import { Honey } from '@/components/Blog/Honey';
+import EditBlogPost from '@/components/Blog/Post/EditBlogPost';
 
 const routesList: RouteListType[] = [
   {
@@ -20,13 +21,13 @@ const routesList: RouteListType[] = [
   },
   {
     id: 'route--honeyJar',
-    path: '/honeyJar',
+    path: '/blog',
     private: true,
     element: <Main />,
   },
   {
     id: 'route--honeyJar--id',
-    path: '/honeyJar/:id',
+    path: '/blog/:id',
     private: true,
     element: <Blog />,
   },
@@ -38,13 +39,19 @@ const routesList: RouteListType[] = [
   },
   {
     id: 'route--post',
-    path: '/new/:id/post',
+    path: '/blog/:blogId/post/create',
     private: true,
     element: <Post />,
   },
   {
+    id: 'route--post--edit',
+    path: '/blog/:blogId/post/:postId/edit',
+    private: true,
+    element: <EditBlogPost />,
+  },
+  {
     id: 'route--honey',
-    path: '/honey/:id',
+    path: '/blog/:blogId/post/:honeyId',
     private: true,
     element: <Honey />,
   },
