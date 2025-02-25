@@ -5,3 +5,8 @@ export interface SettingHeaderProps {
 export interface BlogHeaderProps {
   blogName?: string;
 }
+
+export interface PublicBlogHeaderProps {
+  blogName?: string;
+  blogId?: string;
+}

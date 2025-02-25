@@ -16,6 +16,7 @@ export interface LoginRequest {
 
 export interface LoginReturn {
   accessToken: string;
+  refreshToken: string;
 }
 
 export interface ReissueAccessTokenReturn {

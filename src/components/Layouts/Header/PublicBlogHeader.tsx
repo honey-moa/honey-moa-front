@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
 import { Svg } from '../../Svg';
 import * as S from './style';
-import { BlogHeaderProps } from './type';
+import { PublicBlogHeaderProps } from './type';
 import Image from '@/components/Image';
 
-export default function Blog({ blogName }: BlogHeaderProps) {
+export default function PublicBlog({ blogId }: PublicBlogHeaderProps) {
   return (
     <S.HeaderWrapper>
       <S.TitleContainer>
@@ -14,11 +14,11 @@ export default function Blog({ blogName }: BlogHeaderProps) {
           height="65px"
           borderRadius="50%"
         />
-        <h1>{blogName}</h1>
+        <h1>공개글</h1>
       </S.TitleContainer>
       <S.SettingContainer>
-        <Link to="/public/posts">
-          <button>공개글 보기</button>
+        <Link to={`/blog/${blogId}`}>
+          <button>내 블로그 돌아가기</button>
         </Link>
         <Link to="/setting">
           <button>

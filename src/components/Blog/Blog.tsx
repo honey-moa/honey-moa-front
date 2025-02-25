@@ -17,7 +17,7 @@ export default function Blog() {
     <>
       <Header.BlogHeader blogName={getBlogInfo?.name} />
       <S.ContentsWrapper>
-        <SideNavigate.AbleBlogSideNav />
+        <SideNavigate.AbleBlogSideNav blogId={getBlogInfo.id} />
         <S.BlogWrapper>
           <Profile.CoupleProfile myId={myInfo?.id} />
           <PrivateBlogList id={getBlogInfo.id} />

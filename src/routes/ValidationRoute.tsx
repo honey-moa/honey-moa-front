@@ -11,6 +11,7 @@ import { RouteListType } from './type';
 import Blog from '@/components/Blog/Blog';
 import { Honey } from '@/components/Blog/Honey';
 import EditBlogPost from '@/components/Blog/Post/EditBlogPost';
+import PublicBlogList from '@/components/Blog/BlogList/PublicBlogList';
 
 const routesList: RouteListType[] = [
   {
@@ -54,6 +55,12 @@ const routesList: RouteListType[] = [
     path: '/blog/:blogId/post/:honeyId',
     private: true,
     element: <Honey />,
+  },
+  {
+    id: 'route--public-honey',
+    path: '/public/posts',
+    private: false,
+    element: <PublicBlogList />,
   },
   {
     id: 'route--setting',

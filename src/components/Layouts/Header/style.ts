@@ -63,17 +63,20 @@ export const SettingContainer = styled.div`
     cursor: pointer;
   }
   //공개글 보러가기 버튼
-  & > button:nth-child(1) {
-    width: 180px;
-    height: 100%;
-    margin: 0px 8px;
+  & > :nth-child(1) {
     border-radius: 16px;
-    font-size: 24px;
+    padding: 8px 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border: none;
     color: ${({ theme }) => theme.text.secondary};
     cursor: pointer;
     background-color: ${({ theme }) => theme.button.primary.base};
     margin-right: 25px;
+    button {
+      font-size: 1.2rem;
+    }
   }
   //설정 버튼
   & > :nth-child(2) {
