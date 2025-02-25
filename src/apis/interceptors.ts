@@ -1,6 +1,7 @@
 //요청 인터셉터
 import { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { toast } from 'react-toastify';
+import { AuthQueries } from './auth';
 
 //요청 인터셉터
 export function CommonRequestInterceptor(
@@ -32,6 +33,9 @@ export function CommonResponseInterceptor(
 //에러 인터셉터
 export function ErrorInterceptor(error: AxiosError) {
   const { code } = error.response?.data as { code: string };
+  if (code === 'INVALID_TOKEN') {
+    AuthQueries.ReissueAccessTokenMutate();
+  }
   if (code === 'SERVER_ERROR') {
     return toast.error('서버 오류 입니다. 잠시 후 다시 시도해주세요.');
   }
