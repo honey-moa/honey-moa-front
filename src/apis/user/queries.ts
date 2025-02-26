@@ -1,7 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { UserEndPoint } from '.';
 import { toast } from 'react-toastify';
-import { MyInfoErrorHandler } from './error';
+import {
+  MyInfoErrorHandler,
+  reissueEmailVerifyTokenErrorHandler,
+} from './error';
 import { AxiosError } from 'axios';
 
 export function GetMyInfoQuery() {
@@ -16,4 +19,19 @@ export function GetMyInfoQuery() {
     return;
   }
   return data;
+}
+
+export function ReissueEmailVerifyTokenMutate() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: UserEndPoint.postReissueEmailVerifyToken,
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: ['user-verify-email-tokens'],
+      });
+    },
+    onError: (error: AxiosError) => {
+      toast.error(reissueEmailVerifyTokenErrorHandler(error as AxiosError));
+    },
+  });
 }

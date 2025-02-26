@@ -10,3 +10,14 @@ export function MyInfoErrorHandler(error: AxiosError) {
   if (code === 'RESOURCE_NOT_FOUND')
     return '존재하지 않는 유저 입니다, 다시 시도해주세요.';
 }
+
+export function reissueEmailVerifyTokenErrorHandler(error: AxiosError) {
+  const responseData = error.response?.data as ErrorResponse;
+  const { code } = responseData;
+  if (code === 'ALREADY_VERIFIED_EMAIL') {
+    return '이미 인증된 이메일입니다.';
+  }
+  if (code === 'CANNOT_RESEND_VERIFICATION_EMAIL_AN_HOUR') {
+    return '요청하신 이메일로 이미 인증 메일을 보냈습니다. 이메일을 확인해 주세요.';
+  }
+}

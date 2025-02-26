@@ -3,7 +3,6 @@ import * as S from './style';
 import useFunnel from '../../hook/useFunnel';
 import { AuthFunnelStep, SelectModalButton } from './type';
 import { AuthFunnelModal } from './AuthFunnelModal';
-import { AuthEndPoint } from '@/apis/auth';
 
 export default function Auth() {
   const [authOpen, setAuthOpen] = useState<boolean>(false);
@@ -17,13 +16,6 @@ export default function Auth() {
 
   return (
     <>
-      <button
-        onClick={() => {
-          AuthEndPoint.reissueAccessToken();
-        }}
-      >
-        버튼
-      </button>
       <S.LoginButton
         data-testid="open-login-modal"
         onClick={() => onClickModalButton({ location: '로그인' })}

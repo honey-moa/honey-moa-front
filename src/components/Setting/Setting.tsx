@@ -5,12 +5,12 @@ import { settingListType } from './type';
 import { Svg } from '../Svg';
 import { useState } from 'react';
 import useFunnel from '@/hook/useFunnel';
-import VerificationEmailModal from '../Auth/VerificationEmailModal';
 import Modal from '../Modal';
 import SendEmailForChangePasswordModal from '../Auth/SendEmailForChangePasswordModal';
 import ChangeThemeModal from './Modals/ChangeThemeModal';
 import EditCoupleProfileModal from './Modals/EditCoupleProfileModal';
 import EditMyProfileModal from './Modals/EditMyProfileModal';
+import EmailValidationModal from './Modals/EmailValidationModal';
 
 export default function Setting() {
   const theme = useTheme();
@@ -93,7 +93,7 @@ export default function Setting() {
       <Modal isShow={isOpenModal} setIsShow={setIsOpenModal}>
         <Funnel>
           <Funnel.Step name="이메일 인증">
-            <VerificationEmailModal />
+            <EmailValidationModal />
           </Funnel.Step>
           <Funnel.Step name="비밀번호 변경">
             <SendEmailForChangePasswordModal setStep={setStep} />
