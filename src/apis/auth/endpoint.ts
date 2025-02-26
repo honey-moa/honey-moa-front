@@ -1,5 +1,5 @@
 import { EmailForChangePwType } from '@/components/Auth/type';
-import { commonInstance, instanceToken } from '../axiosInstance';
+import { commonInstance } from '../axiosInstance';
 import {
   ChangePasswordRequest,
   LoginRequest,
@@ -76,7 +76,7 @@ export async function putChangePassword({
 
 export async function reissueAccessToken(): Promise<ReissueAccessTokenReturn> {
   const refreshToken = window.localStorage.getItem('refreshToken');
-  const response = await instanceToken.post(
+  const response = await commonInstance.post(
     '/auth/reissue/access-token',
     {},
     {
