@@ -4,9 +4,9 @@ import * as S from './style';
 import { Svg } from '@/components/Svg';
 import ConnectionList from './ConnectionList';
 
-export default function ManageModal({ isOpen }: ManageModalProps) {
+export default function ManageModal({ isOpen, setIsOpen }: ManageModalProps) {
   return (
-    <Modal isOpen={isOpen}>
+    <Modal isShow={isOpen} setIsShow={setIsOpen}>
       <S.ManageModalWrapper>
         <S.ModalHeader>
           <Svg.ConnectedIcon color="black" />

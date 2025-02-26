@@ -90,7 +90,7 @@ export default function Setting() {
   ];
   return (
     <>
-      <Modal isOpen={isOpenModal}>
+      <Modal isShow={isOpenModal} setIsShow={setIsOpenModal}>
         <Funnel>
           <Funnel.Step name="이메일 인증">
             <VerificationEmailModal />

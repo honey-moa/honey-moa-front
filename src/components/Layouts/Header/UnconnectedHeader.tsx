@@ -10,7 +10,9 @@ export default function UnConnectedHeader() {
         <h1>커플 연결이 필요합니다</h1>
       </S.UnConnectedTitleContainer>
       <S.SettingContainer>
-        <button>공개글 보기</button>
+        <Link to="/public/posts">
+          <button>공개글 보기</button>
+        </Link>
         <Link to="/setting">
           <button>
             <Svg.SettingIcon size={36} />

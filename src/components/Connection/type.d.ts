@@ -3,10 +3,11 @@ export interface ConnectionStateType {
   manage: boolean;
 }
 
-export interface ConnectionModalProps {
+export type ConnectionModalType = {
   isOpen: boolean;
-}
+  setIsOpen: React.Dispatch<React.SetStateAction<ConnectionStateType>>;
+};
 
-export interface ManageModalProps {
-  isOpen: boolean;
-}
+export type ConnectionModalProps = ConnectionModalType;
+
+export type ManageModalProps = ConnectionModalType;

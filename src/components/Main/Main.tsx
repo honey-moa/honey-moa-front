@@ -8,8 +8,10 @@ import { UserQueries } from '@/apis/user';
 import { BlogQueries } from '@/apis/blog';
 import { ConnectionQueries } from '@/apis/connection';
 import useLocalStorage from '@/hook/useLocalStorage';
+import { useEffect, useState } from 'react';
 
 export default function Main() {
+  const [isCreateBlogModal, setIsCreateBlogModal] = useState(false);
   const connectionInfo = ConnectionQueries.GetConnectionListPaginationQuery({
     status: 'ACCEPTED',
     type: 'requested',
@@ -17,6 +19,12 @@ export default function Main() {
   const { value: token } = useLocalStorage('accessToken');
   const getMyInfo = UserQueries.GetMyInfoQuery();
   const getBlogInfo = BlogQueries.GetSingleBlogQuery(getMyInfo?.id as string);
+
+  useEffect(() => {
+    if (connectionInfo?.contents && getBlogInfo) {
+      setIsCreateBlogModal(true);
+    }
+  }, [getBlogInfo, connectionInfo]);
 
   if (getBlogInfo) {
     return <Navigate to={`/blog/${getBlogInfo.id}`} />;
@@ -34,7 +42,8 @@ export default function Main() {
         <Modal
           shouldCloseToClickOutside={false}
           blur={true}
-          isOpen={connectionInfo?.contents.length !== 0 && !getBlogInfo}
+          isShow={isCreateBlogModal}
+          setIsShow={setIsCreateBlogModal}
         >
           <CreateBlogModal />
         </Modal>

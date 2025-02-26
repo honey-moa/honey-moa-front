@@ -10,7 +10,10 @@ import { toast } from 'react-toastify';
 import UserInfo from './UserInfo';
 import { useTheme } from 'styled-components';
 
-export default function ConnectionModal({ isOpen }: ConnectionModalProps) {
+export default function ConnectionModal({
+  isOpen,
+  setIsOpen,
+}: ConnectionModalProps) {
   const emailRef = useRef<HTMLInputElement>(null);
   const mutationSearch = ConnectionQueries.SearchQuery();
   const theme = useTheme();
@@ -30,7 +33,7 @@ export default function ConnectionModal({ isOpen }: ConnectionModalProps) {
   };
 
   return (
-    <Modal isOpen={isOpen}>
+    <Modal isShow={isOpen} setIsShow={setIsOpen}>
       <S.SearchModalWrapper onSubmit={submitSearch}>
         <S.ModalHeader>
           <Svg.SearchIcon color={theme.button.primary.base} />

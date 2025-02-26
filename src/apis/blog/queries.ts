@@ -50,7 +50,7 @@ export const GetSingleBlogQuery = (id?: string) => {
   });
   if (isError) {
     toast.error(getSingleBlogErrorHandler(error as AxiosError));
-    return;
+    return null;
   }
   return data;
 };

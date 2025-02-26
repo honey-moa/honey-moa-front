@@ -8,15 +8,13 @@ export default function AccessAuth({ children, isPrivate }: AccessAuthProps) {
   const { Funnel, setStep } = useFunnel<AuthFunnelStep>('로그인');
   const { value: token } = useLocalStorage('accessToken');
 
-  //접근 권한이 있는 사용자인지 판별하는 로직 추가 필요
-
   return (
     <>
       {isPrivate && !token && (
         <AuthFunnelModal
           Funnel={Funnel}
           setStep={setStep}
-          isOpen={true}
+          isShow={true}
           outSideClick={false}
         />
       )}

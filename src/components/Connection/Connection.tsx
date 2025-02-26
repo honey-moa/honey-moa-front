@@ -30,8 +30,14 @@ export default function Connection() {
           나에게 온 요청
         </S.ConnectedCoupleButton>
       </S.CoupleConnectionButtonModalWrapper>
-      <SearchConnectionModal isOpen={isConnection.search} />
-      <ManageConnectionModal isOpen={isConnection.manage} />
+      <SearchConnectionModal
+        isOpen={isConnection.search}
+        setIsOpen={setIsConnection}
+      />
+      <ManageConnectionModal
+        isOpen={isConnection.manage}
+        setIsOpen={setIsConnection}
+      />
     </>
   );
 }
