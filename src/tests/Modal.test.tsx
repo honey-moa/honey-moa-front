@@ -21,12 +21,12 @@ const ModalTestWrapper = () => {
   );
 };
 describe('Modal test', () => {
+  render(<ModalTestWrapper />);
   it('1. 버튼을 누르면 모달이 열린다.', () => {
-    render(<ModalTestWrapper />);
-    const toggleButton = screen.getByTestId('toggle-button');
+    const toggleButton = screen.getByText('Toggle Modal');
     fireEvent.click(toggleButton);
 
     const testHeader = screen.getByText('testHeader');
-    expect(testHeader).toBe('testHeader');
+    expect(testHeader).toBeDefined();
   });
 });

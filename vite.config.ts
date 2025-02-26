@@ -10,6 +10,7 @@ export default {
       provider: 'webdriverio',
       enabled: true,
       name: 'chrome',
+      setupFiles: ['./vitest-setup.ts'],
     },
   },
   resolve: {
