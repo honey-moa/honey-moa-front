@@ -93,7 +93,7 @@ export default function Setting() {
       <Modal isShow={isOpenModal} setIsShow={setIsOpenModal}>
         <Funnel>
           <Funnel.Step name="이메일 인증">
-            <EmailValidationModal />
+            <EmailValidationModal setIsShow={setIsOpenModal} />
           </Funnel.Step>
           <Funnel.Step name="비밀번호 변경">
             <SendEmailForChangePasswordModal setStep={setStep} />
@@ -102,7 +102,7 @@ export default function Setting() {
             <ChangeThemeModal />
           </Funnel.Step>
           <Funnel.Step name="마이 프로필">
-            <EditMyProfileModal />
+            <EditMyProfileModal setIsShow={setIsOpenModal} />
           </Funnel.Step>
           <Funnel.Step name="블로그 프로필">
             <EditCoupleProfileModal />

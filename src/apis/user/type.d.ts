@@ -10,6 +10,10 @@ export interface GetMyInfoReturn {
   profileImageUrl: string;
 }
 
+export interface PatchMyInfoParams {
+  formData: FormData;
+}
+
 type ConnectionUser = {
   id: string;
   createdAt: string;

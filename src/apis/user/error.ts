@@ -11,6 +11,14 @@ export function MyInfoErrorHandler(error: AxiosError) {
     return '존재하지 않는 유저 입니다, 다시 시도해주세요.';
 }
 
+export function EditMyInfoErrorHandler(error: AxiosError) {
+  const responseData = error.response?.data as ErrorResponse;
+  const code = responseData?.code;
+  if (code === 'INVALID_REQUEST_PARAMETER')
+    return '수정한 파일 형태가 올바르지 않습니다';
+  if (code === 'RESOURCE_NOT_FOUND') return '유저를 찾을 수 없습니다.';
+}
+
 export function reissueEmailVerifyTokenErrorHandler(error: AxiosError) {
   const responseData = error.response?.data as ErrorResponse;
   const { code } = responseData;
