@@ -9,6 +9,7 @@ import EditProfileImageOverlayComponent from './EditProfileImageOverlayComponent
 import { UserQueries } from '@/apis/user';
 import { BlogQueries } from '@/apis/blog';
 import { toast } from 'react-toastify';
+import { ConnectionQueries } from '@/apis/connection';
 
 export default function EditCoupleProfileModal({
   setIsShow,
@@ -120,7 +121,26 @@ export default function EditCoupleProfileModal({
     );
   };
 
-  const onClickDisConnectedCouple = () => {};
+  const deleteConnectionMutate = ConnectionQueries.DeleteConnectionMutate();
+
+  const onClickDisConnectedCouple = () => {
+    if (
+      confirm(
+        '정말로 연결을 해제하시겠습니까? 연결이 해제되면 함께 쌓은 추억이 삭제됩니다.'
+      )
+    ) {
+      deleteConnectionMutate.mutate(
+        { id: getBlogInfo?.connectionId },
+        {
+          onSuccess: () => {
+            toast.success('연결이 해제되었습니다.');
+            setIsShow(false);
+            window.location.href = '/blog';
+          },
+        }
+      );
+    }
+  };
 
   useEffect(() => {
     setCoupleInfo({
@@ -131,6 +151,10 @@ export default function EditCoupleProfileModal({
       startDate: getBlogInfo?.dDayStartDate,
     });
   }, [getBlogInfo]);
+
+  if (!getBlogInfo) {
+    return <S.ModalWrapper>블로그 연결을 진행해 주세요.</S.ModalWrapper>;
+  }
 
   return (
     <S.ModalWrapper $width="650px">
@@ -224,8 +248,8 @@ export default function EditCoupleProfileModal({
         </S.SubmitEditProfileButtonWrapper>
       </form>
       <S.DisConnectedCoupleButtonWrapper>
-        <S.DisConnectedCoupleButton>
-          <Svg.DisConnectedCoupleIcon onClick={onClickDisConnectedCouple} />
+        <S.DisConnectedCoupleButton onClick={onClickDisConnectedCouple}>
+          <Svg.DisConnectedCoupleIcon />
           커플 연결 해제
         </S.DisConnectedCoupleButton>
       </S.DisConnectedCoupleButtonWrapper>

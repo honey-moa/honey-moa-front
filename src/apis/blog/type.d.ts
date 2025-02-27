@@ -22,8 +22,8 @@ export interface BlogSingleInfoReturn {
   description: string;
   backgroundImageUrl: string;
   dDayStartDate: string;
-  createdBy: number; //블로그 생성 유저
-  connectionId: number;
+  createdBy: string; //블로그 생성 유저
+  connectionId: string;
   members: {
     id: string;
     createdAt: string;

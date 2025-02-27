@@ -50,3 +50,17 @@ export function GetConnectionDetailErrorHandler(error: AxiosError) {
   if (code === 'INVALID_TOKEN') return '다시 로그인 후 시도해 주세요';
   if (code === 'RESOURCE_NOT_FOUND') return '연인과 연결이 필요합니다';
 }
+
+export function deleteConnectionErrorHandler(error: AxiosError) {
+  const responseData = error.response?.data as ErrorResponse;
+  const code = responseData?.code;
+
+  if (code === 'INVALID_REQUEST_PARAMETER')
+    return '연결 삭제 중 오류가 발생했습니다';
+  if (code === 'YOU_ARE_NOT_PART_OF_A_CONNECTION')
+    return '연결에 속한 계정이 아닙니다.';
+  if (code === 'CANNOT_DISCONNECT_CONNECTION_REQUEST_NOT_ACCEPTED')
+    return '연결된 계정이 존재하지 않습니다. 연결을 먼저 진행해주세요.';
+  if (code === 'INVALID_TOKEN') return '다시 로그인 후 시도해 주세요';
+  if (code === 'RESOURCE_NOT_FOUND') return '연결이 존재하지 않습니다';
+}
