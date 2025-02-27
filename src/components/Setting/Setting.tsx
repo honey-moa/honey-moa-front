@@ -105,7 +105,7 @@ export default function Setting() {
             <EditMyProfileModal setIsShow={setIsOpenModal} />
           </Funnel.Step>
           <Funnel.Step name="블로그 프로필">
-            <EditCoupleProfileModal />
+            <EditCoupleProfileModal setIsShow={setIsOpenModal} />
           </Funnel.Step>
         </Funnel>
       </Modal>

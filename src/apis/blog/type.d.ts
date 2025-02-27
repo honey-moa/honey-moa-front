@@ -20,7 +20,7 @@ export interface BlogSingleInfoReturn {
   updatedAt: string;
   name: string;
   description: string;
-  backgroundUrl: string;
+  backgroundImageUrl: string;
   dDayStartDate: string;
   createdBy: number; //블로그 생성 유저
   connectionId: number;
@@ -31,6 +31,11 @@ export interface BlogSingleInfoReturn {
     nickname: string;
     profileImageUrl: string;
   }[];
+}
+
+export interface EditBlogProfileParams {
+  blogId: string | undefined;
+  formData: FormData;
 }
 
 export interface BlogPostHandlerType {

@@ -1,6 +1,19 @@
 import { AxiosError } from 'axios';
 import { ErrorResponse } from '../type';
 
+export function editBlogProfileErrorHandler(error: AxiosError) {
+  const responseData = error.response?.data as ErrorResponse;
+  const { errors, code } = responseData;
+  if (
+    errors[0].reason === 'name must be shorter than or equal to 30 characters'
+  )
+    return '커플 이름은 1자 이상 30자 이하로 입력해주세요.';
+  if (code === 'YOU_ARE_NOT_PART_OF_A_CONNECTION')
+    return '해당 블로그의 수정 권한이 없습니다.';
+  if (code === 'RESOURCE_NOT_FOUND')
+    return '해당 블로그는 존재하지 않거나 삭제되었습니다.';
+}
+
 export function createBlogErrorhandler(error: AxiosError) {
   const responseData = error.response?.data as ErrorResponse;
   const code = responseData?.code;

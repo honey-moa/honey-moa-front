@@ -120,6 +120,19 @@ export const EditProfileImageOverlay = styled.div`
   }
 `;
 
+export const NoneBgImageBox = styled.div`
+  width: 100%;
+  height: 220px;
+  border-radius: 18px;
+  background-color: ${({ theme }) => theme.bg.secondary};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  span {
+    color: ${({ theme }) => theme.text.primary};
+  }
+`;
+
 export const EditInputContainer = styled.div`
   width: 100%;
   display: flex;
@@ -217,10 +230,12 @@ export const EditProfileDescription = styled.div`
   justify-content: center;
   align-items: center;
   gap: 16px;
-  input {
+  textarea {
     padding: 8px 16px;
+    resize: none;
     border-radius: 8px;
     width: 100%;
+    height: 100px;
     border: none;
     background-color: ${({ theme }) => theme.bg.secondary};
     color: ${({ theme }) => theme.text.primary};

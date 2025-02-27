@@ -8,6 +8,7 @@ import {
   CreateNewBLogPostParams,
   CreateNewBlogPostReturn,
   DeleteBlogPostParams,
+  EditBlogProfileParams,
   PaginationBaseType,
   PaginationOffsetType,
   PrivateBlogPaginationType,
@@ -27,6 +28,19 @@ export async function getSingleBlog({
   id,
 }: BlogSingleParamsType): Promise<BlogSingleInfoReturn> {
   const response = await instanceToken.get(`/users/${id}/blog`);
+  return response.data;
+}
+
+//블로그 커플 정보 수정
+export async function patchBlogCoupleInfo({
+  blogId,
+  formData,
+}: EditBlogProfileParams): Promise<void> {
+  const response = await instanceToken.patch(`/blogs/${blogId}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
   return response.data;
 }
 

@@ -11,16 +11,16 @@ type ProfileInfo = {
 };
 
 export interface CoupleProfileInfoType {
-  name: string;
-  description: string;
+  name: string | undefined;
+  description: string | undefined;
   bgImage: File;
-  blobImage: string;
-  myProfile: ProfileInfo;
-  partnerProfile: ProfileInfo;
-  startDate: string;
+  blobImage: string | undefined;
+  startDate: string | undefined;
 }
 
-export type EditProfileInputOnFocusType = React.RefObject<HTMLInputElement>;
+export type EditProfileInputOnFocusType = React.RefObject<
+  HTMLInputElement | HTMLTextAreaElement
+>;
 
 export interface EditProfileImageOverlayComponentProps {
   children: React.ReactNode;
