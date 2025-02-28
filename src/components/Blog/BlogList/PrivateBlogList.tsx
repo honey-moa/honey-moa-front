@@ -32,7 +32,6 @@ export default function PrivateBlogList({ id }: { id: string }) {
 
   const onFilterHandler: React.ChangeEventHandler<HTMLSelectElement> = e => {
     const value = e.target.value;
-    console.log(value);
     setSelectFilter(prev => ({ ...prev, filter: value }));
   };
 

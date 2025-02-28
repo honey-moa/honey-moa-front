@@ -55,6 +55,22 @@ export const GetSingleBlogQuery = (id?: string) => {
   return data;
 };
 
+//블로그 프로필 수정 mutation
+export const EditCoupleProfileMutate = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: BlogEndpoint.patchBlogCoupleInfo,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['edit-couple-profile'],
+      });
+    },
+    onError: (error: AxiosError) => {
+      toast.error(createNewBlogPostErrorHandler(error));
+    },
+  });
+};
+
 //블로그 게시글 생성 mutation
 export const CreateNewBlogPostMutate = () => {
   const queryClient = useQueryClient();

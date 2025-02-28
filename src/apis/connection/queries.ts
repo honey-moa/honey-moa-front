@@ -3,6 +3,7 @@ import { ConnectionEndPoint } from '.';
 import axios, { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import {
+  deleteConnectionErrorHandler,
   GetConnectionDetailErrorHandler,
   GetConnectionListErrorHandler,
 } from './error';
@@ -107,6 +108,22 @@ export function PutConnectionQuery() {
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['put-connection'] });
+    },
+  });
+}
+
+//유저 커넥션 해제 mutate
+export function DeleteConnectionMutate() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ConnectionEndPoint.deleteConnection,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['delete-connection'],
+      });
+    },
+    onError: (error: AxiosError) => {
+      toast.error(deleteConnectionErrorHandler(error));
     },
   });
 }

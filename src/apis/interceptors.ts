@@ -35,7 +35,6 @@ export function CommonResponseInterceptor(
 export async function ErrorInterceptor(error: AxiosError) {
   const { code } = error.response?.data as { code: string };
   if (code === 'INVALID_TOKEN') {
-    console.log('토큰 없음');
     try {
       const response = await AuthEndPoint.reissueAccessToken();
       window.localStorage.setItem('accessToken', response.accessToken);

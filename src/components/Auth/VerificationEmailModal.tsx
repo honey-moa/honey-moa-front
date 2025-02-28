@@ -3,10 +3,23 @@ import { Svg } from '../Svg';
 import * as S from './style';
 import { useUserInfoStore } from '@/store/authStore/userInfoStore';
 import { useNavigate } from 'react-router-dom';
+import { UserQueries } from '@/apis/user';
+import { toast } from 'react-toastify';
+import { Loading } from '..';
 
 export default function VerificationEmailModal() {
   const userInfo = useStore(useUserInfoStore);
   const navigate = useNavigate();
+
+  const reissueEmailVerifyToken = UserQueries.ReissueEmailVerifyTokenMutate();
+
+  const onClickEmailValidationHandler = () => {
+    reissueEmailVerifyToken.mutate(undefined, {
+      onSuccess: () => {
+        toast.success('이메일을 재 전송했습니다.');
+      },
+    });
+  };
   return (
     <>
       <S.ModalWrapper>
@@ -29,7 +42,13 @@ export default function VerificationEmailModal() {
         <S.EmailAuthBottom>
           <p>이메일이 보이지 않는경우 스팸함을 확인해 보세요.</p>
           <button onClick={() => navigate('/blog')}>확인했습니다</button>
-          <button>이메일 재전송</button>
+          <button onClick={onClickEmailValidationHandler}>
+            {reissueEmailVerifyToken.isPending ? (
+              <Loading.Spinner />
+            ) : (
+              '이메일 재전송'
+            )}
+          </button>
           <p>프로필 설정에서 언제든지 이메일 인증을 진행할 수 있습니다.</p>
         </S.EmailAuthBottom>
       </S.ModalWrapper>

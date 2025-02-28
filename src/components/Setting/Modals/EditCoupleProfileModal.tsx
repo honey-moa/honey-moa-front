@@ -6,35 +6,36 @@ import { useTheme } from 'styled-components';
 import { CoupleProfileInfoType, EditProfileInputOnFocusType } from './type';
 import { changeInfo } from '@/utils';
 import EditProfileImageOverlayComponent from './EditProfileImageOverlayComponent';
+import { UserQueries } from '@/apis/user';
+import { BlogQueries } from '@/apis/blog';
+import { toast } from 'react-toastify';
+import { ConnectionQueries } from '@/apis/connection';
 
-export default function EditCoupleProfileModal() {
+export default function EditCoupleProfileModal({
+  setIsShow,
+}: {
+  setIsShow: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   const theme = useTheme();
   const coupleNameRef = useRef<HTMLInputElement>(null);
-  const coupleDescriptionRef = useRef<HTMLInputElement>(null);
+  const coupleDescriptionRef = useRef<HTMLTextAreaElement>(null);
   const [coupleInfo, setCoupleInfo] = useState<CoupleProfileInfoType>({
-    name: '우리의 이야기 저장소',
-    description: '우리의 이야기를 저장하는 곳',
+    name: '',
+    description: '',
     bgImage: {} as File,
-    blobImage: 'images/introImage.jpg',
-    myProfile: {
-      name: '이재진',
-      image: {} as File,
-      blobImage: 'images/introImage.jpg',
-    },
-    partnerProfile: {
-      name: '이재진',
-      image: {} as File,
-      blobImage: 'images/introImage.jpg',
-    },
-    startDate: '2016-04-21',
+    blobImage: '',
+    startDate: '',
   });
   const [isEditing, setIsEditing] = useState({
     name: true,
     description: true,
   });
 
+  const getMyInfo = UserQueries.GetMyInfoQuery();
+  const getBlogInfo = BlogQueries.GetSingleBlogQuery(getMyInfo?.id);
+
   const calculateDurationRelationship = () => {
-    const startDate = new Date(coupleInfo.startDate);
+    const startDate = new Date(coupleInfo.startDate!);
     const now = new Date();
     now.setHours(now.getHours() + 9);
     const diff = now.getTime() - startDate.getTime();
@@ -54,15 +55,11 @@ export default function EditCoupleProfileModal() {
     setState: setCoupleInfo,
   });
 
-  const onChangeMyProfileImage = changeInfo.image<CoupleProfileInfoType>({
-    setState: setCoupleInfo,
-    depth: 'myProfile',
-  });
+  const onChangeStartDate: React.ChangeEventHandler<HTMLInputElement> = e => {
+    const date = e.target.value;
+    setCoupleInfo(prev => ({ ...prev, startDate: date }));
+  };
 
-  const onChangePartnerProfileImage = changeInfo.image<CoupleProfileInfoType>({
-    setState: setCoupleInfo,
-    depth: 'partnerProfile',
-  });
   const onEditProfileTextInfo = (ref: EditProfileInputOnFocusType) => {
     if (ref.current) {
       ref.current.disabled = false;
@@ -103,15 +100,61 @@ export default function EditCoupleProfileModal() {
     };
   }, [coupleNameRef, coupleDescriptionRef]);
 
-  const onSubmitEditProfile = () => {
+  const editBlogProfileMutate = BlogQueries.EditCoupleProfileMutate();
+
+  const onSubmitEditProfile: React.FormEventHandler<HTMLFormElement> = e => {
+    e.preventDefault();
     //api로 담아보낼 from데이터
     const formData = new FormData();
-    formData.append('file', coupleInfo.bgImage);
-    formData.append('file', coupleInfo.myProfile.image);
-    formData.append('file', coupleInfo.partnerProfile.image);
-    //api요청 로직 추가 예정
+    formData.append('backgroundImageFile', coupleInfo.bgImage);
+    formData.append('name', coupleInfo.name!);
+    formData.append('description', coupleInfo.description!);
+    formData.append('dDayStartDate', coupleInfo.startDate!);
+    editBlogProfileMutate.mutate(
+      { formData, blogId: getBlogInfo?.id },
+      {
+        onSuccess: () => {
+          toast.success('프로필이 수정되었습니다.');
+          setIsShow(false);
+        },
+      }
+    );
   };
-  const onClickDisConnectedCouple = () => {};
+
+  const deleteConnectionMutate = ConnectionQueries.DeleteConnectionMutate();
+
+  const onClickDisConnectedCouple = () => {
+    if (
+      confirm(
+        '정말로 연결을 해제하시겠습니까? 연결이 해제되면 함께 쌓은 추억이 삭제됩니다.'
+      )
+    ) {
+      deleteConnectionMutate.mutate(
+        { id: getBlogInfo?.connectionId },
+        {
+          onSuccess: () => {
+            toast.success('연결이 해제되었습니다.');
+            setIsShow(false);
+            window.location.href = '/blog';
+          },
+        }
+      );
+    }
+  };
+
+  useEffect(() => {
+    setCoupleInfo({
+      name: getBlogInfo?.name,
+      description: getBlogInfo?.description,
+      bgImage: {} as File,
+      blobImage: getBlogInfo?.backgroundImageUrl,
+      startDate: getBlogInfo?.dDayStartDate,
+    });
+  }, [getBlogInfo]);
+
+  if (!getBlogInfo) {
+    return <S.ModalWrapper>블로그 연결을 진행해 주세요.</S.ModalWrapper>;
+  }
 
   return (
     <S.ModalWrapper $width="650px">
@@ -137,55 +180,59 @@ export default function EditCoupleProfileModal() {
             htmlForId="bgImage"
             onChange={onChangeCoupleBgImage}
           >
-            <Image
-              src={coupleInfo.blobImage}
-              alt="bgImage"
-              width="100%"
-              height="220px"
-              borderRadius="18px"
-            />
+            {coupleInfo.blobImage ? (
+              <Image
+                src={coupleInfo.blobImage}
+                alt="bgImage"
+                width="100%"
+                height="220px"
+                borderRadius="18px"
+              />
+            ) : (
+              <S.NoneBgImageBox>
+                <span>커플 프로필 이미지를 등록해주세요</span>
+              </S.NoneBgImageBox>
+            )}
           </EditProfileImageOverlayComponent>
         </S.CoupleProfileWrapper>
         <S.CoupleProfileInfoWrapper>
           <S.CoupleInfoGrid>
-            <EditProfileImageOverlayComponent
-              htmlForId="myProfileImage"
-              onChange={onChangeMyProfileImage}
-            >
-              <Image
-                src={coupleInfo.myProfile.blobImage}
-                alt="profile"
-                width="80px"
-                height="80px"
-                borderRadius="50%"
-              />
-            </EditProfileImageOverlayComponent>
+            <Image
+              src={getBlogInfo?.members[0].profileImageUrl as string}
+              alt="profile"
+              width="80px"
+              height="80px"
+              borderRadius="50%"
+            />
             <S.DuringRelationshipDateWrapper>
               <Svg.LikeIcon color={theme.accent} />
-              <div>+ {calculateDurationRelationship()}</div>
-            </S.DuringRelationshipDateWrapper>
-            <EditProfileImageOverlayComponent
-              htmlForId="partnerProfileImage"
-              onChange={onChangePartnerProfileImage}
-            >
-              <Image
-                src={coupleInfo.partnerProfile.blobImage}
-                alt="profile"
-                width="80px"
-                height="80px"
-                borderRadius="50%"
-              />
-            </EditProfileImageOverlayComponent>
-            <span>{coupleInfo.myProfile.name}</span>
-            <span />
-            <span>{coupleInfo.partnerProfile.name}</span>
-            <S.EditProfileDescription>
+              <label htmlFor="startDate">
+                + {calculateDurationRelationship()}
+              </label>
               <input
-                type="text"
+                id="startDate"
+                type="date"
+                value={coupleInfo.startDate}
+                onChange={onChangeStartDate}
+              />
+            </S.DuringRelationshipDateWrapper>
+            <Image
+              src={getBlogInfo?.members[1].profileImageUrl as string}
+              alt="profile"
+              width="80px"
+              height="80px"
+              borderRadius="50%"
+            />
+            <span>{getBlogInfo?.members[0].nickname}</span>
+            <span />
+            <span>{getBlogInfo?.members[1].nickname}</span>
+            <S.EditProfileDescription>
+              <textarea
                 value={coupleInfo.description}
                 id="description"
                 disabled={isEditing.description}
                 onChange={onChangeProfileDescription}
+                placeholder="본인 커플을 표현할 수 있는 대표 문장을 만들어 주세요."
                 ref={coupleDescriptionRef}
               />
               <label
@@ -201,8 +248,8 @@ export default function EditCoupleProfileModal() {
         </S.SubmitEditProfileButtonWrapper>
       </form>
       <S.DisConnectedCoupleButtonWrapper>
-        <S.DisConnectedCoupleButton>
-          <Svg.DisConnectedCoupleIcon onClick={onClickDisConnectedCouple} />
+        <S.DisConnectedCoupleButton onClick={onClickDisConnectedCouple}>
+          <Svg.DisConnectedCoupleIcon />
           커플 연결 해제
         </S.DisConnectedCoupleButton>
       </S.DisConnectedCoupleButtonWrapper>

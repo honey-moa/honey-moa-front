@@ -1,12 +1,16 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { UserEndPoint } from '.';
 import { toast } from 'react-toastify';
-import { MyInfoErrorHandler } from './error';
+import {
+  EditMyInfoErrorHandler,
+  MyInfoErrorHandler,
+  reissueEmailVerifyTokenErrorHandler,
+} from './error';
 import { AxiosError } from 'axios';
 
 export function GetMyInfoQuery() {
   const { data, isError, error } = useQuery({
-    queryKey: ['users-me'],
+    queryKey: ['users-me', 'get'],
     queryFn: UserEndPoint.getMyInfo,
     enabled: !!localStorage.getItem('accessToken'),
     refetchOnWindowFocus: false,
@@ -16,4 +20,34 @@ export function GetMyInfoQuery() {
     return;
   }
   return data;
+}
+
+export function EditMyInfoMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: UserEndPoint.patchMyInfo,
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: ['users-me', 'patch'],
+      });
+    },
+    onError: (error: AxiosError) => {
+      toast.error(EditMyInfoErrorHandler(error as AxiosError));
+    },
+  });
+}
+
+export function ReissueEmailVerifyTokenMutate() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: UserEndPoint.postReissueEmailVerifyToken,
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: ['user-verify-email-tokens'],
+      });
+    },
+    onError: (error: AxiosError) => {
+      toast.error(reissueEmailVerifyTokenErrorHandler(error as AxiosError));
+    },
+  });
 }

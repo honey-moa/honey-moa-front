@@ -67,3 +67,13 @@ export async function getConnectionDetail(id: string): Promise<ConnectionInfo> {
   const response = await instanceToken.get(`/users/me/connections/${id}`);
   return response.data;
 }
+
+//연결 해제
+export async function deleteConnection({
+  id,
+}: {
+  id: string | undefined;
+}): Promise<void> {
+  const response = await instanceToken.delete(`/users/me/connections/${id}`);
+  return response.data;
+}

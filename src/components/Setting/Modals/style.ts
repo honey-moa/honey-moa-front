@@ -120,6 +120,19 @@ export const EditProfileImageOverlay = styled.div`
   }
 `;
 
+export const NoneBgImageBox = styled.div`
+  width: 100%;
+  height: 220px;
+  border-radius: 18px;
+  background-color: ${({ theme }) => theme.bg.secondary};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  span {
+    color: ${({ theme }) => theme.text.primary};
+  }
+`;
+
 export const EditInputContainer = styled.div`
   width: 100%;
   display: flex;
@@ -217,10 +230,12 @@ export const EditProfileDescription = styled.div`
   justify-content: center;
   align-items: center;
   gap: 16px;
-  input {
+  textarea {
     padding: 8px 16px;
+    resize: none;
     border-radius: 8px;
     width: 100%;
+    height: 100px;
     border: none;
     background-color: ${({ theme }) => theme.bg.secondary};
     color: ${({ theme }) => theme.text.primary};
@@ -279,5 +294,55 @@ export const DisConnectedCoupleButton = styled.button`
   &:hover {
     background-color: ${({ theme }) => theme.button.secondary.hover};
     color: ${({ theme }) => theme.text.secondary};
+  }
+`;
+
+export const EmailValidationIconWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  span {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    border-radius: 50%;
+    background-color: ${({ theme }) => theme.bg.secondary};
+    > svg {
+      stroke: ${({ theme }) => theme.button.primary.base};
+    }
+  }
+`;
+
+export const EmailValidationButton = styled.button`
+  width: 100%;
+  padding: 8px;
+  margin-top: 16px;
+  border: none;
+  border-radius: 8px;
+  background-color: ${({ theme }) => theme.button.primary.base};
+  color: ${({ theme }) => theme.text.secondary};
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    background-color: ${({ theme }) => theme.button.primary.hover};
+  }
+`;
+
+export const EmailValidationDescriptionWrapper = styled.div`
+  border-radius: 16px;
+  margin-top: 16px;
+  padding: 8px 16px;
+  background-color: ${({ theme }) => theme.bg.secondary};
+  text-align: center;
+  color: ${({ theme }) => theme.text.quaternary};
+  span {
+    font-weight: bold;
+    color: ${({ theme }) => theme.button.primary.base};
   }
 `;
