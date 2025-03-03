@@ -17,9 +17,12 @@ export function TokenRequestInterceptor(
   config: InternalAxiosRequestConfig
 ): InternalAxiosRequestConfig | Promise<InternalAxiosRequestConfig> {
   config.headers['X-Api-Key'] = import.meta.env.VITE_API_KEY;
-  config.headers['Authorization'] = `Bearer ${window.localStorage.getItem(
-    'accessToken'
-  )}`;
+  const accessToken = window.localStorage.getItem('accessToken');
+  if (accessToken) {
+    config.headers['Authorization'] = `Bearer ${accessToken}`;
+  } else {
+    throw new Error('로그인한 사용자가 아닙니다.');
+  }
   return config;
 }
 
@@ -53,6 +56,9 @@ export async function ErrorInterceptor(error: AxiosError) {
         toast.error('토근 재발급에 실패했습니다. 다시 로그인 해 주세요');
         window.location.href = '/root';
         window.localStorage.clear();
+        return;
+      } else {
+        toast.error('서버 오류 입니다. 잠시 후 다시 시도해주세요.');
         return;
       }
     }

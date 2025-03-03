@@ -1,9 +1,8 @@
-import { Error } from '@/components';
+import { Error, Setting } from '@/components';
 import ChangePassword from '@/components/Auth/ChangePassword';
 import { Main } from '@/components/Main';
 import { Post } from '@/components/Blog/Post';
 import Root from '@/components/Root';
-import { Setting } from '@/components/Setting';
 import * as Chat from '@/components/Chat';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import AccessAuth from './AccessAuth';
@@ -66,7 +65,13 @@ const routesList: RouteListType[] = [
     id: 'route--setting',
     path: '/setting',
     private: true,
-    element: <Setting />,
+    element: <Setting.Main />,
+  },
+  {
+    id: 'route--setting-support',
+    path: '/setting/support',
+    private: false,
+    element: <Setting.Support />,
   },
   {
     id: 'route--chat',

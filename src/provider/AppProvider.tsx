@@ -9,7 +9,15 @@ import { ToastContainer } from 'react-toastify';
 import { useState } from 'react';
 import * as Chat from '@/components/Chat';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5,
+      refetchOnWindowFocus: false,
+      retry: false,
+    },
+  },
+});
 
 /**
  * 여러 Provider를 한번에 관리하는 컴포넌트

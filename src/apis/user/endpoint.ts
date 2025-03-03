@@ -27,3 +27,9 @@ export async function postReissueEmailVerifyToken(): Promise<void> {
   );
   return response.data;
 }
+
+//회원 탈퇴
+export async function deleteUser(): Promise<void> {
+  const response = await instanceToken.delete('/users/me');
+  return response.data;
+}

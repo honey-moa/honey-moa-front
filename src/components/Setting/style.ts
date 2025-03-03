@@ -47,3 +47,26 @@ export const SettingItemContent = styled.div<
   font-weight: 500;
   color: ${({ color, theme }) => color || theme.text.primary};
 `;
+
+export const SettingSupportWrapper = styled.div`
+  width: 100%;
+  margin-top: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  button {
+    margin-top: 16px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    background-color: ${({ theme }) => theme.button.secondary.base};
+    color: ${({ theme }) => theme.text.primary};
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    &:hover {
+      background-color: ${({ theme }) => theme.button.secondary.hover};
+    }
+  }
+`;
