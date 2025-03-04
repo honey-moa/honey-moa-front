@@ -12,7 +12,7 @@ import * as Chat from '@/components/Chat';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 5,
+      staleTime: Infinity,
       refetchOnWindowFocus: false,
       retry: false,
     },
