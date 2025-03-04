@@ -163,6 +163,7 @@ export const GetPrivateBlogPaginationQuery = (
         ? allPages.currentPage + 1
         : undefined;
     },
+
     retry: false,
     refetchOnWindowFocus: false,
     enabled: !!params.id,

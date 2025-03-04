@@ -11,9 +11,13 @@ import ChangeThemeModal from './Modals/ChangeThemeModal';
 import EditCoupleProfileModal from './Modals/EditCoupleProfileModal';
 import EditMyProfileModal from './Modals/EditMyProfileModal';
 import EmailValidationModal from './Modals/EmailValidationModal';
+import { toast } from 'react-toastify';
+import { UserEndPoint } from '@/apis/user';
+import { useNavigate } from 'react-router-dom';
 
 export default function Setting() {
   const theme = useTheme();
+  const navigate = useNavigate();
   const [isOpenModal, setIsOpenModal] = useState(false);
   const { Funnel, setStep } = useFunnel<
     | '이메일 인증'
@@ -55,15 +59,33 @@ export default function Setting() {
             setIsOpenModal(prev => !prev);
           },
         },
-        { name: '로그아웃', color: theme.accent },
-        { name: '회원탈퇴', color: theme.accent },
-      ],
-    },
-    {
-      title: '알림',
-      contents: [
         {
-          name: '알림 설정',
+          name: '로그아웃',
+          color: theme.accent,
+          event: () => {
+            window.localStorage.removeItem('accessToken');
+            window.localStorage.removeItem('refreshToken');
+            window.location.href = '/root';
+          },
+        },
+        {
+          name: '회원탈퇴',
+          color: theme.accent,
+          event: async () => {
+            if (
+              confirm(
+                '정말로 회원탈퇴를 진행하시겠습니까? 연결된 블로그도 함께 삭제됩니다.'
+              )
+            ) {
+              try {
+                await UserEndPoint.deleteUser();
+                window.localStorage.clear();
+                window.location.href = '/root';
+              } catch {
+                toast.error('회원탈퇴에 실패했습니다.');
+              }
+            }
+          },
         },
       ],
     },
@@ -84,6 +106,9 @@ export default function Setting() {
       contents: [
         {
           name: '고객지원',
+          event: () => {
+            navigate('/setting/support');
+          },
         },
       ],
     },

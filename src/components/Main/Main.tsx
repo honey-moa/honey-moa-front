@@ -18,13 +18,13 @@ export default function Main() {
   });
   const { value: token } = useLocalStorage('accessToken');
   const getMyInfo = UserQueries.GetMyInfoQuery();
-  const getBlogInfo = BlogQueries.GetSingleBlogQuery(getMyInfo?.id as string);
+  const getBlogInfo = BlogQueries.GetSingleBlogQuery(getMyInfo?.id);
 
   useEffect(() => {
-    if (connectionInfo?.contents && getBlogInfo) {
+    if (connectionInfo && connectionInfo?.contents.length > 0) {
       setIsCreateBlogModal(true);
     }
-  }, [getBlogInfo, connectionInfo]);
+  }, [connectionInfo?.contents]);
 
   if (getBlogInfo) {
     return <Navigate to={`/blog/${getBlogInfo.id}`} />;
@@ -39,14 +39,16 @@ export default function Main() {
       <Header.UnConnectedHeader />
       <S.ContentsWrapper>
         <SideNavigate.UnConnectedSideNav />
-        <Modal
-          shouldCloseToClickOutside={false}
-          blur={true}
-          isShow={isCreateBlogModal}
-          setIsShow={setIsCreateBlogModal}
-        >
-          <CreateBlogModal />
-        </Modal>
+        {isCreateBlogModal && (
+          <Modal
+            shouldCloseToClickOutside={false}
+            blur={true}
+            isShow={isCreateBlogModal}
+            setIsShow={setIsCreateBlogModal}
+          >
+            <CreateBlogModal />
+          </Modal>
+        )}
 
         <div>
           <Profile.UnConnectedProfile />

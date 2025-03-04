@@ -29,3 +29,11 @@ export function reissueEmailVerifyTokenErrorHandler(error: AxiosError) {
     return '요청하신 이메일로 이미 인증 메일을 보냈습니다. 이메일을 확인해 주세요.';
   }
 }
+
+export function deleteUserErrorHandler(error: AxiosError) {
+  const responseData = error.response?.data as ErrorResponse;
+  const { code } = responseData;
+  if (code === 'RESOURCE_NOT_FOUND') {
+    return '이미 삭제되었거나, 존재하지 않는 유저 입니다.';
+  }
+}

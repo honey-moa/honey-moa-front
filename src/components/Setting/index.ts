@@ -1,1 +1,2 @@
-export { default as Setting } from './Setting';
+export { default as Main } from './Setting';
+export { default as Support } from './Support';
