@@ -5,40 +5,42 @@ import { useTheme } from 'styled-components';
 import { useState } from 'react';
 import onChangeTextInfo from '@/utils/changeInfo/text';
 import Image from '@/components/Image';
+import { date } from '@/utils';
+import { BlogCommentsQueries } from '@/apis/blogComments';
+import { toast } from 'react-toastify';
+import { UserQueries } from '@/apis/user';
 
-const blogCommentsMock: BlogCommentType[] = [
-  {
-    id: '4124',
-    content: '좋은 글이네요!',
-    date: '2025-01-14',
-    user: {
-      id: '1234',
-      name: '김철수',
-      profileImage: 'images/profileImage.jpg',
-    },
-  },
-];
-
-export default function BlogComments() {
+export default function BlogComments({ id }: { id: string | undefined }) {
   const theme = useTheme();
-  const [comments, setComments] = useState<BlogCommentType[]>(blogCommentsMock);
   const [commentInfo, setCommentInfo] = useState<BlogCommentType>({
     content: '',
-    id: '121fef',
-    date: '2025-01-21',
-    user: {
-      id: 'aefqe123',
-      name: '이재진',
-      profileImage: '',
-    },
   });
+
+  const myInfo = UserQueries.GetMyInfoQuery();
+
+  const commentList = BlogCommentsQueries.useBlogPostCommentsPaginationQuery({
+    id: id,
+  });
+
+  const newCommentMutate = BlogCommentsQueries.useNewBlogPostCommentMutation();
+
+  const flattenedContents =
+    commentList?.data?.pages.flatMap(page => page.contents) || [];
 
   const onChangeComment = onChangeTextInfo({ setState: setCommentInfo });
   const sendComment: React.FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
-    setComments(prev => {
-      return [...prev, commentInfo];
-    });
+    newCommentMutate.mutate(
+      {
+        id: id,
+        content: commentInfo.content,
+      },
+      {
+        onSuccess: () => {
+          toast.success('댓글이 등록되었습니다.');
+        },
+      }
+    );
     setCommentInfo(prev => {
       return {
         ...prev,
@@ -51,33 +53,11 @@ export default function BlogComments() {
     <S.BlogCommentsWrapper>
       <S.BlogCommentsHeader>
         <h2>댓글</h2>
-        <p>({12})</p>
+        <p>{commentList.data?.pages[0].totalCount}</p>
       </S.BlogCommentsHeader>
-      <S.BlogCommentsContentsWrapper>
-        {comments.map(comment => {
-          return (
-            <S.BlogComment key={comment.id}>
-              <Image
-                src={comment.user.profileImage}
-                alt="profile"
-                borderRadius="50%"
-                width="50px"
-                height="50px"
-              />
-              <div>
-                <div>
-                  <span>{comment.user.name}</span>
-                  <p>{comment.date}</p>
-                </div>
-                <p>{comment.content}</p>
-              </div>
-            </S.BlogComment>
-          );
-        })}
-      </S.BlogCommentsContentsWrapper>
       <S.NewCommentWrapper onSubmit={sendComment}>
         <Image
-          src="images/profileImage.jpg"
+          src={myInfo?.profileImageUrl}
           alt="profile"
           borderRadius="50%"
           width="50px"
@@ -94,6 +74,41 @@ export default function BlogComments() {
           <Svg.SendIcon color={theme.button.primary.base} />
         </S.SendButton>
       </S.NewCommentWrapper>
+      <S.BlogCommentsContentsWrapper>
+        {flattenedContents.map(comment => {
+          return (
+            <S.BlogComment key={comment.id}>
+              <Image
+                src={comment.user.profileImageUrl}
+                alt="profile"
+                borderRadius="50%"
+                width="50px"
+                height="50px"
+              />
+              <div>
+                <div>
+                  <span>{comment.user.nickname}</span>
+                  <p>
+                    {date.getFormattingDate({
+                      date: comment.createdAt,
+                      formatType: '년월일',
+                    })}
+                  </p>
+                </div>
+                <p>{comment.content}</p>
+              </div>
+            </S.BlogComment>
+          );
+        })}
+        {commentList.data?.pages[0].totalCount !== undefined &&
+          commentList.data?.pages[0].totalCount > 5 &&
+          commentList.data?.pages[commentList.data?.pages.length - 1]
+            .hasNext && (
+            <button onClick={() => commentList?.fetchNextPage()}>
+              더보기...
+            </button>
+          )}
+      </S.BlogCommentsContentsWrapper>
     </S.BlogCommentsWrapper>
   );
 }

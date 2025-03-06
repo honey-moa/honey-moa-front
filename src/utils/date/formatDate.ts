@@ -1,5 +1,5 @@
 type FormatDateType = {
-  date: string | number | Date;
+  date: string | number | Date | undefined;
   formatType:
     | '년월일'
     | '월일'
@@ -36,7 +36,7 @@ type FormatDateType = {
  * - DD: 14
  */
 export default function formatDate({ date, formatType }: FormatDateType) {
-  let newDate = new Date(date);
+  let newDate = new Date(date ? date : new Date());
   if (typeof date === 'number') {
     newDate = new Date(`2025-${date}-01`);
   }

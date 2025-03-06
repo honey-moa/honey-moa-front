@@ -159,17 +159,28 @@ export const BlogCommentsContentsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
+  margin-top: 24px;
 `;
 
 export const BlogComment = styled.div`
   display: flex;
   gap: 12px;
-  align-items: center;
+  align-items: start;
+  padding: 8px 0px;
   //이름, 날짜, 댓글
   & > :nth-child(2) {
     & > :nth-child(1) {
       display: flex;
       gap: 8px;
+      span {
+        font-weight: 700;
+        font-size: 1rem;
+      }
+      p {
+        font-size: 0.6rem;
+        color: ${({ theme }) => theme.text.tertiary};
+        align-content: center;
+      }
     }
     display: flex;
     flex-direction: column;

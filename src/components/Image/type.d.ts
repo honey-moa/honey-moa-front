@@ -1,5 +1,5 @@
 export interface ImageComponentProps {
-  src: string;
+  src: string | undefined;
   alt?: string;
   width?: string;
   height?: string;
