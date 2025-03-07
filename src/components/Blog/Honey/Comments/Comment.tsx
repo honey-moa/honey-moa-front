@@ -63,15 +63,15 @@ export default function Comment(comment: BlogCommentContentsType) {
       {
         onSuccess: () => {
           toast.success('댓글이 수정되었습니다.');
-          setUpdateCommentInfo(prev => {
-            return {
-              ...prev,
-              isEdit: false,
-            };
-          });
         },
       }
     );
+    setUpdateCommentInfo(prev => {
+      return {
+        ...prev,
+        isEdit: false,
+      };
+    });
   };
 
   const onClickDeleteCommentButton = () => {
