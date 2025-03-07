@@ -8,7 +8,11 @@ import { BlogCommentsEndpoint } from '.';
 import { BlogCommentPaginationParams } from './type';
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
-import { newBlogPostCommentErrorHandler } from './error';
+import {
+  deleteBlogPostCommentErrorHandler,
+  newBlogPostCommentErrorHandler,
+  updateBlogPostCommentErrorHandler,
+} from './error';
 
 export const useBlogPostCommentsPaginationQuery = (
   params: BlogCommentPaginationParams
@@ -47,6 +51,38 @@ export const useNewBlogPostCommentMutation = () => {
     },
     onError: (error: AxiosError) => {
       toast.error(newBlogPostCommentErrorHandler(error));
+    },
+  });
+};
+
+//댓글 수정 mutation
+export const useUpdateBlogPostCommentMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: BlogCommentsEndpoint.patchBlogPostComments,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['blog-post-comments'],
+      });
+    },
+    onError: (error: AxiosError) => {
+      toast.error(updateBlogPostCommentErrorHandler(error));
+    },
+  });
+};
+
+//댓글 삭제 mutation
+export const useDeleteBlogPostCommentMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: BlogCommentsEndpoint.deleteBlogPostComments,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['blog-post-comments'],
+      });
+    },
+    onError: (error: AxiosError) => {
+      toast.error(deleteBlogPostCommentErrorHandler(error));
     },
   });
 };

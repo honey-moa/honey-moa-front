@@ -17,6 +17,11 @@ export interface PostBlogCommentParams extends BlogCommentBaseParamsType {
   content: string;
 }
 
+export interface PatchBlogCommentParams extends BlogCommentBaseParamsType {
+  blogPostCommentId: string | undefined;
+  content: string;
+}
+
 export interface BlogCommentContentsType {
   id: string;
   blogPostId: string;

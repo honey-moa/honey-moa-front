@@ -2,10 +2,11 @@ import { instanceToken } from '../axiosInstance';
 import {
   BlogCommentPaginationParams,
   BlogCommentPaginationResponseType,
+  PatchBlogCommentParams,
   PostBlogCommentParams,
 } from './type';
 
-//블로그 게시글 댓글 조회
+//댓글 조회
 export async function getBlogPostCommentsPagination({
   limit = 5,
   ...params
@@ -23,7 +24,7 @@ export async function getBlogPostCommentsPagination({
   return response.data;
 }
 
-//블로그 게시글 댓글 추가
+//댓글 추가
 export async function postBlogPostComments({
   id,
   content,
@@ -31,6 +32,30 @@ export async function postBlogPostComments({
   const response = await instanceToken.post(
     `/blog-posts/${id}/blog-post-comments`,
     { content }
+  );
+  return response.data;
+}
+
+//댓글 수정
+export async function patchBlogPostComments({
+  id,
+  blogPostCommentId,
+  content,
+}: PatchBlogCommentParams) {
+  const response = await instanceToken.patch(
+    `/blog-posts/${id}/blog-post-comments/${blogPostCommentId}`,
+    { content }
+  );
+  return response.data;
+}
+
+//댓글 삭제
+export async function deleteBlogPostComments({
+  id,
+  blogPostCommentId,
+}: Omit<PatchBlogCommentParams, 'content'>) {
+  const response = await instanceToken.delete(
+    `/blog-posts/${id}/blog-post-comments/${blogPostCommentId}`
   );
   return response.data;
 }

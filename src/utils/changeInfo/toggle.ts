@@ -1,6 +1,7 @@
 interface toggleCheckBoxParams<T> {
   setState: React.Dispatch<React.SetStateAction<T>>;
   key: keyof T;
+  additionalFunction?: () => void;
 }
 
 /**
@@ -20,11 +21,15 @@ interface toggleCheckBoxParams<T> {
 export default function toggleCheckBox<T>({
   setState,
   key,
+  additionalFunction,
 }: toggleCheckBoxParams<T>) {
   return () => {
     setState(prev => ({
       ...prev,
       [key]: !prev[key],
     }));
+    if (additionalFunction) {
+      additionalFunction();
+    }
   };
 }

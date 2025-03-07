@@ -1,5 +1,5 @@
 import { Header } from '@/components/Layouts';
-import BlogComments from './BlogComments';
+import BlogComments from './Comments/BlogComments';
 import { useLocation } from 'react-router-dom';
 import { BlogQueries } from '@/apis/blog';
 import LeftSideNav from './LeftSideNav';

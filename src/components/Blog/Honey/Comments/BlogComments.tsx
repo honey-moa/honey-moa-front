@@ -1,20 +1,21 @@
 import { Svg } from '@/components/Svg';
 import * as S from './style';
-import { BlogCommentType } from './type';
+import { BlogCommentType } from '../type';
 import { useTheme } from 'styled-components';
-import { useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import onChangeTextInfo from '@/utils/changeInfo/text';
 import Image from '@/components/Image';
-import { date } from '@/utils';
 import { BlogCommentsQueries } from '@/apis/blogComments';
 import { toast } from 'react-toastify';
 import { UserQueries } from '@/apis/user';
+import Comment from './Comment';
 
 export default function BlogComments({ id }: { id: string | undefined }) {
   const theme = useTheme();
   const [commentInfo, setCommentInfo] = useState<BlogCommentType>({
     content: '',
   });
+  const commentTextRef = useRef<HTMLTextAreaElement>(null);
 
   const myInfo = UserQueries.GetMyInfoQuery();
 
@@ -49,6 +50,14 @@ export default function BlogComments({ id }: { id: string | undefined }) {
     });
   };
 
+  useLayoutEffect(() => {
+    if (commentTextRef.current) {
+      commentTextRef.current.style.height = 'auto';
+      commentTextRef.current.style.height =
+        commentTextRef.current.scrollHeight + 'px';
+    }
+  }, [commentInfo.content]);
+
   return (
     <S.BlogCommentsWrapper>
       <S.BlogCommentsHeader>
@@ -63,8 +72,8 @@ export default function BlogComments({ id }: { id: string | undefined }) {
           width="50px"
           height="50px"
         />
-        <S.CommentInput
-          type="text"
+        <S.CommentTextarea
+          ref={commentTextRef}
           placeholder="댓글을 입력해주세요"
           value={commentInfo.content}
           id="content"
@@ -76,29 +85,7 @@ export default function BlogComments({ id }: { id: string | undefined }) {
       </S.NewCommentWrapper>
       <S.BlogCommentsContentsWrapper>
         {flattenedContents.map(comment => {
-          return (
-            <S.BlogComment key={comment.id}>
-              <Image
-                src={comment.user.profileImageUrl}
-                alt="profile"
-                borderRadius="50%"
-                width="50px"
-                height="50px"
-              />
-              <div>
-                <div>
-                  <span>{comment.user.nickname}</span>
-                  <p>
-                    {date.getFormattingDate({
-                      date: comment.createdAt,
-                      formatType: '년월일',
-                    })}
-                  </p>
-                </div>
-                <p>{comment.content}</p>
-              </div>
-            </S.BlogComment>
-          );
+          return <Comment key={comment.id} {...comment} />;
         })}
         {commentList.data?.pages[0].totalCount !== undefined &&
           commentList.data?.pages[0].totalCount > 5 &&

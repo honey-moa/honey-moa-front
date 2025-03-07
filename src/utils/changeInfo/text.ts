@@ -1,5 +1,8 @@
 interface onChangeTextInfoParams<T> {
   setState: React.Dispatch<React.SetStateAction<T>>;
+  additionalFunction?: (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
 }
 
 /**input Text 핸들러 동작시키는 함수
@@ -23,6 +26,7 @@ interface onChangeTextInfoParams<T> {
  */
 export default function onChangeTextInfo<T>({
   setState,
+  additionalFunction,
 }: onChangeTextInfoParams<T>): React.ChangeEventHandler<
   HTMLTextAreaElement | HTMLInputElement
 > {
@@ -34,5 +38,8 @@ export default function onChangeTextInfo<T>({
         [e.target.id]: value,
       };
     });
+    if (additionalFunction) {
+      additionalFunction(e);
+    }
   };
 }
