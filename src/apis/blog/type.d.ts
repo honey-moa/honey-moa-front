@@ -60,8 +60,8 @@ export interface UpdateBlogPostParams extends BlogPostHandlerType {
 }
 
 export interface DeleteBlogPostParams {
-  blogId: string;
-  postId: string;
+  blogId: string | undefined;
+  postId: string | undefined;
 }
 
 export interface CreateNewBlogPostReturn {

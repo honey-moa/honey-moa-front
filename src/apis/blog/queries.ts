@@ -42,7 +42,7 @@ export const CreateBlogMutate = () => {
 //블로그 단일 조회 query
 export const GetSingleBlogQuery = (id?: string) => {
   const { data, isError, error } = useQuery({
-    queryKey: ['single-blog'],
+    queryKey: ['single-blog', id],
     queryFn: () => BlogEndpoint.getSingleBlog({ id }),
     enabled: !!id,
     retry: false,
@@ -123,7 +123,7 @@ export const DeleteBlogPostMutate = () => {
 export const GetBlogHoneyQuery = ({ id }: Pick<BlogHoneyType, 'id'>) => {
   const navigate = useNavigate();
   const { data, isError, error } = useQuery({
-    queryKey: ['blog-honey'],
+    queryKey: ['blog-honey', id],
     queryFn: () => BlogEndpoint.getBlogHoney({ id }),
     retry: false,
     refetchOnWindowFocus: false,
