@@ -9,11 +9,12 @@ export const ProfileWrapper = styled.div`
 
 export const CoupleInfoWrapper = styled.div`
   position: absolute;
-  width: 100%;
-  background-color: ${({ theme }) => theme.bg_02};
+  width: 50%;
+  background-color: ${({ theme }) => theme.button.tertiary.base};
+  opacity: 0.8;
+  padding: 21px;
   border-radius: 16px;
   left: 0;
-  top: 36px;
   right: 0;
   bottom: 36px;
   margin: auto;
@@ -31,15 +32,7 @@ export const EachImageContainer = styled.div`
   display: flex;
   position: relative;
   img {
-    position: absolute;
-    &:nth-child(1) {
-      z-index: 2;
-      left: 0;
-    }
-    &:nth-child(2) {
-      right: 0;
-      z-index: 1;
-    }
+    border: 2px solid ${({ theme }) => theme.button.primary.base};
   }
 `;
 

@@ -33,10 +33,6 @@ export default function BlogContents(honeyData: Partial<HoneyContentType>) {
     return BlockNoteEditor.create({ initialContent });
   }, [initialContent]);
 
-  const coupleName = useMemo(() => {
-    return bloggerInfo?.members.map(member => member.nickname).join(' & ');
-  }, [bloggerInfo]);
-
   const pastYear = useMemo(() => {
     const now = new Date();
     const coupleDDay = bloggerInfo?.dDayStartDate.split('-');
@@ -73,7 +69,7 @@ export default function BlogContents(honeyData: Partial<HoneyContentType>) {
         <S.CoupleProfileWrapper>
           <Profile.TogetherImage members={bloggerInfo?.members} />
           <div>
-            <p>{coupleName}</p>
+            <p>{bloggerInfo?.name}</p>
             <p>{pastYear} 커플</p>
           </div>
         </S.CoupleProfileWrapper>
@@ -83,6 +79,7 @@ export default function BlogContents(honeyData: Partial<HoneyContentType>) {
           editor={editor}
           editable={false}
           theme={themeColor === 'dark' ? darkTheme : lightTheme}
+          linkToolbar={true}
         />
       </S.BlockNoteWrapper>
     </S.HoneyWrapper>

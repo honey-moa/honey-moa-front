@@ -88,13 +88,13 @@ export const CreateNewBlogPostMutate = () => {
 };
 
 //블로그 게시글 수정 mutation
-export const UpdateBlogPostMutate = () => {
+export const UpdateBlogPostMutate = (id: string) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: BlogEndpoint.updateBlogPost,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['update-blog-post'],
+        queryKey: ['single-blog', id],
       });
     },
     onError: (error: AxiosError) => {

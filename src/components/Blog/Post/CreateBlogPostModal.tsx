@@ -12,7 +12,6 @@ import { DefaultBlockSchema } from '@blocknote/core';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { BlogQueries } from '@/apis/blog';
 import { toast } from 'react-toastify';
-import { SuccessNewBlogPostToast } from './SuccessNewBlogPostToast';
 import { AttachmentsQueries } from '@/apis/attachment';
 import { changeInfo } from '@/utils';
 
@@ -97,7 +96,9 @@ export default function CreateBlogPostModal(data: CreateBlogPostModalProps) {
   };
 
   const createBlogPostMutate = BlogQueries.CreateNewBlogPostMutate();
-  const editBlogPostMutate = BlogQueries.UpdateBlogPostMutate();
+  const editBlogPostMutate = BlogQueries.UpdateBlogPostMutate(
+    editBlogPostInfo.blogId
+  );
 
   const onSubmitCreateBlogPostHandler: React.FormEventHandler<
     HTMLFormElement
@@ -106,12 +107,8 @@ export default function CreateBlogPostModal(data: CreateBlogPostModalProps) {
     if (pathname.split('/')[pathname.split('/').length - 1] !== 'edit') {
       createBlogPostMutate.mutate(createBlogPostInfo, {
         onSuccess: res => {
-          toast.success(
-            <SuccessNewBlogPostToast
-              postId={res.id}
-              blogHome={pathname.split('/')[pathname.split('/').length - 3]}
-            />
-          );
+          toast.success('게시글 업로드를 성공했습니다.');
+          navigate(`/blog/${createBlogPostInfo.id}/post/${res.id}`);
         },
       });
     } else {

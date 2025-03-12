@@ -172,7 +172,7 @@ export default function PrivateBlogList({ id }: { id: string }) {
       ) : (
         <S.NoBlogPleaseAddToBlogWrapper>
           <span>아직 달콯한 이야기가 존재하지 않습니다😭</span>
-          <Link to={`/new/${id}/post`}>
+          <Link to={`/blog/${id}/post/create`}>
             <span>👉달콤한 이야기 추가하기👈</span>
           </Link>
         </S.NoBlogPleaseAddToBlogWrapper>

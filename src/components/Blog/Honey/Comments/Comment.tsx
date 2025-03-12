@@ -6,7 +6,9 @@ import { useLayoutEffect, useRef, useState } from 'react';
 import { BlogCommentsQueries } from '@/apis/blogComments';
 import { toast } from 'react-toastify';
 
-export default function Comment(comment: BlogCommentContentsType) {
+export default function Comment(
+  comment: BlogCommentContentsType & { commentOwner?: string }
+) {
   const [updateCommentInfo, setUpdateCommentInfo] = useState({
     content: comment.content,
     isEdit: false,
@@ -127,13 +129,17 @@ export default function Comment(comment: BlogCommentContentsType) {
         </div>
       </S.CommentInfoWrapper>
       <S.EditCommentButtonWrapper>
-        {!updateCommentInfo.isEdit ? (
+        {comment.commentOwner === comment.user.id && (
           <>
-            <button onClick={onToggleUpdateComment}>수정</button>
-            <button onClick={onClickDeleteCommentButton}>삭제</button>
+            {!updateCommentInfo.isEdit ? (
+              <>
+                <button onClick={onToggleUpdateComment}>수정</button>
+                <button onClick={onClickDeleteCommentButton}>삭제</button>
+              </>
+            ) : (
+              <button onClick={onClickUpdateCommentButton}>완료</button>
+            )}
           </>
-        ) : (
-          <button onClick={onClickUpdateCommentButton}>완료</button>
         )}
       </S.EditCommentButtonWrapper>
     </S.BlogComment>
