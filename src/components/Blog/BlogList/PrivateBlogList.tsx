@@ -2,10 +2,11 @@ import { Svg } from '@/components/Svg';
 import * as S from './style';
 import { BlogListEachHoneyCard } from './BlogListEachHoneyCard';
 import { useTheme } from 'styled-components';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { date } from '@/utils';
 import { GetPrivateBlogPaginationQuery } from '@/apis/blog/queries';
 import { Link } from 'react-router-dom';
+import useObserver from '@/hook/useObserver';
 
 export default function PrivateBlogList({ id }: { id: string }) {
   const theme = useTheme();
@@ -15,9 +16,6 @@ export default function PrivateBlogList({ id }: { id: string }) {
     month: date.getNowDate.month,
     filter: 'all',
   });
-
-  const obsRef = useRef<HTMLDivElement>(null);
-  const preventRef = useRef(true); //옵저버 중복 방지
 
   const getBlogFilter = useMemo(
     () => ({
@@ -29,28 +27,14 @@ export default function PrivateBlogList({ id }: { id: string }) {
   );
 
   const getBlogInfo = GetPrivateBlogPaginationQuery(getBlogFilter);
+  const { obsRef } = useObserver({
+    event: getBlogInfo?.fetchNextPage,
+    threshold: 0.1,
+  });
 
   const onFilterHandler: React.ChangeEventHandler<HTMLSelectElement> = e => {
     const value = e.target.value;
     setSelectFilter(prev => ({ ...prev, filter: value }));
-  };
-
-  //옵저버 생성
-  useEffect(() => {
-    const observer = new IntersectionObserver(handleObs, { threshold: 0.1 });
-    if (obsRef.current) observer.observe(obsRef.current);
-    return () => {
-      observer.disconnect();
-    };
-  }, [obsRef]);
-
-  const handleObs: IntersectionObserverCallback = entries => {
-    const target = entries[0];
-    if (target.isIntersecting) {
-      //옵저버 중복 실행 방지
-      preventRef.current = false; //옵저버 중복 실행 방지
-      getBlogInfo?.fetchNextPage();
-    }
   };
 
   const onClickMonthHandler = (month: string) => {
