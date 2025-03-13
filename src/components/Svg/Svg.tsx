@@ -623,3 +623,31 @@ export function PublicIcon({ color, size = 24 }: SvgProps) {
     </svg>
   );
 }
+
+export function DefaultProfile({ color, size = 24 }: SvgProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 14 17"
+      fill="none"
+      style={{ color: color }}
+    >
+      <path
+        d="M12.6667 16V14.3333C12.6667 13.4493 12.3155 12.6014 11.6904 11.9763C11.0652 11.3512 10.2174 11 9.33333 11H4.33333C3.44928 11 2.60143 11.3512 1.97631 11.9763C1.35119 12.6014 1 13.4493 1 14.3333V16"
+        stroke="black"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M6.83333 7.66667C8.67428 7.66667 10.1667 6.17428 10.1667 4.33333C10.1667 2.49238 8.67428 1 6.83333 1C4.99238 1 3.5 2.49238 3.5 4.33333C3.5 6.17428 4.99238 7.66667 6.83333 7.66667Z"
+        stroke="black"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+}

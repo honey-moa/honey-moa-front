@@ -1,6 +1,7 @@
 import Image from '@/components/Image';
 import * as S from './style';
 import { TogetherImageProps } from './type';
+import { Svg } from '@/components/Svg';
 
 export default function TogetherImage({ members }: TogetherImageProps) {
   return (
@@ -8,14 +9,21 @@ export default function TogetherImage({ members }: TogetherImageProps) {
       <S.EachImageContainer>
         {members?.map(member => {
           return (
-            <Image
-              key={member.id}
-              src={member.profileImageUrl}
-              alt="profile"
-              width="64px"
-              height="64px"
-              borderRadius="50%"
-            />
+            <div key={member.id}>
+              {member.profileImageUrl ? (
+                <Image
+                  src={member.profileImageUrl}
+                  alt={`${member.nickname}의 프로필 이미지`}
+                  width="64px"
+                  height="64px"
+                  borderRadius="50%"
+                />
+              ) : (
+                <div>
+                  <Svg.DefaultProfile />
+                </div>
+              )}
+            </div>
           );
         })}
       </S.EachImageContainer>

@@ -15,7 +15,7 @@ export default function Blog() {
 
   return (
     <>
-      <Header.BlogHeader blogName={getBlogInfo?.name} />
+      <Header.BlogHeader blogName={getBlogInfo?.name} blogId={getBlogInfo.id} />
       <S.ContentsWrapper>
         <SideNavigate.AbleBlogSideNav blogId={getBlogInfo.id} />
         <S.BlogWrapper>

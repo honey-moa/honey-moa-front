@@ -51,6 +51,7 @@ const shareBoxAnimation = keyframes`
 `;
 
 export const ShareBoxButton = styled.button<{ $index: number }>`
+  width: 45px;
   animation: ${shareBoxAnimation} 0.3s ease-in-out;
   animation-delay: ${({ $index }) => $index * 0.1}s;
   animation-fill-mode: both;
@@ -121,9 +122,6 @@ export const CoupleProfileWrapper = styled.div`
   display: flex;
   margin-top: 12px;
   gap: 16px;
-  & > :nth-child(1) {
-    width: 80px;
-  }
   img {
     width: 50px;
     height: 50px;
@@ -133,7 +131,16 @@ export const CoupleProfileWrapper = styled.div`
   & > :nth-child(2) {
     display: flex;
     flex-direction: column;
+    align-items: start;
+    justify-content: start;
     color: ${({ theme }) => theme.text.primary};
+    & > :nth-child(1) {
+      font-weight: 700;
+    }
+    & > :nth-child(2) {
+      font-size: 0.8rem;
+      color: ${({ theme }) => theme.text.tertiary};
+    }
   }
 `;
 

@@ -7,13 +7,20 @@ import { toast } from 'react-toastify';
 import { BlogQueries } from '@/apis/blog';
 import { HoneyLeftSideNavProps } from './type';
 import { useNavigate } from 'react-router-dom';
+import { UserQueries } from '@/apis/user';
 
-export default function LeftSideNav({ id, blogId }: HoneyLeftSideNavProps) {
+export default function LeftSideNav({
+  id,
+  blogId,
+  userId,
+}: HoneyLeftSideNavProps) {
   const theme = useTheme();
   const navigation = useNavigate();
   const [share, setShare] = useState({
     isOpen: false,
   });
+
+  const myInfo = UserQueries.GetMyInfoQuery();
 
   const onToggleShare = changeInfo.toggle({
     setState: setShare,
@@ -85,18 +92,22 @@ export default function LeftSideNav({ id, blogId }: HoneyLeftSideNavProps) {
           >
             <Svg.FileIcon color={theme.text.primary} />
           </S.ShareBoxButton>
-          <S.ShareBoxButton
-            $index={3}
-            onClick={() => onClickEditHandler('edit')}
-          >
-            수정
-          </S.ShareBoxButton>
-          <S.ShareBoxButton
-            $index={4}
-            onClick={() => onClickEditHandler('delete')}
-          >
-            삭제
-          </S.ShareBoxButton>
+          {userId === myInfo?.id && (
+            <>
+              <S.ShareBoxButton
+                $index={3}
+                onClick={() => onClickEditHandler('edit')}
+              >
+                수정
+              </S.ShareBoxButton>
+              <S.ShareBoxButton
+                $index={4}
+                onClick={() => onClickEditHandler('delete')}
+              >
+                삭제
+              </S.ShareBoxButton>
+            </>
+          )}
         </div>
       )}
     </S.LeftSideFloatingNavWrapper>

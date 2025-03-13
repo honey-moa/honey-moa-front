@@ -7,5 +7,5 @@ export type BlogCommentType = {
 };
 
 export type HoneyLeftSideNavProps = Partial<
-  Pick<HoneyContentType, 'id' | 'blogId'>
+  Pick<HoneyContentType, 'id' | 'blogId' | 'userId'>
 >;

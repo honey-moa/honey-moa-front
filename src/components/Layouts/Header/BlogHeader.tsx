@@ -4,16 +4,18 @@ import * as S from './style';
 import { BlogHeaderProps } from './type';
 import Image from '@/components/Image';
 
-export default function Blog({ blogName }: BlogHeaderProps) {
+export default function Blog({ blogName, blogId }: BlogHeaderProps) {
   return (
     <S.HeaderWrapper>
       <S.TitleContainer>
-        <Image
-          src={'/images/introImage.jpg'}
-          width="65px"
-          height="65px"
-          borderRadius="50%"
-        />
+        <Link to={`/blog/${blogId}`}>
+          <Image
+            src={'/images/siteLogo.jpg'}
+            width="65px"
+            height="65px"
+            borderRadius="50%"
+          />
+        </Link>
         <h1>{blogName}</h1>
       </S.TitleContainer>
       <S.SettingContainer>

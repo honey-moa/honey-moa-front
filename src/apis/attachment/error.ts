@@ -4,6 +4,7 @@ import { ErrorResponse } from '../type';
 export function createAttachmentErrorHandler(error: AxiosError) {
   const responseData = error.response?.data as ErrorResponse;
   const code = responseData?.code;
+  console.log(responseData);
   if (
     responseData.errors[0].reason ===
     'File must be of one of the types image/png, image/jpeg, video/mp4, video/quicktime'

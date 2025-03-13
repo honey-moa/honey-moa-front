@@ -4,7 +4,6 @@ import { useLocation } from 'react-router-dom';
 import { BlogQueries } from '@/apis/blog';
 import LeftSideNav from './LeftSideNav';
 import * as S from './style';
-import RightSideNav from './RightSideNav';
 import BlogContents from './BlogContents';
 
 export default function Honey() {
@@ -16,9 +15,12 @@ export default function Honey() {
     <>
       <Header.BlogHeader />
       <S.HoneyContentsDivLeftAndRight>
-        <LeftSideNav blogId={honeyData?.blogId} id={honeyData?.id} />
+        <LeftSideNav
+          blogId={honeyData?.blogId}
+          id={honeyData?.id}
+          userId={honeyData?.userId}
+        />
         <BlogContents {...honeyData} />
-        <RightSideNav />
       </S.HoneyContentsDivLeftAndRight>
       <BlogComments id={honeyData?.id} />
     </>

@@ -85,7 +85,11 @@ export default function BlogComments({ id }: { id: string | undefined }) {
       </S.NewCommentWrapper>
       <S.BlogCommentsContentsWrapper>
         {flattenedContents.map(comment => {
-          return <Comment key={comment.id} {...comment} />;
+          const temp = {
+            ...comment,
+            commentOwner: myInfo?.id,
+          };
+          return <Comment key={comment.id} {...temp} />;
         })}
         {commentList.data?.pages[0].totalCount !== undefined &&
           commentList.data?.pages[0].totalCount > 5 &&
