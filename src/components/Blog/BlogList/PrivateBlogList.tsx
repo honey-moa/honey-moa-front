@@ -2,99 +2,45 @@ import { Svg } from '@/components/Svg';
 import * as S from './style';
 import { BlogListEachHoneyCard } from './BlogListEachHoneyCard';
 import { useTheme } from 'styled-components';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo } from 'react';
 import { date } from '@/utils';
 import { GetPrivateBlogPaginationQuery } from '@/apis/blog/queries';
 import { Link } from 'react-router-dom';
+import useObserver from '@/hook/useObserver';
+import { useFilterPageStore } from '@/store/paginationStore/useFilterPageStore';
+import {
+  onChangeYearHandler,
+  onClickYearPrevAndNextHandler,
+  onFilterHandler,
+} from './utils';
 
 export default function PrivateBlogList({ id }: { id: string }) {
   const theme = useTheme();
 
-  const [selectFilter, setSelectFilter] = useState({
-    year: date.getNowDate.year,
-    month: date.getNowDate.month,
-    filter: 'all',
-  });
-
-  const obsRef = useRef<HTMLDivElement>(null);
-  const preventRef = useRef(true); //옵저버 중복 방지
+  const { year, month, filter, setMonth } = useFilterPageStore();
 
   const getBlogFilter = useMemo(
     () => ({
       id: id,
-      datePeriod: `${selectFilter.year}-${selectFilter.month}`,
-      showPrivatePosts: selectFilter.filter === 'all',
+      datePeriod: `${year}-${month}`,
+      showPrivatePosts: filter === 'all',
     }),
-    [id, selectFilter.year, selectFilter.month, selectFilter.filter]
+    [id, year, month, filter]
   );
-
   const getBlogInfo = GetPrivateBlogPaginationQuery(getBlogFilter);
-
-  const onFilterHandler: React.ChangeEventHandler<HTMLSelectElement> = e => {
-    const value = e.target.value;
-    setSelectFilter(prev => ({ ...prev, filter: value }));
-  };
-
-  //옵저버 생성
-  useEffect(() => {
-    const observer = new IntersectionObserver(handleObs, { threshold: 0.1 });
-    if (obsRef.current) observer.observe(obsRef.current);
-    return () => {
-      observer.disconnect();
-    };
-  }, [obsRef]);
-
-  const handleObs: IntersectionObserverCallback = entries => {
-    const target = entries[0];
-    if (target.isIntersecting) {
-      //옵저버 중복 실행 방지
-      preventRef.current = false; //옵저버 중복 실행 방지
-      getBlogInfo?.fetchNextPage();
-    }
-  };
-
-  const onClickMonthHandler = (month: string) => {
-    setSelectFilter(prev => ({ ...prev, month }));
-  };
-
-  const onClickYearPrevAndNextHandler = (location: 'prev' | 'next') => {
-    const date = new Date(`${selectFilter.year}-${selectFilter.month}-01`);
-    if (location === 'prev') {
-      date.setFullYear(date.getFullYear() - 1);
-    } else {
-      date.setFullYear(date.getFullYear() + 1);
-    }
-    setSelectFilter(prev => {
-      return {
-        ...prev,
-        year: date.getFullYear().toString(),
-      };
-    });
-  };
+  const { obsRef } = useObserver({
+    event: getBlogInfo?.fetchNextPage,
+    threshold: 0.1,
+  });
 
   const flattenedContents =
     getBlogInfo?.data?.pages.flatMap(page => page.contents) || [];
-
-  const onChangeYearHandler: React.ChangeEventHandler<HTMLInputElement> = e => {
-    const newDate = new Date(e.target.value);
-    setSelectFilter(prev => ({
-      ...prev,
-      year: newDate.getFullYear().toString(),
-      month: date.getFormattingDate({
-        date: newDate.getMonth() + 1,
-        formatType: 'MM',
-      }),
-    }));
-  };
 
   return (
     <S.BlogListWrapper>
       <S.BlogListHeaderWrapper>
         <div>
-          <S.BlogListFilterSelect
-            onChange={onFilterHandler}
-            value={selectFilter.filter}
-          >
+          <S.BlogListFilterSelect onChange={onFilterHandler} value={filter}>
             <option value="all">전체</option>
             <option value="public">공개글</option>
           </S.BlogListFilterSelect>
@@ -107,7 +53,7 @@ export default function PrivateBlogList({ id }: { id: string }) {
                 type="date"
                 id="selectYear"
                 onChange={onChangeYearHandler}
-                placeholder={selectFilter.year}
+                placeholder={year}
               />
               년 의 달콤한 이야기
             </span>
@@ -121,11 +67,11 @@ export default function PrivateBlogList({ id }: { id: string }) {
             <S.BlogSelectMonthButton
               key={`${i + 1}-month-filter`}
               $isSelectedMonth={
-                selectFilter.month ===
+                month ===
                 date.getFormattingDate({ date: i + 1, formatType: 'MM' })
               }
               onClick={() =>
-                onClickMonthHandler(
+                setMonth(
                   date.getFormattingDate({ date: i + 1, formatType: 'MM' })
                 )
               }

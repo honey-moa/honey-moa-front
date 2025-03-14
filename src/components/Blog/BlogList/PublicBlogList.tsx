@@ -3,38 +3,21 @@ import { BlogQueries } from '@/apis/blog';
 import { UserQueries } from '@/apis/user';
 import { Header, SideNavigate } from '@/components/Layouts';
 import { BlogListEachHoneyCard } from './BlogListEachHoneyCard';
-import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import useObserver from '@/hook/useObserver';
 
 export default function PublicBlogList() {
-  const obsRef = useRef<HTMLDivElement>(null);
-  const preventRef = useRef(true); //옵저버 중복 방지
-
   const myInfo = UserQueries.GetMyInfoQuery();
   const getBlogInfo = BlogQueries.GetSingleBlogQuery(myInfo?.id);
 
   const getPublicBlogList = BlogQueries.GetPublicBlogPaginationQuery({});
+  const { obsRef } = useObserver({
+    threshold: 0.1,
+    event: getPublicBlogList?.fetchNextPage,
+  });
 
   const flattenedContents =
     getPublicBlogList?.data?.pages.flatMap(page => page.contents) || [];
-
-  //옵저버 생성
-  useEffect(() => {
-    const observer = new IntersectionObserver(handleObs, { threshold: 0.1 });
-    if (obsRef.current) observer.observe(obsRef.current);
-    return () => {
-      observer.disconnect();
-    };
-  }, [obsRef]);
-
-  const handleObs: IntersectionObserverCallback = entries => {
-    const target = entries[0];
-    if (target.isIntersecting) {
-      //옵저버 중복 실행 방지
-      preventRef.current = false; //옵저버 중복 실행 방지
-      getPublicBlogList?.fetchNextPage();
-    }
-  };
 
   return (
     <>
