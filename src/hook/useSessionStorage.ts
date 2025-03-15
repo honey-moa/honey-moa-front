@@ -1,0 +1,39 @@
+import { useCallback, useMemo, useSyncExternalStore } from 'react';
+import { toast } from 'react-toastify';
+
+export default function useSessionStorage(
+  key: string,
+  initialValue?: string | null
+) {
+  const getSnapshot = () => sessionStorage.getItem(key);
+
+  const subscribe = (listener: () => void) => {
+    window.addEventListener('storage', listener);
+    return () => window.removeEventListener('storage', listener);
+  };
+
+  const externalStoreState = useSyncExternalStore(subscribe, getSnapshot);
+
+  const store = useMemo(() => {
+    return externalStoreState ? externalStoreState : initialValue;
+  }, [externalStoreState, initialValue]);
+
+  const setStorage = useCallback(
+    (newValue: string) => {
+      try {
+        sessionStorage.setItem(key, newValue);
+        dispatchEvent(new StorageEvent('storage', { key: key, newValue }));
+      } catch (error) {
+        toast.error(`스토리지에 저장하는데 문제가 발생했습니다: ${error}`);
+      }
+    },
+    [key]
+  );
+
+  const removeStorage = useCallback(() => {
+    sessionStorage.removeItem(key);
+    dispatchEvent(new StorageEvent('storage', { key: key }));
+  }, [key]);
+
+  return { value: store, set: setStorage, remove: removeStorage };
+}

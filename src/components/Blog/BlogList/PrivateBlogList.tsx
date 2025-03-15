@@ -6,9 +6,12 @@ import { Link } from 'react-router-dom';
 import useObserver from '@/hook/useObserver';
 import { useFilterPageStore } from '@/store/paginationStore/useFilterPageStore';
 import SelectBlogDateSection from './SelectBlogDateSection';
+import useScrollTo from '@/hook/useScrollTo';
 
 export default function PrivateBlogList({ id }: { id: string }) {
   const { year, month, filter } = useFilterPageStore();
+
+  useScrollTo({ key: 'blog-list-location' });
 
   const getBlogFilter = useMemo(
     () => ({
