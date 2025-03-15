@@ -14,7 +14,7 @@ export default function useObserver({ threshold = 0.1, event }: InfiniteProps) {
       const target = entries[0];
       if (target.isIntersecting && event) {
         //옵저버 중복 실행 방지
-        preventRef.current = false; //옵저버 중복 실행 방지
+        preventRef.current = false;
         event();
       }
     },

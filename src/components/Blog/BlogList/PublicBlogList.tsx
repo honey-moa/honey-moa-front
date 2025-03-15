@@ -10,7 +10,7 @@ import useScrollTo from '@/hook/useScrollTo';
 export default function PublicBlogList() {
   const myInfo = UserQueries.GetMyInfoQuery();
   const getBlogInfo = BlogQueries.GetSingleBlogQuery(myInfo?.id);
-  useScrollTo({ key: 'blog-list-location' });
+  useScrollTo({});
 
   const getPublicBlogList = BlogQueries.GetPublicBlogPaginationQuery({});
   const { obsRef } = useObserver({

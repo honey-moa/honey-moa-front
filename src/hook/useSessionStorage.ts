@@ -19,10 +19,13 @@ export default function useSessionStorage(
   }, [externalStoreState, initialValue]);
 
   const setStorage = useCallback(
-    (newValue: string) => {
+    (newValue: unknown) => {
+      const parsedValue = JSON.stringify(newValue);
       try {
-        sessionStorage.setItem(key, newValue);
-        dispatchEvent(new StorageEvent('storage', { key: key, newValue }));
+        sessionStorage.setItem(key, parsedValue);
+        dispatchEvent(
+          new StorageEvent('storage', { key: key, newValue: parsedValue })
+        );
       } catch (error) {
         toast.error(`스토리지에 저장하는데 문제가 발생했습니다: ${error}`);
       }

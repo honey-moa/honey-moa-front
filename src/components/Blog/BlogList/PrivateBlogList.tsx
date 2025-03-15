@@ -11,7 +11,7 @@ import useScrollTo from '@/hook/useScrollTo';
 export default function PrivateBlogList({ id }: { id: string }) {
   const { year, month, filter } = useFilterPageStore();
 
-  useScrollTo({ key: 'blog-list-location' });
+  useScrollTo();
 
   const getBlogFilter = useMemo(
     () => ({

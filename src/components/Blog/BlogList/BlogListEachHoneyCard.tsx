@@ -7,7 +7,7 @@ import Image from '@/components/Image';
 import useScrollTo from '@/hook/useScrollTo';
 
 export function BlogListEachHoneyCard(props: PaginationContents) {
-  const { saveToPosition } = useScrollTo({ key: 'blog-list-location' });
+  const { saveToPosition } = useScrollTo();
 
   const postDate = useMemo(
     () => date.getFormattingDate({ date: props.createdAt, formatType: '월일' }),
@@ -21,7 +21,7 @@ export function BlogListEachHoneyCard(props: PaginationContents) {
   return (
     <S.BlogHoneyCardWrapper
       to={`/blog/${props.blogId}/post/${props.id}`}
-      onClick={saveToPosition}
+      onClick={() => saveToPosition(window.scrollX, window.scrollY)}
     >
       {!isThumbnailImage ? (
         <>
