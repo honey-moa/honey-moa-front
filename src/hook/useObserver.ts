@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 interface InfiniteProps {
   threshold?: number;
@@ -9,14 +9,17 @@ export default function useObserver({ threshold = 0.1, event }: InfiniteProps) {
   const obsRef = useRef<HTMLDivElement>(null);
   const preventRef = useRef(true); //옵저버 중복 방지
 
-  const handleObs: IntersectionObserverCallback = entries => {
-    const target = entries[0];
-    if (target.isIntersecting && event) {
-      //옵저버 중복 실행 방지
-      preventRef.current = false; //옵저버 중복 실행 방지
-      event();
-    }
-  };
+  const handleObs: IntersectionObserverCallback = useCallback(
+    entries => {
+      const target = entries[0];
+      if (target.isIntersecting && event) {
+        //옵저버 중복 실행 방지
+        preventRef.current = false;
+        event();
+      }
+    },
+    [event]
+  );
 
   //옵저버 생성
   useEffect(() => {
@@ -25,6 +28,7 @@ export default function useObserver({ threshold = 0.1, event }: InfiniteProps) {
     return () => {
       observer.disconnect();
     };
-  }, [obsRef]);
+  }, [handleObs, threshold]);
+
   return { obsRef };
 }

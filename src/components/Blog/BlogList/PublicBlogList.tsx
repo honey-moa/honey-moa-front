@@ -5,10 +5,12 @@ import { Header, SideNavigate } from '@/components/Layouts';
 import { BlogListEachHoneyCard } from './BlogListEachHoneyCard';
 import { Link } from 'react-router-dom';
 import useObserver from '@/hook/useObserver';
+import useScrollTo from '@/hook/useScrollTo';
 
 export default function PublicBlogList() {
   const myInfo = UserQueries.GetMyInfoQuery();
   const getBlogInfo = BlogQueries.GetSingleBlogQuery(myInfo?.id);
+  useScrollTo({});
 
   const getPublicBlogList = BlogQueries.GetPublicBlogPaginationQuery({});
   const { obsRef } = useObserver({
