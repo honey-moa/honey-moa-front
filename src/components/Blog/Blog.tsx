@@ -7,7 +7,11 @@ import PrivateBlogList from './BlogList/PrivateBlogList';
 import useScrollPosition from '@/hook/useScrollPosition';
 import PublicBlogList from './BlogList/PublicBlogList';
 
-export default function Blog({ type }: { type: 'public' | 'private' }) {
+interface BlogProps {
+  type: 'public' | 'private';
+}
+
+export default function Blog({ type }: BlogProps) {
   const myInfo = UserQueries.GetMyInfoQuery();
   const getBlogInfo = BlogQueries.GetSingleBlogQuery(myInfo?.id);
 
@@ -29,14 +33,13 @@ export default function Blog({ type }: { type: 'public' | 'private' }) {
       <S.ContentsWrapper>
         <SideNavigate.AbleBlogSideNav blogId={getBlogInfo.id} />
         <S.BlogWrapper>
-          {type === 'private' ? (
+          {type === 'private' && (
             <>
               <Profile.CoupleProfile myId={myInfo?.id} />
               <PrivateBlogList id={getBlogInfo.id} />
             </>
-          ) : (
-            <PublicBlogList />
           )}
+          {type === 'public' && <PublicBlogList />}
         </S.BlogWrapper>
       </S.ContentsWrapper>
     </>
