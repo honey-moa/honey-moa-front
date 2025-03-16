@@ -1,5 +1,5 @@
+import CustomLink from '@/components/common/CustomLink';
 import { breakpoints } from '@/styles/GlobalStyles';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const BlogListWrapper = styled.div`
@@ -134,7 +134,7 @@ export const BlogListPaginationWrapper = styled.div`
   }
 `;
 
-export const BlogHoneyCardWrapper = styled(Link)`
+export const BlogHoneyCardWrapper = styled(CustomLink)`
   border: 1px solid ${({ theme }) => theme.border.primary};
   border-radius: 8px;
   padding: 8px 16px;
@@ -180,6 +180,7 @@ export const HoneyInfoWrapper = styled.div`
 export const HoneyCardSummary = styled.div`
   overflow: hidden;
   flex: 1;
+  color: ${({ theme }) => theme.text.primary};
 `;
 
 export const HoneyCardTagsWrapper = styled.div`
@@ -226,20 +227,12 @@ export const NoBlogPleaseAddToBlogWrapper = styled.div`
 
 export const ListObserver = styled.div`
   height: 120px;
-  width: 100%;
+  width: 100px;
   margin: 0px;
   padding: 0px;
   border: none;
-  background-color: transparent;
 `;
 
-export const PublicContentsWrapper = styled.div`
-  display: flex;
-`;
-
-export const PublicPaginationWrapper = styled.div`
-  flex-grow: 1;
-  height: 100dvh;
-  border-left: 1px solid ${({ theme }) => theme.border.primary};
-  padding: 16px;
+export const PublicBlogPostTitle = styled.h3`
+  color: ${({ theme }) => theme.text.primary};
 `;

@@ -80,6 +80,12 @@ export const CreateNewBlogPostMutate = () => {
       queryClient.invalidateQueries({
         queryKey: ['create-blog-post'],
       });
+      queryClient.invalidateQueries({
+        queryKey: ['private-blog-pagination'],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['public-blog-pagination'],
+      });
     },
     onError: (error: AxiosError) => {
       toast.error(createNewBlogPostErrorHandler(error));
@@ -88,13 +94,13 @@ export const CreateNewBlogPostMutate = () => {
 };
 
 //블로그 게시글 수정 mutation
-export const UpdateBlogPostMutate = (id: string) => {
+export const UpdateBlogPostMutate = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: BlogEndpoint.updateBlogPost,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['single-blog', id],
+        queryKey: ['blog-honey'],
       });
     },
     onError: (error: AxiosError) => {
@@ -143,6 +149,7 @@ export const GetBlogHoneyQuery = ({ id }: Pick<BlogHoneyType, 'id'>) => {
   return data;
 };
 
+//블로그 pagination query
 export const GetPrivateBlogPaginationQuery = (
   params: PrivateBlogPaginationType
 ) => {

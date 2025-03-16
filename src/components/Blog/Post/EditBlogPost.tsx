@@ -25,6 +25,8 @@ export default function EditBlogPost() {
     date: '',
     location: '',
     contents: [],
+    thumbnailImageUrl: '',
+    isPublic: false,
   });
 
   const [isToast, setIsToast] = useState({
@@ -66,6 +68,8 @@ export default function EditBlogPost() {
         date: getPostInfo?.date,
         location: getPostInfo?.location,
         contents: getPostInfo?.contents,
+        thumbnailImageUrl: getPostInfo?.thumbnailImageUrl,
+        isPublic: getPostInfo?.isPublic,
       });
     }
   }, [getPostInfo]);

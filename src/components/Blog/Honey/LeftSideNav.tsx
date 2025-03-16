@@ -49,7 +49,7 @@ export default function LeftSideNav({
   const onClickEditHandler = (type: 'edit' | 'delete') => {
     const obj = {
       edit: () => {
-        navigation(`/blog/${blogId}/post/${id}/edit`);
+        navigation(`/blog/${blogId}/post/${id}/edit`, { replace: true });
       },
       delete: () => {
         if (confirm('해당 이야기를 삭제하시겠습니까?')) {

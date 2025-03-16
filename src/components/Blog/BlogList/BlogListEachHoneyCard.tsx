@@ -4,25 +4,20 @@ import { PaginationContents } from './type';
 import { date } from '@/utils';
 import { useMemo } from 'react';
 import Image from '@/components/Image';
-import useScrollTo from '@/hook/useScrollTo';
 
 export function BlogListEachHoneyCard(props: PaginationContents) {
-  const { saveToPosition } = useScrollTo();
-
   const postDate = useMemo(
     () => date.getFormattingDate({ date: props.createdAt, formatType: '월일' }),
     [props.date]
   );
+
   const isThumbnailImage = useMemo(() => {
     const temp = props.thumbnailImageUrl.split('/');
     return temp[temp.length - 1] === 'null' ? false : true;
   }, [props.thumbnailImageUrl]);
 
   return (
-    <S.BlogHoneyCardWrapper
-      to={`/blog/${props.blogId}/post/${props.id}`}
-      onClick={() => saveToPosition(window.scrollX, window.scrollY)}
-    >
+    <S.BlogHoneyCardWrapper to={`/blog/${props.blogId}/post/${props.id}`}>
       {!isThumbnailImage ? (
         <>
           <S.HoneyInfoWrapper>
