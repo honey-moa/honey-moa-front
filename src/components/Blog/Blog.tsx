@@ -6,6 +6,8 @@ import { BlogQueries } from '@/apis/blog';
 import PrivateBlogList from './BlogList/PrivateBlogList';
 import useScrollPosition from '@/hook/useScrollPosition';
 import PublicBlogList from './BlogList/PublicBlogList';
+import { GetMyInfoReturn } from '@/apis/user/type';
+import { BlogSingleInfoReturn } from '@/apis/blog/type';
 
 interface BlogProps {
   type: 'public' | 'private';
@@ -16,6 +18,12 @@ export default function Blog({ type }: BlogProps) {
   const getBlogInfo = BlogQueries.GetSingleBlogQuery(myInfo?.id);
 
   const { visible } = useScrollPosition();
+
+  const isTypeGuardId = <T extends object>(
+    obj: T
+  ): obj is T & { id: string } => {
+    return 'id' in obj && typeof obj.id === 'string';
+  };
 
   if (!getBlogInfo) {
     return <Navigate to="/blog" />;
@@ -35,8 +43,20 @@ export default function Blog({ type }: BlogProps) {
         <S.BlogWrapper>
           {type === 'private' && (
             <>
-              <Profile.CoupleProfile myId={myInfo?.id} />
-              <PrivateBlogList id={getBlogInfo.id} />
+              {
+                <Profile.CoupleProfile
+                  myId={
+                    isTypeGuardId<GetMyInfoReturn>(myInfo!) ? myInfo.id : ''
+                  }
+                />
+              }
+              <PrivateBlogList
+                id={
+                  isTypeGuardId<BlogSingleInfoReturn>(getBlogInfo)
+                    ? getBlogInfo.id
+                    : ''
+                }
+              />
             </>
           )}
           {type === 'public' && <PublicBlogList />}

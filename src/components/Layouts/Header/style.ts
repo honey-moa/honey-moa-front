@@ -22,7 +22,7 @@ const headerAnimationReverse = keyframes`
   }
 `;
 
-export const HeaderWrapper = styled.div<HeaderProps>`
+export const BlogHeaderWrapper = styled.div<HeaderProps>`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -42,6 +42,16 @@ export const HeaderWrapper = styled.div<HeaderProps>`
           top: -100px;
           animation: ${headerAnimationReverse} 0.5s forwards;
         `}
+`;
+
+export const HeaderWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  height: 100px;
+  border-bottom: 1px solid ${({ theme }) => theme.border.primary};
+  background-color: ${({ theme }) => theme.bg.primary};
 `;
 
 export const TitleContainer = styled.div`
