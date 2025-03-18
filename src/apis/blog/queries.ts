@@ -10,9 +10,12 @@ import { toast } from 'react-toastify';
 import {
   createBlogErrorhandler,
   createNewBlogPostErrorHandler,
+  deleteBlogPostErrorHandler,
+  editBlogProfileErrorHandler,
   getBlogHoneyErrorHandler,
   getSingleBlogErrorHandler,
   PaginationErrorHandler,
+  updateBlogPostErrorHandler,
 } from './error';
 import { AxiosError } from 'axios';
 import {
@@ -62,11 +65,11 @@ export const EditCoupleProfileMutate = () => {
     mutationFn: BlogEndpoint.patchBlogCoupleInfo,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['edit-couple-profile'],
+        queryKey: ['single-blog'],
       });
     },
     onError: (error: AxiosError) => {
-      toast.error(createNewBlogPostErrorHandler(error));
+      toast.error(editBlogProfileErrorHandler(error));
     },
   });
 };
@@ -102,9 +105,15 @@ export const UpdateBlogPostMutate = () => {
       queryClient.invalidateQueries({
         queryKey: ['blog-honey'],
       });
+      queryClient.invalidateQueries({
+        queryKey: ['private-blog-pagination'],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['public-blog-pagination'],
+      });
     },
     onError: (error: AxiosError) => {
-      toast.error(createNewBlogPostErrorHandler(error));
+      toast.error(updateBlogPostErrorHandler(error));
     },
   });
 };
@@ -120,7 +129,7 @@ export const DeleteBlogPostMutate = () => {
       });
     },
     onError: (error: AxiosError) => {
-      toast.error(createNewBlogPostErrorHandler(error));
+      toast.error(deleteBlogPostErrorHandler(error));
     },
   });
 };

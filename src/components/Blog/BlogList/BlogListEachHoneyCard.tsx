@@ -12,8 +12,8 @@ export function BlogListEachHoneyCard(props: PaginationContents) {
   );
 
   const isThumbnailImage = useMemo(() => {
-    const temp = props.thumbnailImageUrl.split('/');
-    return temp[temp.length - 1] === 'null' ? false : true;
+    if (props.thumbnailImageUrl === null) return false;
+    return true;
   }, [props.thumbnailImageUrl]);
 
   return (

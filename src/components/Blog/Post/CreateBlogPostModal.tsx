@@ -32,8 +32,6 @@ export default function CreateBlogPostModal(data: CreateBlogPostModalProps) {
       thumbnailImageUrl: data.thumbnailImageUrl ? data.thumbnailImageUrl : null,
     });
 
-  console.log(createBlogPostInfo);
-
   const [editBlogPostInfo, setEditBlogPostInfo] = useState({
     blogId: '',
     postId: '',
