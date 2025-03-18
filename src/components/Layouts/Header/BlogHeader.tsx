@@ -1,33 +1,36 @@
-import { Link } from 'react-router-dom';
+import { useTheme } from 'styled-components';
 import { Svg } from '../../Svg';
 import * as S from './style';
 import { BlogHeaderProps } from './type';
 import Image from '@/components/Image';
+import CustomLink from '@/components/common/CustomLink';
 
-export default function Blog({ blogName, blogId }: BlogHeaderProps) {
+export default function Blog({ blogName, blogId, visible }: BlogHeaderProps) {
+  const theme = useTheme();
+
   return (
-    <S.HeaderWrapper>
+    <S.BlogHeaderWrapper $visible={visible}>
       <S.TitleContainer>
-        <Link to={`/blog/${blogId}`}>
+        <CustomLink to={`/blog/${blogId}`} scrollTop={true}>
           <Image
             src={'/images/siteLogo.jpg'}
             width="65px"
             height="65px"
             borderRadius="50%"
           />
-        </Link>
+        </CustomLink>
         <h1>{blogName}</h1>
       </S.TitleContainer>
       <S.SettingContainer>
-        <Link to="/public/posts">
+        <CustomLink to="/public/posts" scrollTop={true}>
           <button>공개글 보기</button>
-        </Link>
-        <Link to="/setting">
+        </CustomLink>
+        <CustomLink to="/setting" scrollTop={true}>
           <button>
-            <Svg.SettingIcon size={36} />
+            <Svg.SettingIcon size={36} color={theme.button.secondary.base} />
           </button>
-        </Link>
+        </CustomLink>
       </S.SettingContainer>
-    </S.HeaderWrapper>
+    </S.BlogHeaderWrapper>
   );
 }

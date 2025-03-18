@@ -25,12 +25,14 @@ export default function CreateBlogPostModal(data: CreateBlogPostModalProps) {
       contents: data.contents,
       date: data.date,
       location: data.location,
-      isPublic: false,
+      isPublic: data.isPublic,
       tagNames: data.tagNames,
       fileUrls: [],
       summary: '',
-      thumbnailImageUrl: null,
+      thumbnailImageUrl: data.thumbnailImageUrl ? data.thumbnailImageUrl : null,
     });
+
+  console.log(createBlogPostInfo);
 
   const [editBlogPostInfo, setEditBlogPostInfo] = useState({
     blogId: '',
@@ -96,9 +98,7 @@ export default function CreateBlogPostModal(data: CreateBlogPostModalProps) {
   };
 
   const createBlogPostMutate = BlogQueries.CreateNewBlogPostMutate();
-  const editBlogPostMutate = BlogQueries.UpdateBlogPostMutate(
-    editBlogPostInfo.blogId
-  );
+  const editBlogPostMutate = BlogQueries.UpdateBlogPostMutate();
 
   const onSubmitCreateBlogPostHandler: React.FormEventHandler<
     HTMLFormElement
@@ -108,7 +108,9 @@ export default function CreateBlogPostModal(data: CreateBlogPostModalProps) {
       createBlogPostMutate.mutate(createBlogPostInfo, {
         onSuccess: res => {
           toast.success('게시글 업로드를 성공했습니다.');
-          navigate(`/blog/${createBlogPostInfo.id}/post/${res.id}`);
+          navigate(`/blog/${createBlogPostInfo.id}/post/${res.id}`, {
+            replace: true,
+          });
         },
       });
     } else {
@@ -122,7 +124,10 @@ export default function CreateBlogPostModal(data: CreateBlogPostModalProps) {
           onSuccess: () => {
             toast.success('게시글이 수정되었습니다.');
             navigate(
-              `/blog/${editBlogPostInfo.blogId}/post/${editBlogPostInfo.postId}`
+              `/blog/${editBlogPostInfo.blogId}/post/${editBlogPostInfo.postId}`,
+              {
+                replace: true,
+              }
             );
           },
         }

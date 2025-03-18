@@ -7,6 +7,8 @@ export interface PostContentsType {
   location: string;
   contents: PartialBlock[];
   isEdit?: boolean;
+  thumbnailImageUrl?: string | null;
+  isPublic?: boolean;
 }
 
 export type PostContentsPropsType = React.Dispatch<

@@ -1,12 +1,13 @@
-// import { useTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
 import { Svg } from '../../Svg';
 import * as S from './style';
-import { Link } from 'react-router-dom';
 import { AbleBLogSideNavProps } from './type';
 import { PopUp } from '@/components';
+import CustomLink from '@/components/common/CustomLink';
 
 export default function AbleBlogSideNav({ blogId }: AbleBLogSideNavProps) {
-  // const theme = useTheme();
+  const theme = useTheme();
+
   return (
     <S.NavWrapper>
       <S.NavItemListContainer>
@@ -17,11 +18,11 @@ export default function AbleBlogSideNav({ blogId }: AbleBLogSideNavProps) {
         </li> */}
         <li>
           <PopUp.Tooltip message="포스트 작성" direction="right">
-            <Link to={`/blog/${blogId}/post/create`}>
+            <CustomLink to={`/blog/${blogId}/post/create`}>
               <S.ItemButton>
-                <Svg.WriteIcon size={36} />
+                <Svg.WriteIcon size={36} color={theme.text.primary} />
               </S.ItemButton>
-            </Link>
+            </CustomLink>
           </PopUp.Tooltip>
         </li>
       </S.NavItemListContainer>

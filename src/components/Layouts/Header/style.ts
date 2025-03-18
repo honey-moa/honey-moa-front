@@ -1,4 +1,48 @@
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
+
+interface HeaderProps {
+  $visible?: boolean;
+}
+
+const headerAnimation = keyframes`
+  from {
+    top: -100px;
+  }
+  to {
+    top: 0;
+  }
+`;
+
+const headerAnimationReverse = keyframes`
+  from {
+    top: 0;
+  }
+  to {
+    top: -100px;
+  }
+`;
+
+export const BlogHeaderWrapper = styled.div<HeaderProps>`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  height: 100px;
+  border-bottom: 1px solid ${({ theme }) => theme.border.primary};
+  background-color: ${({ theme }) => theme.bg.primary};
+  position: fixed;
+  z-index: 77;
+  ${({ $visible }) =>
+    $visible
+      ? css`
+          top: 0;
+          animation: ${headerAnimation} 0.5s forwards;
+        `
+      : css`
+          top: -100px;
+          animation: ${headerAnimationReverse} 0.5s forwards;
+        `}
+`;
 
 export const HeaderWrapper = styled.div`
   display: flex;
@@ -7,7 +51,7 @@ export const HeaderWrapper = styled.div`
   width: 100%;
   height: 100px;
   border-bottom: 1px solid ${({ theme }) => theme.border.primary};
-  background-color: ${({ theme }) => theme.primary};
+  background-color: ${({ theme }) => theme.bg.primary};
 `;
 
 export const TitleContainer = styled.div`

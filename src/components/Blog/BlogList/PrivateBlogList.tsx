@@ -2,16 +2,16 @@ import * as S from './style';
 import { BlogListEachHoneyCard } from './BlogListEachHoneyCard';
 import { useMemo } from 'react';
 import { GetPrivateBlogPaginationQuery } from '@/apis/blog/queries';
-import { Link } from 'react-router-dom';
 import useObserver from '@/hook/useObserver';
 import { useFilterPageStore } from '@/store/paginationStore/useFilterPageStore';
 import SelectBlogDateSection from './SelectBlogDateSection';
-import useScrollTo from '@/hook/useScrollTo';
+import useScrollPosition from '@/hook/useScrollPosition';
+import CustomLink from '@/components/common/CustomLink';
 
 export default function PrivateBlogList({ id }: { id: string }) {
   const { year, month, filter } = useFilterPageStore();
 
-  useScrollTo();
+  useScrollPosition();
 
   const getBlogFilter = useMemo(
     () => ({
@@ -70,9 +70,9 @@ export default function PrivateBlogList({ id }: { id: string }) {
       ) : (
         <S.NoBlogPleaseAddToBlogWrapper>
           <span>아직 달콯한 이야기가 존재하지 않습니다😭</span>
-          <Link to={`/blog/${id}/post/create`}>
+          <CustomLink to={`/blog/${id}/post/create`}>
             <span>👉달콤한 이야기 추가하기👈</span>
-          </Link>
+          </CustomLink>
         </S.NoBlogPleaseAddToBlogWrapper>
       )}
       <S.ListObserver ref={obsRef}></S.ListObserver>

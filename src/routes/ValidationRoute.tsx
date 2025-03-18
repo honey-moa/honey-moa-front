@@ -10,7 +10,6 @@ import { RouteListType } from './type';
 import Blog from '@/components/Blog/Blog';
 import { Honey } from '@/components/Blog/Honey';
 import EditBlogPost from '@/components/Blog/Post/EditBlogPost';
-import PublicBlogList from '@/components/Blog/BlogList/PublicBlogList';
 
 const routesList: RouteListType[] = [
   {
@@ -29,7 +28,7 @@ const routesList: RouteListType[] = [
     id: 'route--honeyJar--id',
     path: '/blog/:id',
     private: true,
-    element: <Blog />,
+    element: <Blog type="private" />,
   },
   {
     id: 'route--changePassword',
@@ -59,7 +58,7 @@ const routesList: RouteListType[] = [
     id: 'route--public-honey',
     path: '/public/posts',
     private: false,
-    element: <PublicBlogList />,
+    element: <Blog type="public" />,
   },
   {
     id: 'route--setting',

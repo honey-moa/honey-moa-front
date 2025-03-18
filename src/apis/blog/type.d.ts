@@ -80,6 +80,7 @@ export interface BlogHoneyType {
   date: string;
   location: string;
   isPublic: boolean;
+  thumbnailImageUrl?: string;
   tags: {
     id: string;
     createdAt: string;
