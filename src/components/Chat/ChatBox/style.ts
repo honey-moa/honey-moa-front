@@ -1,5 +1,33 @@
 import styled from 'styled-components';
 
+export const BeforeChattingStartBox = styled.div`
+  position: fixed;
+  right: 5%;
+  bottom: 14%;
+  z-index: 999;
+  height: 400px;
+  width: 300px;
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+  background-color: ${({ theme }) => theme.bg.primary};
+  border: 2px solid ${({ theme }) => theme.button.primary.base};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  & > button {
+    border: 1px solid ${({ theme }) => theme.button.primary.base};
+    background-color: ${({ theme }) => theme.button.primary.base};
+    color: ${({ theme }) => theme.text.primary};
+    padding: 10px;
+    border-radius: 16px;
+    cursor: pointer;
+    &:hover {
+      background-color: ${({ theme }) => theme.button.primary.hover};
+    }
+  }
+`;
+
 export const ChatBox = styled.div`
   position: fixed;
   right: 5%;
@@ -25,6 +53,14 @@ export const ChatHeader = styled.div`
 
 export const ChatInfo = styled.div`
   display: flex;
+  //online 표시
+  /* & > span {
+    margin-left: 5px;
+    background-color: #2ecc71;
+    border-radius: 50%;
+    width: 8px;
+    height: 8px;
+  } */
 `;
 
 export const ChatControl = styled.div`
@@ -65,14 +101,19 @@ export const IconWrapper = styled.div`
 `;
 
 export const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 50%;
   padding: 8px;
-  background-color: ${({ theme }) => theme.bg.tertiary};
+  border: 1px solid ${({ theme }) => theme.button.primary.base};
+  background-color: ${({ theme }) => theme.button.primary.base};
   position: fixed;
   right: 5%;
   bottom: 5%;
   z-index: 999;
+  cursor: pointer;
   &:hover {
-    background-color: lightgray;
+    background-color: ${({ theme }) => theme.button.primary.hover};
   }
 `;

@@ -24,10 +24,6 @@ export const CoupleInfoWrapper = styled.div`
   align-items: center;
 `;
 
-export const CoupleProfileWrapper = styled.div`
-  height: 80px;
-`;
-
 export const EachImageContainer = styled.div`
   display: flex;
   position: relative;

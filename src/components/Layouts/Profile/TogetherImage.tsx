@@ -3,9 +3,12 @@ import * as S from './style';
 import { TogetherImageProps } from './type';
 import { Svg } from '@/components/Svg';
 
-export default function TogetherImage({ members }: TogetherImageProps) {
+export default function TogetherImage({
+  members,
+  width = '64px',
+}: TogetherImageProps) {
   return (
-    <S.CoupleProfileWrapper>
+    <>
       <S.EachImageContainer>
         {members?.map(member => {
           return (
@@ -14,8 +17,8 @@ export default function TogetherImage({ members }: TogetherImageProps) {
                 <Image
                   src={member.profileImageUrl}
                   alt={`${member.nickname}의 프로필 이미지`}
-                  width="64px"
-                  height="64px"
+                  width={width}
+                  height={width}
                   borderRadius="50%"
                 />
               ) : (
@@ -27,6 +30,6 @@ export default function TogetherImage({ members }: TogetherImageProps) {
           );
         })}
       </S.EachImageContainer>
-    </S.CoupleProfileWrapper>
+    </>
   );
 }

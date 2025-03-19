@@ -10,4 +10,5 @@ export interface TogetherImageProps {
     nickname: string;
     profileImageUrl: string;
   }[];
+  width?: string;
 }
