@@ -22,7 +22,7 @@ export default function EditCoupleProfileModal({
   const [coupleInfo, setCoupleInfo] = useState<CoupleProfileInfoType>({
     name: '',
     description: '',
-    bgImage: {} as File,
+    bgImage: null,
     blobImage: '',
     startDate: '',
   });
@@ -73,40 +73,15 @@ export default function EditCoupleProfileModal({
     }
   };
 
-  useEffect(() => {
-    // 특정 영역 외 클릭 시 발생하는 이벤트
-    function handleFocus(ref: EditProfileInputOnFocusType) {
-      if (ref.current) {
-        ref.current.disabled = true;
-        setIsEditing(prev => {
-          return {
-            ...prev,
-            [`${ref.current?.id}`]: true,
-          };
-        });
-      }
-    }
-
-    // 이벤트 리스너에 handleFocus 함수 등록
-    document.addEventListener('mouseup', () => handleFocus(coupleNameRef));
-    document.addEventListener('mouseup', () =>
-      handleFocus(coupleDescriptionRef)
-    );
-    return () => {
-      document.removeEventListener('mouseup', () => handleFocus(coupleNameRef));
-      document.removeEventListener('mouseup', () =>
-        handleFocus(coupleDescriptionRef)
-      );
-    };
-  }, [coupleNameRef, coupleDescriptionRef]);
-
   const editBlogProfileMutate = BlogQueries.EditCoupleProfileMutate();
 
   const onSubmitEditProfile: React.FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
     //api로 담아보낼 from데이터
     const formData = new FormData();
-    formData.append('backgroundImageFile', coupleInfo.bgImage);
+    if (coupleInfo.bgImage !== null) {
+      formData.append('backgroundImageFile', coupleInfo.bgImage);
+    }
     formData.append('name', coupleInfo.name!);
     formData.append('description', coupleInfo.description!);
     formData.append('dDayStartDate', coupleInfo.startDate!);
@@ -143,12 +118,14 @@ export default function EditCoupleProfileModal({
   };
 
   useEffect(() => {
-    setCoupleInfo({
-      name: getBlogInfo?.name,
-      description: getBlogInfo?.description,
-      bgImage: {} as File,
-      blobImage: getBlogInfo?.backgroundImageUrl,
-      startDate: getBlogInfo?.dDayStartDate,
+    setCoupleInfo(prev => {
+      return {
+        ...prev,
+        name: getBlogInfo?.name,
+        description: getBlogInfo?.description,
+        blobImage: getBlogInfo?.backgroundImageUrl,
+        startDate: getBlogInfo?.dDayStartDate,
+      };
     });
   }, [getBlogInfo]);
 

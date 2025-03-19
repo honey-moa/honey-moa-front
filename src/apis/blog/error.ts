@@ -8,6 +8,16 @@ export function editBlogProfileErrorHandler(error: AxiosError) {
     errors[0].reason === 'name must be shorter than or equal to 30 characters'
   )
     return '커플 이름은 1자 이상 30자 이하로 입력해주세요.';
+  if (
+    errors[0].reason ===
+    'File must be of one of the types image/png, image/jpeg'
+  )
+    return '이미지는 png, jpeg만 가능합니다.';
+  if (
+    errors[0].reason ===
+    'description must be longer than or equal to 1 characters'
+  )
+    return '커플 소개글은 1글자 이상 255자 이하로 작성해야 합니다.';
   if (code === 'YOU_ARE_NOT_PART_OF_A_CONNECTION')
     return '해당 블로그의 수정 권한이 없습니다.';
   if (code === 'RESOURCE_NOT_FOUND')

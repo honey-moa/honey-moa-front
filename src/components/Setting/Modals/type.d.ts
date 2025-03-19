@@ -13,7 +13,7 @@ type ProfileInfo = {
 export interface CoupleProfileInfoType {
   name: string | undefined;
   description: string | undefined;
-  bgImage: File;
+  bgImage: File | null;
   blobImage: string | undefined;
   startDate: string | undefined;
 }
