@@ -10,6 +10,7 @@ export const ChatBox = styled.div`
   z-index: 99;
   display: flex;
   flex-direction: column;
+  border: 2px solid ${({ theme }) => theme.button.primary.base};
 `;
 
 export const ChatHeader = styled.div`
