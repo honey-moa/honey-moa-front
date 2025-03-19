@@ -104,7 +104,7 @@ export interface PaginationBaseType {
   page?: number;
   limit?: number;
   title?: string; //필터링 할 제목(검색에 사용)
-  orderBy?: OrderByArrayType;
+  orderBy?: string;
   cursor?: CursorArrayType;
 }
 

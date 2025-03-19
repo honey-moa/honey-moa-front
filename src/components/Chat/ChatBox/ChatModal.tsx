@@ -7,6 +7,9 @@ import { ChatModalProps } from './type';
 import { BlogQueries } from '@/apis/blog';
 import { UserQueries } from '@/apis/user';
 import { Profile } from '@/components/Layouts';
+import { useChattingMessagePagination } from '@/apis/chat/queries';
+import useObserver from '@/hook/useObserver';
+import { date } from '@/utils';
 
 export default function ChatRoomModal({
   setIsOpen,
@@ -23,6 +26,22 @@ export default function ChatRoomModal({
       },
     });
   };
+
+  //타입 가드
+  function isString(value: unknown): value is string {
+    return typeof value === 'string';
+  }
+
+  const messages = useChattingMessagePagination({
+    id: isString(belongToChatRoomData?.id) ? belongToChatRoomData.id : '',
+    orderBy: JSON.stringify(['createdAt:asc']),
+  });
+  const { obsRef } = useObserver({
+    event: messages?.fetchNextPage,
+    threshold: 0.1,
+  });
+
+  const messagesContents = messages?.data?.pages.flatMap(page => page.contents);
 
   if (belongToChatRoomData === undefined)
     return (
@@ -49,7 +68,40 @@ export default function ChatRoomModal({
           </S.IconWrapper>
         </S.ChatControl>
       </S.ChatHeader>
-      <S.ChatBody></S.ChatBody>
+      <S.ChatBody>
+        {messagesContents?.map(message => {
+          const isOwner = message.senderId === myInfo?.id;
+
+          return (
+            <S.ChatMessage key={message.id}>
+              <S.ChatContentsWrapper $isOwner={isOwner}>
+                {!isOwner ? (
+                  <>
+                    <div>{message.message}</div>
+                    <span>
+                      {date.getFormattingTime({
+                        time: message.createdAt,
+                        formatType: '오전오후',
+                      })}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span>
+                      {date.getFormattingTime({
+                        time: message.createdAt,
+                        formatType: '오전오후',
+                      })}
+                    </span>
+                    <div>{message.message}</div>
+                  </>
+                )}
+              </S.ChatContentsWrapper>
+            </S.ChatMessage>
+          );
+        })}
+        <div ref={obsRef}></div>
+      </S.ChatBody>
       <S.ChatOperate>
         <S.FormAttachBox>
           <S.IconWrapper>
@@ -60,7 +112,7 @@ export default function ChatRoomModal({
           </S.IconWrapper>
         </S.FormAttachBox>
         <S.ChatForm onSubmit={e => e.preventDefault()}>
-          <S.ChatInput placeholder="Type a message..." />
+          <S.ChatInput placeholder="메시지를 입력하세요..." />
           <S.IconWrapper>
             <Svg.SendIcon />
           </S.IconWrapper>

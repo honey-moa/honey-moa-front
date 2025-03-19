@@ -14,3 +14,9 @@ export function getBelongToChatRoomErrorHandler(error: AxiosError) {
   const { code } = responseData;
   if (code === 'RESOURCE_NOT_FOUND') return '채팅방이 존재하지 않습니다. ';
 }
+
+export function messagePaginationErrorHandler(error: AxiosError) {
+  const responseData = error.response?.data as ErrorResponse;
+  const { code } = responseData;
+  if (code === 'RESOURCE_NOT_FOUND') return '메세지가 존재하지 않습니다.';
+}

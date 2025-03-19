@@ -4,10 +4,8 @@ export const BeforeChattingStartBox = styled.div`
   position: fixed;
   right: 5%;
   bottom: 14%;
-  z-index: 999;
   height: 400px;
   width: 300px;
-  z-index: 99;
   display: flex;
   flex-direction: column;
   background-color: ${({ theme }) => theme.bg.primary};
@@ -31,7 +29,7 @@ export const BeforeChattingStartBox = styled.div`
 export const ChatBox = styled.div`
   position: fixed;
   right: 5%;
-  bottom: 14%;
+  bottom: 5%;
   z-index: 999;
   height: 400px;
   width: 300px;
@@ -72,6 +70,7 @@ export const ChatBody = styled.div`
   background-color: ${({ theme }) => theme.bg.primary};
   width: 100%;
   height: 80%;
+  overflow-y: auto;
 `;
 
 export const ChatOperate = styled.div`
@@ -111,9 +110,52 @@ export const ButtonWrapper = styled.div`
   position: fixed;
   right: 5%;
   bottom: 5%;
-  z-index: 999;
+  z-index: 88;
   cursor: pointer;
   &:hover {
     background-color: ${({ theme }) => theme.button.primary.hover};
+  }
+`;
+
+export const ChatMessage = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+`;
+
+export const ChatMessageInfo = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+`;
+
+export const ChatMessageOwnerName = styled.span`
+  margin: 0px 8px;
+  font-size: 1rem;
+`;
+
+export const ChatContentsWrapper = styled.div<{ $isOwner?: boolean }>`
+  display: flex;
+  margin: 5px 8px;
+  justify-content: ${({ $isOwner }) => ($isOwner ? 'flex-end' : 'flex-start')};
+  & > div {
+    background-color: ${({ $isOwner, theme }) =>
+      $isOwner ? theme.button.primary.base : theme.bg.secondary};
+    padding: 10px;
+    border-radius: 16px;
+    word-break: break-word;
+    font-size: 1rem;
+    color: ${({ theme }) => theme.text.primary};
+  }
+  & > span {
+    display: flex;
+    align-items: end;
+    ${({ $isOwner }) => {
+      if ($isOwner) return 'margin-right: 10px;';
+      return 'margin-left: 10px;';
+    }}
+    font-size: 0.7rem;
+    color: ${({ theme }) => theme.text.tertiary};
   }
 `;
