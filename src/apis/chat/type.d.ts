@@ -22,10 +22,6 @@ export interface ChatMessagePaginationType {
     message: string;
     blogPostUrl: string;
   }[];
-  currentPage: number;
-  nextPage: number;
-  lastPage: number;
-  hasNext: boolean;
   nextCursor: {
     id: string;
     createdAt: string;

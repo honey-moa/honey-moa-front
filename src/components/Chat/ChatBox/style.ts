@@ -33,9 +33,6 @@ export const ChatBox = styled.div`
   z-index: 999;
   height: 400px;
   width: 300px;
-  z-index: 99;
-  display: flex;
-  flex-direction: column;
   border: 2px solid ${({ theme }) => theme.button.primary.base};
 `;
 
@@ -86,7 +83,7 @@ export const FormAttachBox = styled.div`
   display: flex;
 `;
 
-export const ChatForm = styled.form`
+export const ChatForm = styled.div`
   display: flex;
   margin: 3px;
 `;
@@ -96,6 +93,10 @@ export const ChatInput = styled.input`
 `;
 
 export const IconWrapper = styled.div`
+  margin: 3px;
+`;
+
+export const SendIconButton = styled.button`
   margin: 3px;
 `;
 
@@ -140,6 +141,7 @@ export const ChatContentsWrapper = styled.div<{ $isOwner?: boolean }>`
   margin: 5px 8px;
   justify-content: ${({ $isOwner }) => ($isOwner ? 'flex-end' : 'flex-start')};
   & > div {
+    max-width: 75%;
     background-color: ${({ $isOwner, theme }) =>
       $isOwner ? theme.button.primary.base : theme.bg.secondary};
     padding: 10px;
@@ -158,4 +160,9 @@ export const ChatContentsWrapper = styled.div<{ $isOwner?: boolean }>`
     font-size: 0.7rem;
     color: ${({ theme }) => theme.text.tertiary};
   }
+`;
+
+export const ObserverBox = styled.div`
+  width: 100%;
+  margin-bottom: 24px;
 `;

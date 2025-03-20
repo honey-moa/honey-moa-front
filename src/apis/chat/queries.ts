@@ -41,16 +41,14 @@ export function useGetBelongToChatRoom() {
 export const useChattingMessagePagination = (params: PaginationBaseType) => {
   const response = useInfiniteQuery({
     queryKey: ['chat-rooms', params.id, 'messages'],
-    queryFn: ({ pageParam = 1 }) =>
+    queryFn: ({ pageParam }: { pageParam?: string }) =>
       ChatEndPoint.getChatRoomPagination({
-        page: pageParam,
+        cursor: pageParam ? JSON.stringify([`id:${pageParam}`]) : undefined,
         ...params,
       }),
-    initialPageParam: 1,
+    initialPageParam: undefined,
     getNextPageParam: allPages => {
-      return allPages.currentPage < allPages.lastPage
-        ? allPages.currentPage + 1
-        : undefined;
+      return allPages.nextCursor !== null ? allPages.nextCursor.id : undefined;
     },
     retry: false,
     refetchOnWindowFocus: false,

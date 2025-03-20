@@ -9,7 +9,9 @@ import { UserQueries } from '@/apis/user';
 import { Profile } from '@/components/Layouts';
 import { useChattingMessagePagination } from '@/apis/chat/queries';
 import useObserver from '@/hook/useObserver';
-import { date } from '@/utils';
+import { changeInfo, date } from '@/utils';
+import { useEffect, useState } from 'react';
+import { useSocket } from '@/hook/useSocket';
 
 export default function ChatRoomModal({
   setIsOpen,
@@ -19,6 +21,10 @@ export default function ChatRoomModal({
   const myInfo = UserQueries.GetMyInfoQuery();
   const blogInfo = BlogQueries.GetSingleBlogQuery(myInfo?.id);
 
+  const [chatInfo, setChatInfo] = useState({
+    message: '',
+  });
+
   const onClickStartChatting = () => {
     createChatRoom.mutate(undefined, {
       onSuccess: () => {
@@ -26,6 +32,22 @@ export default function ChatRoomModal({
       },
     });
   };
+  const socket = useSocket();
+
+  useEffect(() => {
+    if (!socket) return;
+    socket.emit('enter_chat_room', { roomId: belongToChatRoomData?.id });
+
+    //메시지 수신
+    socket.on('receive_message', data => {
+      console.log('receive_message', data);
+    });
+
+    return () => {
+      socket.off('enter_chat_room');
+      socket.off('receive_message');
+    };
+  }, [socket]);
 
   //타입 가드
   function isString(value: unknown): value is string {
@@ -34,14 +56,33 @@ export default function ChatRoomModal({
 
   const messages = useChattingMessagePagination({
     id: isString(belongToChatRoomData?.id) ? belongToChatRoomData.id : '',
-    orderBy: JSON.stringify(['createdAt:asc']),
+    orderBy: JSON.stringify(['createdAt:desc']),
   });
+
   const { obsRef } = useObserver({
-    event: messages?.fetchNextPage,
+    event: () => {
+      messages?.fetchNextPage();
+    },
     threshold: 0.1,
   });
 
   const messagesContents = messages?.data?.pages.flatMap(page => page.contents);
+  const sendToMessage = () => {
+    if (!socket || !socket.connected || chatInfo.message === '') {
+      toast.error('메시지를 입력해주세요.');
+      return;
+    }
+
+    const sendData = {
+      roomId: belongToChatRoomData?.id,
+      message: chatInfo.message,
+      blogPostUrl: '',
+    };
+    socket.emit('send_message', sendData);
+    setChatInfo({ message: '' });
+  };
+
+  const onChangeMessage = changeInfo.text({ setState: setChatInfo });
 
   if (belongToChatRoomData === undefined)
     return (
@@ -69,9 +110,13 @@ export default function ChatRoomModal({
         </S.ChatControl>
       </S.ChatHeader>
       <S.ChatBody>
-        {messagesContents?.map(message => {
+        {messages?.isPending ? (
+          <div>로딩중...</div>
+        ) : (
+          <S.ObserverBox ref={obsRef}></S.ObserverBox>
+        )}
+        {messagesContents?.reverse().map(message => {
           const isOwner = message.senderId === myInfo?.id;
-
           return (
             <S.ChatMessage key={message.id}>
               <S.ChatContentsWrapper $isOwner={isOwner}>
@@ -100,7 +145,6 @@ export default function ChatRoomModal({
             </S.ChatMessage>
           );
         })}
-        <div ref={obsRef}></div>
       </S.ChatBody>
       <S.ChatOperate>
         <S.FormAttachBox>
@@ -111,11 +155,16 @@ export default function ChatRoomModal({
             <Svg.EmojiIcon />
           </S.IconWrapper>
         </S.FormAttachBox>
-        <S.ChatForm onSubmit={e => e.preventDefault()}>
-          <S.ChatInput placeholder="메시지를 입력하세요..." />
-          <S.IconWrapper>
+        <S.ChatForm>
+          <S.ChatInput
+            placeholder="메시지를 입력하세요..."
+            id="message"
+            onChange={onChangeMessage}
+            value={chatInfo.message}
+          />
+          <S.SendIconButton onClick={sendToMessage} type="button">
             <Svg.SendIcon />
-          </S.IconWrapper>
+          </S.SendIconButton>
         </S.ChatForm>
       </S.ChatOperate>
     </S.ChatBox>
