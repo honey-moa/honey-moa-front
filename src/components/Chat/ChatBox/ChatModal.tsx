@@ -11,8 +11,7 @@ import { useChattingMessagePagination } from '@/apis/chat/queries';
 import useObserver from '@/hook/useObserver';
 import { changeInfo, date } from '@/utils';
 import { useEffect, useState } from 'react';
-import { io, Socket } from 'socket.io-client';
-import useLocalStorage from '@/hook/useLocalStorage';
+import { useSocket } from '@/hook/useSocket';
 
 export default function ChatRoomModal({
   setIsOpen,
@@ -55,52 +54,25 @@ export default function ChatRoomModal({
 
   const onChangeMessage = changeInfo.text({ setState: setChatInfo });
 
-  const [socket, setSocket] = useState<Socket | null>(null);
-  const { value: token } = useLocalStorage('accessToken');
-  const SOCKET_SERVER_URL = import.meta.env.VITE_SOCKET_SERVER_URL;
-
-  const connectedSocketServer = () => {
-    const _socket = io(`${SOCKET_SERVER_URL}`, {
-      autoConnect: false,
-      extraHeaders: {
-        authorization: `Bearer ${token}`,
-      },
-    });
-    _socket.connect();
-    setSocket(_socket);
-  };
+  const socket = useSocket();
 
   const onMessageReceived = (data: string) => {
     console.log(data);
   };
 
   const sendMessageToServer = () => {
-    console.log(`send message: ${chatInfo.message}`);
-    socket?.emit(
-      'send_message',
-      {
-        chatRoomId: belongToChatRoomData?.id,
-        message: chatInfo.message,
-      },
-      (res: string) => {
-        console.log(res);
-      }
-    );
+    socket?.emit('send_message', {
+      roomId: belongToChatRoomData?.id,
+      message: chatInfo.message,
+    });
     setChatInfo({ message: '' });
   };
 
   useEffect(() => {
-    socket?.emit(
-      'enter_chat_room',
-      {
-        roomId: belongToChatRoomData?.id,
-      },
-      (res: string) => {
-        console.log(res);
-      }
-    );
+    socket?.emit('enter_chat_room', { roomId: belongToChatRoomData?.id });
     socket?.on('receive_message', onMessageReceived);
     return () => {
+      socket?.off('enter_chat_room');
       socket?.off('receive_message', onMessageReceived);
     };
   }, [socket]);
@@ -115,7 +87,6 @@ export default function ChatRoomModal({
   return (
     <S.ChatBox>
       <S.ChatHeader>
-        <button onClick={connectedSocketServer}>접속</button>
         <S.ChatInfo>
           <Profile.TogetherImage members={blogInfo?.members} width="32px" />
           <span></span>

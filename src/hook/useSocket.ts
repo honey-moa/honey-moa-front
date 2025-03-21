@@ -16,8 +16,6 @@ export const useSocket = () => {
       extraHeaders: {
         authorization: `Bearer ${token}`,
       },
-      transports: ['polling', 'websocket'],
-      upgrade: false,
     });
     socket.current.connect(); // 수동 연결
 
@@ -38,7 +36,7 @@ export const useSocket = () => {
     return () => {
       socket.current?.disconnect();
     };
-  }, []);
+  }, [socket]);
 
   return socket.current;
 };
