@@ -11,7 +11,8 @@ import { useChattingMessagePagination } from '@/apis/chat/queries';
 import useObserver from '@/hook/useObserver';
 import { changeInfo, date } from '@/utils';
 import { useEffect, useState } from 'react';
-import { useSocket } from '@/hook/useSocket';
+import { io, Socket } from 'socket.io-client';
+import useLocalStorage from '@/hook/useLocalStorage';
 
 export default function ChatRoomModal({
   setIsOpen,
@@ -32,32 +33,18 @@ export default function ChatRoomModal({
       },
     });
   };
-  const socket = useSocket();
 
-  useEffect(() => {
-    if (!socket) return;
-    socket.emit('enter_chat_room', { roomId: belongToChatRoomData?.id });
-
-    //메시지 수신
-    socket.on('receive_message', data => {
-      console.log('receive_message', data);
-    });
-
-    return () => {
-      socket.off('enter_chat_room');
-      socket.off('receive_message');
-    };
-  }, [socket]);
+  const messages = useChattingMessagePagination({
+    id: isString(belongToChatRoomData?.id) ? belongToChatRoomData.id : '',
+    orderBy: JSON.stringify(['createdAt:desc']),
+  });
 
   //타입 가드
   function isString(value: unknown): value is string {
     return typeof value === 'string';
   }
 
-  const messages = useChattingMessagePagination({
-    id: isString(belongToChatRoomData?.id) ? belongToChatRoomData.id : '',
-    orderBy: JSON.stringify(['createdAt:desc']),
-  });
+  const messagesContents = messages?.data?.pages.flatMap(page => page.contents);
 
   const { obsRef } = useObserver({
     event: () => {
@@ -66,23 +53,57 @@ export default function ChatRoomModal({
     threshold: 0.1,
   });
 
-  const messagesContents = messages?.data?.pages.flatMap(page => page.contents);
-  const sendToMessage = () => {
-    if (!socket || !socket.connected || chatInfo.message === '') {
-      toast.error('메시지를 입력해주세요.');
-      return;
-    }
+  const onChangeMessage = changeInfo.text({ setState: setChatInfo });
 
-    const sendData = {
-      roomId: belongToChatRoomData?.id,
-      message: chatInfo.message,
-      blogPostUrl: '',
-    };
-    socket.emit('send_message', sendData);
+  const [socket, setSocket] = useState<Socket | null>(null);
+  const { value: token } = useLocalStorage('accessToken');
+  const SOCKET_SERVER_URL = import.meta.env.VITE_SOCKET_SERVER_URL;
+
+  const connectedSocketServer = () => {
+    const _socket = io(`${SOCKET_SERVER_URL}`, {
+      autoConnect: false,
+      extraHeaders: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    _socket.connect();
+    setSocket(_socket);
+  };
+
+  const onMessageReceived = (data: string) => {
+    console.log(data);
+  };
+
+  const sendMessageToServer = () => {
+    console.log(`send message: ${chatInfo.message}`);
+    socket?.emit(
+      'send_message',
+      {
+        chatRoomId: belongToChatRoomData?.id,
+        message: chatInfo.message,
+      },
+      (res: string) => {
+        console.log(res);
+      }
+    );
     setChatInfo({ message: '' });
   };
 
-  const onChangeMessage = changeInfo.text({ setState: setChatInfo });
+  useEffect(() => {
+    socket?.emit(
+      'enter_chat_room',
+      {
+        roomId: belongToChatRoomData?.id,
+      },
+      (res: string) => {
+        console.log(res);
+      }
+    );
+    socket?.on('receive_message', onMessageReceived);
+    return () => {
+      socket?.off('receive_message', onMessageReceived);
+    };
+  }, [socket]);
 
   if (belongToChatRoomData === undefined)
     return (
@@ -94,6 +115,7 @@ export default function ChatRoomModal({
   return (
     <S.ChatBox>
       <S.ChatHeader>
+        <button onClick={connectedSocketServer}>접속</button>
         <S.ChatInfo>
           <Profile.TogetherImage members={blogInfo?.members} width="32px" />
           <span></span>
@@ -162,7 +184,7 @@ export default function ChatRoomModal({
             onChange={onChangeMessage}
             value={chatInfo.message}
           />
-          <S.SendIconButton onClick={sendToMessage} type="button">
+          <S.SendIconButton onClick={sendMessageToServer} type="button">
             <Svg.SendIcon />
           </S.SendIconButton>
         </S.ChatForm>
