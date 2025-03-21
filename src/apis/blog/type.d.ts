@@ -104,8 +104,8 @@ export interface PaginationBaseType {
   page?: number;
   limit?: number;
   title?: string; //필터링 할 제목(검색에 사용)
-  orderBy?: OrderByArrayType;
-  cursor?: CursorArrayType;
+  orderBy?: string;
+  cursor?: string;
 }
 
 export interface PrivateBlogPaginationType extends PaginationBaseType {
