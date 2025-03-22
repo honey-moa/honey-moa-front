@@ -1,4 +1,7 @@
-import { BelongToMeChatRoomReturnType } from '@/apis/chat/type';
+import {
+  BelongToMeChatRoomReturnType,
+  ChatMessagePaginationType,
+} from '@/apis/chat/type';
 import { Socket } from 'socket.io-client';
 
 export interface ChatModalProps {
@@ -21,4 +24,9 @@ export interface ChatServerBaseResponse {
   message: string;
   roomId: string;
   blogPostUrl: string;
+}
+
+export interface ChatCurrentDataType {
+  pageParam: Array;
+  pages: ChatMessagePaginationType[];
 }

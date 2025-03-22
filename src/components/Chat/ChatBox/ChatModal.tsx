@@ -3,7 +3,12 @@ import { Link } from 'react-router-dom';
 import { Svg } from '@/components/Svg';
 import { ChatQueries } from '@/apis/chat';
 import { toast } from 'react-toastify';
-import { ChatModalProps, ChatServerBaseResponse } from './type';
+import {
+  ChatCurrentDataType,
+  ChatMessageListType,
+  ChatModalProps,
+  ChatServerBaseResponse,
+} from './type';
 import { BlogQueries } from '@/apis/blog';
 import { UserQueries } from '@/apis/user';
 import { Profile } from '@/components/Layouts';
@@ -47,8 +52,8 @@ export default function ChatRoomModal({
   const messagesContents = messages?.data?.pages.flatMap(page => page.contents);
 
   const { obsRef } = useObserver({
-    event: () => {
-      messages?.fetchNextPage();
+    event: async () => {
+      await messages?.fetchNextPage();
     },
     threshold: 0.1,
   });
@@ -62,9 +67,11 @@ export default function ChatRoomModal({
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
   const queryClient = useQueryClient();
 
-  const transformPaginatedData = oldData => {
+  const transformPaginatedData = (oldData: ChatCurrentDataType) => {
+    console.log(oldData);
     if (!oldData) return oldData;
 
     return {
@@ -78,10 +85,10 @@ export default function ChatRoomModal({
     };
   };
 
-  const onMessageReceived = (data: string) => {
+  const onMessageReceived = (data: ChatMessageListType) => {
     queryClient.setQueryData(
       ['chat-rooms', belongToChatRoomData?.id, 'messages'],
-      oldData => {
+      (oldData: ChatCurrentDataType) => {
         const transformedData = transformPaginatedData(oldData);
         if (!oldData) return oldData;
         return {
@@ -92,7 +99,7 @@ export default function ChatRoomModal({
                 ...page,
                 contents: [
                   {
-                    id: 'new',
+                    id: null,
                     createdAt: new Date().toISOString(),
                     updatedAt: new Date().toISOString(),
                     roomId: data.roomId,
@@ -128,10 +135,11 @@ export default function ChatRoomModal({
         roomId: belongToChatRoomData?.id,
         message: chatInfo.message,
       },
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       (res: Partial<ChatServerBaseResponse>) => {
         queryClient.setQueryData(
           ['chat-rooms', belongToChatRoomData?.id, 'messages'],
-          oldData => {
+          (oldData: ChatCurrentDataType) => {
             const transformedData = transformPaginatedData(oldData);
             if (!oldData) return oldData;
             return {
@@ -142,7 +150,7 @@ export default function ChatRoomModal({
                     ...page,
                     contents: [
                       {
-                        id: 'new',
+                        id: null,
                         createdAt: new Date().toISOString(),
                         updatedAt: new Date().toISOString(),
                         roomId: belongToChatRoomData?.id,
@@ -193,7 +201,7 @@ export default function ChatRoomModal({
         {messages?.isPending ? (
           <div>로딩중...</div>
         ) : (
-          <S.ObserverBox></S.ObserverBox>
+          <S.ObserverBox ref={obsRef}></S.ObserverBox>
         )}
         {messagesContents?.reverse().map(message => {
           const isOwner = message.senderId === myInfo?.id;
@@ -241,6 +249,7 @@ export default function ChatRoomModal({
             id="message"
             onChange={onChangeMessage}
             value={chatInfo.message}
+            autoComplete="off"
           />
           <S.SendIconButton type="submit">
             <Svg.SendIcon />
