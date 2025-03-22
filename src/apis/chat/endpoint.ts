@@ -18,7 +18,7 @@ export async function getBelongToChatRoom(): Promise<BelongToMeChatRoomReturnTyp
 //채팅 조회
 export async function getChatRoomPagination({
   id,
-  limit = 20,
+  limit = 5,
   ...params
 }: PaginationBaseType): Promise<ChatMessagePaginationType> {
   const response = await instanceToken.get(`/chat-rooms/${id}/messages`, {

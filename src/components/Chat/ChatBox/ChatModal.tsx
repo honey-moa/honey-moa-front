@@ -3,23 +3,25 @@ import { Link } from 'react-router-dom';
 import { Svg } from '@/components/Svg';
 import { ChatQueries } from '@/apis/chat';
 import { toast } from 'react-toastify';
-import { ChatModalProps } from './type';
+import { ChatModalProps, ChatServerBaseResponse } from './type';
 import { BlogQueries } from '@/apis/blog';
 import { UserQueries } from '@/apis/user';
 import { Profile } from '@/components/Layouts';
 import { useChattingMessagePagination } from '@/apis/chat/queries';
 import useObserver from '@/hook/useObserver';
 import { changeInfo, date } from '@/utils';
-import { useEffect, useState } from 'react';
-import { useSocket } from '@/hook/useSocket';
+import { useEffect, useRef, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function ChatRoomModal({
   setIsOpen,
   belongToChatRoomData,
+  socket,
 }: ChatModalProps) {
   const createChatRoom = ChatQueries.usePostCreateChatRoom();
   const myInfo = UserQueries.GetMyInfoQuery();
   const blogInfo = BlogQueries.GetSingleBlogQuery(myInfo?.id);
+  const messageRef = useRef<HTMLDivElement>(null);
 
   const [chatInfo, setChatInfo] = useState({
     message: '',
@@ -42,7 +44,6 @@ export default function ChatRoomModal({
   function isString(value: unknown): value is string {
     return typeof value === 'string';
   }
-
   const messagesContents = messages?.data?.pages.flatMap(page => page.contents);
 
   const { obsRef } = useObserver({
@@ -52,30 +53,116 @@ export default function ChatRoomModal({
     threshold: 0.1,
   });
 
-  const onChangeMessage = changeInfo.text({ setState: setChatInfo });
-
-  const socket = useSocket();
-
-  const onMessageReceived = (data: string) => {
-    console.log(data);
-  };
-
-  const sendMessageToServer = () => {
-    socket?.emit('send_message', {
-      roomId: belongToChatRoomData?.id,
-      message: chatInfo.message,
-    });
-    setChatInfo({ message: '' });
+  const scrollToBottom = () => {
+    if (messageRef.current) {
+      messageRef.current.scrollTop = messageRef.current.scrollHeight;
+    }
   };
 
   useEffect(() => {
-    socket?.emit('enter_chat_room', { roomId: belongToChatRoomData?.id });
+    scrollToBottom();
+  }, [messages]);
+  const queryClient = useQueryClient();
+
+  const transformPaginatedData = oldData => {
+    if (!oldData) return oldData;
+
+    return {
+      ...oldData,
+      pages: oldData.pages.map(page => ({
+        totalCount: page.totalCount,
+        limit: page.limit,
+        contents: page.contents,
+        nextCursor: page.nextCursor,
+      })),
+    };
+  };
+
+  const onMessageReceived = (data: string) => {
+    queryClient.setQueryData(
+      ['chat-rooms', belongToChatRoomData?.id, 'messages'],
+      oldData => {
+        const transformedData = transformPaginatedData(oldData);
+        if (!oldData) return oldData;
+        return {
+          ...transformedData,
+          pages: transformedData.pages.map((page, index) => {
+            if (index === 0) {
+              return {
+                ...page,
+                contents: [
+                  {
+                    id: 'new',
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString(),
+                    roomId: data.roomId,
+                    senderId: data.senderId,
+                    message: data.message,
+                    blogPostUrl: '',
+                  },
+                  ...page.contents,
+                ],
+              };
+            }
+            return page;
+          }),
+        };
+      }
+    );
+  };
+
+  const onChangeMessage = changeInfo.text({ setState: setChatInfo });
+
+  useEffect(() => {
     socket?.on('receive_message', onMessageReceived);
     return () => {
-      socket?.off('enter_chat_room');
       socket?.off('receive_message', onMessageReceived);
     };
   }, [socket]);
+
+  const sendMessageToServer: React.FormEventHandler<HTMLFormElement> = e => {
+    e.preventDefault();
+    socket?.emit(
+      'send_message',
+      {
+        roomId: belongToChatRoomData?.id,
+        message: chatInfo.message,
+      },
+      (res: Partial<ChatServerBaseResponse>) => {
+        queryClient.setQueryData(
+          ['chat-rooms', belongToChatRoomData?.id, 'messages'],
+          oldData => {
+            const transformedData = transformPaginatedData(oldData);
+            if (!oldData) return oldData;
+            return {
+              ...transformedData,
+              pages: transformedData.pages.map((page, index) => {
+                if (index === 0) {
+                  return {
+                    ...page,
+                    contents: [
+                      {
+                        id: 'new',
+                        createdAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString(),
+                        roomId: belongToChatRoomData?.id,
+                        senderId: myInfo?.id,
+                        message: chatInfo.message,
+                        blogPostUrl: '',
+                      },
+                      ...page.contents,
+                    ],
+                  };
+                }
+                return page;
+              }),
+            };
+          }
+        );
+      }
+    );
+    setChatInfo({ message: '' });
+  };
 
   if (belongToChatRoomData === undefined)
     return (
@@ -102,11 +189,11 @@ export default function ChatRoomModal({
           </S.IconWrapper>
         </S.ChatControl>
       </S.ChatHeader>
-      <S.ChatBody>
+      <S.ChatBody ref={messageRef}>
         {messages?.isPending ? (
           <div>로딩중...</div>
         ) : (
-          <S.ObserverBox ref={obsRef}></S.ObserverBox>
+          <S.ObserverBox></S.ObserverBox>
         )}
         {messagesContents?.reverse().map(message => {
           const isOwner = message.senderId === myInfo?.id;
@@ -148,14 +235,14 @@ export default function ChatRoomModal({
             <Svg.EmojiIcon />
           </S.IconWrapper>
         </S.FormAttachBox>
-        <S.ChatForm>
+        <S.ChatForm onSubmit={sendMessageToServer}>
           <S.ChatInput
             placeholder="메시지를 입력하세요..."
             id="message"
             onChange={onChangeMessage}
             value={chatInfo.message}
           />
-          <S.SendIconButton onClick={sendMessageToServer} type="button">
+          <S.SendIconButton type="submit">
             <Svg.SendIcon />
           </S.SendIconButton>
         </S.ChatForm>
