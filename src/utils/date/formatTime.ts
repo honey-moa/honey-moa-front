@@ -28,12 +28,14 @@ export default function formatTime({ time, formatType }: formatTimeParams) {
   const minute = date.getMinutes();
   const second = date.getSeconds();
 
+  const formattedHour = hour === 0 || hour === 12 ? 12 : hour % 12;
+
   const timeObj = {
     hms: `${hour}:${minute}:${second}`,
     hm: `${hour}:${minute}`,
     m: `${minute}`,
-    ampm: `${hour > 12 ? 'pm' : 'am'} ${hour % 12}:${minute}`,
-    오전오후: `${hour > 12 ? '오후' : '오전'} ${hour % 12}:${minute}`,
+    ampm: `${hour > 12 ? 'pm' : 'am'} ${formattedHour}:${minute}`,
+    오전오후: `${hour > 12 ? '오후' : '오전'} ${formattedHour}:${minute}`,
   };
 
   return timeObj[formatType || 'hms'];

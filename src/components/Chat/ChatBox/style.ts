@@ -164,5 +164,4 @@ export const ChatContentsWrapper = styled.div<{ $isOwner?: boolean }>`
 
 export const ObserverBox = styled.div`
   width: 100%;
-  margin-bottom: 24px;
 `;

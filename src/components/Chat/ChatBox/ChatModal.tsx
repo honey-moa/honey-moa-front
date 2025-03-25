@@ -3,20 +3,15 @@ import { Link } from 'react-router-dom';
 import { Svg } from '@/components/Svg';
 import { ChatQueries } from '@/apis/chat';
 import { toast } from 'react-toastify';
-import {
-  ChatCurrentDataType,
-  ChatMessageListType,
-  ChatModalProps,
-  ChatServerBaseResponse,
-} from './type';
+import { ChatModalProps } from './type';
 import { BlogQueries } from '@/apis/blog';
 import { UserQueries } from '@/apis/user';
 import { Profile } from '@/components/Layouts';
 import { useChattingMessagePagination } from '@/apis/chat/queries';
-import useObserver from '@/hook/useObserver';
 import { changeInfo, date } from '@/utils';
-import { useEffect, useRef, useState } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
+import { useMemo, useState } from 'react';
+import { useReceivedMessage, useScrollToBottom } from '../hooks';
+import useObserver from '@/hook/useObserver';
 
 export default function ChatRoomModal({
   setIsOpen,
@@ -26,7 +21,6 @@ export default function ChatRoomModal({
   const createChatRoom = ChatQueries.usePostCreateChatRoom();
   const myInfo = UserQueries.GetMyInfoQuery();
   const blogInfo = BlogQueries.GetSingleBlogQuery(myInfo?.id);
-  const messageRef = useRef<HTMLDivElement>(null);
 
   const [chatInfo, setChatInfo] = useState({
     message: '',
@@ -40,92 +34,32 @@ export default function ChatRoomModal({
     });
   };
 
+  //타입 가드
+  const isString = (value: unknown): value is string => {
+    return typeof value === 'string';
+  };
   const messages = useChattingMessagePagination({
     id: isString(belongToChatRoomData?.id) ? belongToChatRoomData.id : '',
     orderBy: JSON.stringify(['createdAt:desc']),
   });
 
-  //타입 가드
-  function isString(value: unknown): value is string {
-    return typeof value === 'string';
-  }
-  const messagesContents = messages?.data?.pages.flatMap(page => page.contents);
+  const messagesContents = useMemo(() => {
+    return messages?.data?.pages.flatMap(page => page.contents) || [];
+  }, [messages?.data?.pages]);
 
   const { obsRef } = useObserver({
-    event: async () => {
-      await messages?.fetchNextPage();
+    event: () => {
+      messages?.fetchNextPage();
     },
     threshold: 0.1,
   });
-
-  const scrollToBottom = () => {
-    if (messageRef.current) {
-      messageRef.current.scrollTop = messageRef.current.scrollHeight;
-    }
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  const queryClient = useQueryClient();
-
-  const transformPaginatedData = (oldData: ChatCurrentDataType) => {
-    console.log(oldData);
-    if (!oldData) return oldData;
-
-    return {
-      ...oldData,
-      pages: oldData.pages.map(page => ({
-        totalCount: page.totalCount,
-        limit: page.limit,
-        contents: page.contents,
-        nextCursor: page.nextCursor,
-      })),
-    };
-  };
-
-  const onMessageReceived = (data: ChatMessageListType) => {
-    queryClient.setQueryData(
-      ['chat-rooms', belongToChatRoomData?.id, 'messages'],
-      (oldData: ChatCurrentDataType) => {
-        const transformedData = transformPaginatedData(oldData);
-        if (!oldData) return oldData;
-        return {
-          ...transformedData,
-          pages: transformedData.pages.map((page, index) => {
-            if (index === 0) {
-              return {
-                ...page,
-                contents: [
-                  {
-                    id: null,
-                    createdAt: new Date().toISOString(),
-                    updatedAt: new Date().toISOString(),
-                    roomId: data.roomId,
-                    senderId: data.senderId,
-                    message: data.message,
-                    blogPostUrl: '',
-                  },
-                  ...page.contents,
-                ],
-              };
-            }
-            return page;
-          }),
-        };
-      }
-    );
-  };
+  const { onMessageReceived } = useReceivedMessage();
+  const { scrollToBottomRef } = useScrollToBottom({
+    dependencies: [onMessageReceived],
+    isLoadingPastData: messages?.isFetchingNextPage,
+  });
 
   const onChangeMessage = changeInfo.text({ setState: setChatInfo });
-
-  useEffect(() => {
-    socket?.on('receive_message', onMessageReceived);
-    return () => {
-      socket?.off('receive_message', onMessageReceived);
-    };
-  }, [socket]);
 
   const sendMessageToServer: React.FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
@@ -135,39 +69,7 @@ export default function ChatRoomModal({
         roomId: belongToChatRoomData?.id,
         message: chatInfo.message,
       },
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      (res: Partial<ChatServerBaseResponse>) => {
-        queryClient.setQueryData(
-          ['chat-rooms', belongToChatRoomData?.id, 'messages'],
-          (oldData: ChatCurrentDataType) => {
-            const transformedData = transformPaginatedData(oldData);
-            if (!oldData) return oldData;
-            return {
-              ...transformedData,
-              pages: transformedData.pages.map((page, index) => {
-                if (index === 0) {
-                  return {
-                    ...page,
-                    contents: [
-                      {
-                        id: null,
-                        createdAt: new Date().toISOString(),
-                        updatedAt: new Date().toISOString(),
-                        roomId: belongToChatRoomData?.id,
-                        senderId: myInfo?.id,
-                        message: chatInfo.message,
-                        blogPostUrl: '',
-                      },
-                      ...page.contents,
-                    ],
-                  };
-                }
-                return page;
-              }),
-            };
-          }
-        );
-      }
+      onMessageReceived
     );
     setChatInfo({ message: '' });
   };
@@ -197,12 +99,8 @@ export default function ChatRoomModal({
           </S.IconWrapper>
         </S.ChatControl>
       </S.ChatHeader>
-      <S.ChatBody ref={messageRef}>
-        {messages?.isPending ? (
-          <div>로딩중...</div>
-        ) : (
-          <S.ObserverBox ref={obsRef}></S.ObserverBox>
-        )}
+      <S.ChatBody ref={scrollToBottomRef}>
+        <S.ObserverBox ref={obsRef} />
         {messagesContents?.reverse().map(message => {
           const isOwner = message.senderId === myInfo?.id;
           return (

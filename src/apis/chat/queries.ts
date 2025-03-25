@@ -40,7 +40,7 @@ export function useGetBelongToChatRoom() {
 
 export const useChattingMessagePagination = (params: PaginationBaseType) => {
   const response = useInfiniteQuery({
-    queryKey: ['chat-rooms', params.id, 'messages'],
+    queryKey: ['chat-rooms', 'messages'],
     queryFn: ({ pageParam }: { pageParam?: string }) =>
       ChatEndPoint.getChatRoomPagination({
         cursor: pageParam ? JSON.stringify([`id:${pageParam}`]) : undefined,
