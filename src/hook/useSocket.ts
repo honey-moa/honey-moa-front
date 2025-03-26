@@ -16,8 +16,6 @@ export const useSocket = () => {
       extraHeaders: {
         authorization: `Bearer ${token}`,
       },
-      transports: ['polling', 'websocket'],
-      upgrade: false,
     });
     socket.current.connect(); // 수동 연결
 
@@ -26,19 +24,10 @@ export const useSocket = () => {
       toast.error('채팅 서버 연결에 실패했습니다.');
     });
 
-    socket.current.on('reconnect_failed', () => {
-      console.error('재연결 실패');
-      toast.error('서버 연결이 불안정합니다. 페이지를 새로고침해주세요.');
-    });
-
-    socket.current.on('reconnect_attempt', attemptNumber => {
-      console.log(`재연결 시도 ${attemptNumber}`);
-    });
-
     return () => {
       socket.current?.disconnect();
     };
-  }, []);
+  }, [socket]);
 
   return socket.current;
 };

@@ -83,7 +83,7 @@ export const FormAttachBox = styled.div`
   display: flex;
 `;
 
-export const ChatForm = styled.div`
+export const ChatForm = styled.form`
   display: flex;
   margin: 3px;
 `;
@@ -164,5 +164,4 @@ export const ChatContentsWrapper = styled.div<{ $isOwner?: boolean }>`
 
 export const ObserverBox = styled.div`
   width: 100%;
-  margin-bottom: 24px;
 `;

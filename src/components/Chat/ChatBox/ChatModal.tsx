@@ -3,24 +3,27 @@ import { Link } from 'react-router-dom';
 import { Svg } from '@/components/Svg';
 import { ChatQueries } from '@/apis/chat';
 import { toast } from 'react-toastify';
-import { ChatModalProps } from './type';
+import { ChatAckResponse, ChatModalProps } from './type';
 import { BlogQueries } from '@/apis/blog';
 import { UserQueries } from '@/apis/user';
 import { Profile } from '@/components/Layouts';
 import { useChattingMessagePagination } from '@/apis/chat/queries';
-import useObserver from '@/hook/useObserver';
 import { changeInfo, date } from '@/utils';
-import { useEffect, useState } from 'react';
-import { io, Socket } from 'socket.io-client';
-import useLocalStorage from '@/hook/useLocalStorage';
+import { useEffect, useMemo, useState } from 'react';
+import { scrollToBottom, useReceivedMessage } from '../hooks';
+import useObserver from '@/hook/useObserver';
 
 export default function ChatRoomModal({
   setIsOpen,
   belongToChatRoomData,
+  socket,
+  scrollToBottomRef,
 }: ChatModalProps) {
   const createChatRoom = ChatQueries.usePostCreateChatRoom();
   const myInfo = UserQueries.GetMyInfoQuery();
   const blogInfo = BlogQueries.GetSingleBlogQuery(myInfo?.id);
+
+  const [isAtBottom, setIsAtBottom] = useState(true); // 스크롤이 하단에 있는지 추적
 
   const [chatInfo, setChatInfo] = useState({
     message: '',
@@ -34,76 +37,88 @@ export default function ChatRoomModal({
     });
   };
 
+  //타입 가드
+  const isString = (value: unknown): value is string => {
+    return typeof value === 'string';
+  };
   const messages = useChattingMessagePagination({
     id: isString(belongToChatRoomData?.id) ? belongToChatRoomData.id : '',
     orderBy: JSON.stringify(['createdAt:desc']),
   });
 
-  //타입 가드
-  function isString(value: unknown): value is string {
-    return typeof value === 'string';
-  }
-
-  const messagesContents = messages?.data?.pages.flatMap(page => page.contents);
+  const messagesContents = useMemo(() => {
+    return messages?.data?.pages.flatMap(page => page.contents) || [];
+  }, [messages?.data?.pages]);
 
   const { obsRef } = useObserver({
-    event: () => {
-      messages?.fetchNextPage();
+    event: async () => {
+      if (!messages?.data?.pages.length) return;
+
+      const lastPage = messages.data.pages[messages.data.pages.length - 1];
+
+      if (lastPage.nextCursor !== null) {
+        const prevHeight = scrollToBottomRef.current?.scrollHeight || 0;
+
+        await messages.fetchNextPage();
+
+        setTimeout(() => {
+          if (scrollToBottomRef.current) {
+            const newHeight = scrollToBottomRef.current.scrollHeight;
+            scrollToBottomRef.current.scrollTop += newHeight - prevHeight;
+          }
+        }, 0);
+      }
     },
     threshold: 0.1,
   });
+  const { onMessageReceived } = useReceivedMessage();
 
-  const onChangeMessage = changeInfo.text({ setState: setChatInfo });
+  // 스크롤 위치 체크
+  useEffect(() => {
+    const handleScroll = () => {
+      const chatBody = scrollToBottomRef.current;
+      if (chatBody) {
+        const { scrollTop, scrollHeight, clientHeight } = chatBody;
+        setIsAtBottom(scrollTop + clientHeight >= scrollHeight - 10);
+      }
+    };
 
-  const [socket, setSocket] = useState<Socket | null>(null);
-  const { value: token } = useLocalStorage('accessToken');
-  const SOCKET_SERVER_URL = import.meta.env.VITE_SOCKET_SERVER_URL;
+    const chatBody = scrollToBottomRef.current;
+    if (chatBody) {
+      chatBody.addEventListener('scroll', handleScroll);
+    }
+    return () => {
+      if (chatBody) {
+        chatBody.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, []);
 
-  const connectedSocketServer = () => {
-    const _socket = io(`${SOCKET_SERVER_URL}`, {
-      autoConnect: false,
-      extraHeaders: {
-        authorization: `Bearer ${token}`,
-      },
-    });
-    _socket.connect();
-    setSocket(_socket);
-  };
+  // 처음 로드 시와 새 메시지 수신 시 스크롤 제어
+  useEffect(() => {
+    if (isAtBottom) {
+      scrollToBottom(scrollToBottomRef);
+    }
+  }, [messagesContents, isAtBottom]);
 
-  const onMessageReceived = (data: string) => {
-    console.log(data);
-  };
-
-  const sendMessageToServer = () => {
-    console.log(`send message: ${chatInfo.message}`);
+  const sendMessageToServer: React.FormEventHandler<HTMLFormElement> = e => {
+    e.preventDefault();
     socket?.emit(
       'send_message',
       {
-        chatRoomId: belongToChatRoomData?.id,
+        roomId: belongToChatRoomData?.id,
         message: chatInfo.message,
       },
-      (res: string) => {
-        console.log(res);
+      (res: ChatAckResponse) => {
+        setIsAtBottom(true);
+        scrollToBottom(scrollToBottomRef);
+        onMessageReceived(res.sentMessage);
       }
     );
     setChatInfo({ message: '' });
   };
 
-  useEffect(() => {
-    socket?.emit(
-      'enter_chat_room',
-      {
-        roomId: belongToChatRoomData?.id,
-      },
-      (res: string) => {
-        console.log(res);
-      }
-    );
-    socket?.on('receive_message', onMessageReceived);
-    return () => {
-      socket?.off('receive_message', onMessageReceived);
-    };
-  }, [socket]);
+  const onChangeMessage = changeInfo.text({ setState: setChatInfo });
 
   if (belongToChatRoomData === undefined)
     return (
@@ -115,7 +130,6 @@ export default function ChatRoomModal({
   return (
     <S.ChatBox>
       <S.ChatHeader>
-        <button onClick={connectedSocketServer}>접속</button>
         <S.ChatInfo>
           <Profile.TogetherImage members={blogInfo?.members} width="32px" />
           <span></span>
@@ -131,12 +145,8 @@ export default function ChatRoomModal({
           </S.IconWrapper>
         </S.ChatControl>
       </S.ChatHeader>
-      <S.ChatBody>
-        {messages?.isPending ? (
-          <div>로딩중...</div>
-        ) : (
-          <S.ObserverBox ref={obsRef}></S.ObserverBox>
-        )}
+      <S.ChatBody ref={scrollToBottomRef}>
+        <S.ObserverBox ref={obsRef} />
         {messagesContents?.reverse().map(message => {
           const isOwner = message.senderId === myInfo?.id;
           return (
@@ -177,14 +187,15 @@ export default function ChatRoomModal({
             <Svg.EmojiIcon />
           </S.IconWrapper>
         </S.FormAttachBox>
-        <S.ChatForm>
+        <S.ChatForm onSubmit={sendMessageToServer}>
           <S.ChatInput
             placeholder="메시지를 입력하세요..."
             id="message"
             onChange={onChangeMessage}
             value={chatInfo.message}
+            autoComplete="off"
           />
-          <S.SendIconButton onClick={sendMessageToServer} type="button">
+          <S.SendIconButton type="submit">
             <Svg.SendIcon />
           </S.SendIconButton>
         </S.ChatForm>
