@@ -8,6 +8,7 @@ export interface ChatModalProps {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   belongToChatRoomData: BelongToMeChatRoomReturnType | undefined;
   socket: Socket | null;
+  scrollToBottomRef: React.RefObject<HTMLDivElement>;
 }
 
 export interface ChatMessageListType {
@@ -17,7 +18,7 @@ export interface ChatMessageListType {
   roomId: string;
   senderId: string;
   message: string;
-  blogPostUrl: string;
+  blogPostUrl: string | null;
 }
 
 export interface ChatServerBaseResponse {
@@ -29,4 +30,9 @@ export interface ChatServerBaseResponse {
 export interface ChatCurrentDataType {
   pageParam: Array;
   pages: ChatMessagePaginationType[];
+}
+
+export interface ChatAckResponse {
+  statusMessage: string;
+  sentMessage: ChatMessageListType;
 }

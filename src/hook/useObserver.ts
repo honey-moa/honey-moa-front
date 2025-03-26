@@ -7,12 +7,15 @@ interface InfiniteProps {
 
 export default function useObserver({ threshold = 0.1, event }: InfiniteProps) {
   const obsRef = useRef<HTMLDivElement>(null);
+  const preventRef = useRef(true);
 
   const handleObs: IntersectionObserverCallback = useCallback(
-    entries => {
+    async entries => {
       const target = entries[0];
-      if (target.isIntersecting && event) {
-        event();
+      if (preventRef && target.isIntersecting && event) {
+        preventRef.current = false;
+        await event();
+        preventRef.current = true;
       }
     },
     [event]

@@ -3,24 +3,27 @@ import { Link } from 'react-router-dom';
 import { Svg } from '@/components/Svg';
 import { ChatQueries } from '@/apis/chat';
 import { toast } from 'react-toastify';
-import { ChatModalProps } from './type';
+import { ChatAckResponse, ChatModalProps } from './type';
 import { BlogQueries } from '@/apis/blog';
 import { UserQueries } from '@/apis/user';
 import { Profile } from '@/components/Layouts';
 import { useChattingMessagePagination } from '@/apis/chat/queries';
 import { changeInfo, date } from '@/utils';
-import { useMemo, useState } from 'react';
-import { useReceivedMessage, useScrollToBottom } from '../hooks';
+import { useEffect, useMemo, useState } from 'react';
+import { scrollToBottom, useReceivedMessage } from '../hooks';
 import useObserver from '@/hook/useObserver';
 
 export default function ChatRoomModal({
   setIsOpen,
   belongToChatRoomData,
   socket,
+  scrollToBottomRef,
 }: ChatModalProps) {
   const createChatRoom = ChatQueries.usePostCreateChatRoom();
   const myInfo = UserQueries.GetMyInfoQuery();
   const blogInfo = BlogQueries.GetSingleBlogQuery(myInfo?.id);
+
+  const [isAtBottom, setIsAtBottom] = useState(true); // 스크롤이 하단에 있는지 추적
 
   const [chatInfo, setChatInfo] = useState({
     message: '',
@@ -48,18 +51,55 @@ export default function ChatRoomModal({
   }, [messages?.data?.pages]);
 
   const { obsRef } = useObserver({
-    event: () => {
-      messages?.fetchNextPage();
+    event: async () => {
+      if (!messages?.data?.pages.length) return;
+
+      const lastPage = messages.data.pages[messages.data.pages.length - 1];
+
+      if (lastPage.nextCursor !== null) {
+        const prevHeight = scrollToBottomRef.current?.scrollHeight || 0;
+
+        await messages.fetchNextPage();
+
+        setTimeout(() => {
+          if (scrollToBottomRef.current) {
+            const newHeight = scrollToBottomRef.current.scrollHeight;
+            scrollToBottomRef.current.scrollTop += newHeight - prevHeight;
+          }
+        }, 0);
+      }
     },
     threshold: 0.1,
   });
   const { onMessageReceived } = useReceivedMessage();
-  const { scrollToBottomRef } = useScrollToBottom({
-    dependencies: [onMessageReceived],
-    isLoadingPastData: messages?.isFetchingNextPage,
-  });
 
-  const onChangeMessage = changeInfo.text({ setState: setChatInfo });
+  // 스크롤 위치 체크
+  useEffect(() => {
+    const handleScroll = () => {
+      const chatBody = scrollToBottomRef.current;
+      if (chatBody) {
+        const { scrollTop, scrollHeight, clientHeight } = chatBody;
+        setIsAtBottom(scrollTop + clientHeight >= scrollHeight - 10);
+      }
+    };
+
+    const chatBody = scrollToBottomRef.current;
+    if (chatBody) {
+      chatBody.addEventListener('scroll', handleScroll);
+    }
+    return () => {
+      if (chatBody) {
+        chatBody.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, []);
+
+  // 처음 로드 시와 새 메시지 수신 시 스크롤 제어
+  useEffect(() => {
+    if (isAtBottom) {
+      scrollToBottom(scrollToBottomRef);
+    }
+  }, [messagesContents, isAtBottom]);
 
   const sendMessageToServer: React.FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
@@ -69,10 +109,16 @@ export default function ChatRoomModal({
         roomId: belongToChatRoomData?.id,
         message: chatInfo.message,
       },
-      onMessageReceived
+      (res: ChatAckResponse) => {
+        setIsAtBottom(true);
+        scrollToBottom(scrollToBottomRef);
+        onMessageReceived(res.sentMessage);
+      }
     );
     setChatInfo({ message: '' });
   };
+
+  const onChangeMessage = changeInfo.text({ setState: setChatInfo });
 
   if (belongToChatRoomData === undefined)
     return (
