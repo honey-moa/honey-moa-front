@@ -2,7 +2,7 @@
 
 벌이 꿀을 모으듯, 커플이 꿀과 같은 이야기를 모을 수 있는 커플들의 프라이빗한 블로그
 
-![Image](https://github.com/user-attachments/assets/76c4a2ed-dbdd-42c6-bcdb-459714fe3550)
+![Image](https://private-user-images.githubusercontent.com/117448747/427868218-2ba49dbe-87c3-406f-a6b4-8918ed47881c.jpg?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDMxNDI1ODEsIm5iZiI6MTc0MzE0MjI4MSwicGF0aCI6Ii8xMTc0NDg3NDcvNDI3ODY4MjE4LTJiYTQ5ZGJlLTg3YzMtNDA2Zi1hNmI0LTg5MThlZDQ3ODgxYy5qcGc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwMzI4JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDMyOFQwNjExMjFaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT01YzA5N2UyNGZkZjcwOGQzOTEyMGE5YzI3ZTcwMmIxZjUyNmRmNzY2NDIwNzM0MWNjMjIxZmY5MDMwOGNmZjJjJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.r4s8xzgWqyO40OXcdtiiCeVuodqQbJdtv88uioAvEpU)
 
 ## 프로젝트 정보
 
@@ -29,8 +29,8 @@
 
   <table>
     <tr>
-      <td align="center"><a href="https://github.com/hobiJeong"><img src="https://github.com/hobiJeong.png" width="100px;" height="100px"; alt=""/><br /><sub><b>박현우</b></sub></a><br />
-      <td align="center"><a href="https://github.com/NicoDora"><img src="https://github.com/NicoDora.png" width="100px;" height="100px;" alt=""/><br /><sub><b>이재진</b></sub></a>
+      <td align="center"><a href="https://github.com/hobiJeong"><img src="https://github.com/hobiJeong.png" width="100px;" height="100px"; alt=""/><br /><sub><b>정비호</b></sub></a><br />
+      <td align="center"><a href="https://github.com/NicoDora"><img src="https://github.com/NicoDora.png" width="100px;" height="100px;" alt=""/><br /><sub><b>박준혁</b></sub></a>
     </tr>
   </table>
 
@@ -69,31 +69,18 @@
 
 ## 프로젝트 아키텍처
 
-![Image](https://github.com/user-attachments/assets/2afaf005-63a5-4a05-8248-6d23a317d800)
+[링크](/docs/prodoct_client_architecture.md)
 
 ## 사이트 소개
 
-| 메인                                                                                                                | 로그인(소셜)                                                                                                        | 멘토 찾기                                                                                                           | 멘토 프로필                                                                                                         |
-| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| ![image](https://github.com/modern-agile-team/Menbosha-front/assets/137866369/1945c93a-c736-40d2-ab18-8b0db4ce1faf) | ![image](https://github.com/modern-agile-team/Menbosha-front/assets/137866369/286ec2cd-359a-4ea2-824b-c8359dc5c4ad) | ![image](https://github.com/modern-agile-team/Menbosha-front/assets/137866369/781decbb-532d-4882-9ac6-9126d43ffbd8) | ![image](https://github.com/modern-agile-team/Menbosha-front/assets/137866369/f98ad6a0-283e-476b-9db8-2996df6f5038) |
-| 멘보샤 홈페이지                                                                                                     | 소셜 로그인 모달                                                                                                    | 멘토들의 목록 페이지                                                                                                | 멘토의 프로필을 열람하는 페이지                                                                                     |
+⭐ 연인과 프라이빗한 블로그를 작성해 벌들이 꿀통에 꿀을 모으듯 이야기를 모을 수 있는 사이트 입니다.
 
-| 멘토 게시판                                                                                                         | 멘토 게시글                                                                                                         | 도와주세요 게시판                                                                                                   | 도와주세요 게시글                                                                                                   |
-| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| ![image](https://github.com/modern-agile-team/Menbosha-front/assets/137866369/b9838a44-04b0-4f89-8f32-ae4f02e62d38) | ![image](https://github.com/modern-agile-team/Menbosha-front/assets/137866369/42ec1398-923d-461c-86b3-9966d21c8729) | ![image](https://github.com/modern-agile-team/Menbosha-front/assets/137866369/f00ece8e-70d6-474c-951f-66db18968321) | ![image](https://github.com/modern-agile-team/Menbosha-front/assets/137866369/f464f60b-1e1d-4fa9-b2ec-cc51baa04a73) |
-| 멘토들의 정보 공유 페이지                                                                                           | 멘토들이 쓴 게시글                                                                                                  | 멘티들의 도와주세요 게시글 리스트                                                                                   | 도움이 필요한 사람의 게시글                                                                                         |
+⭐ notion과 같은 글쓰기 환경을 제공합니다.
 
-| 게시글 작성                                                                                                         | 신고하기                                                                                                            | 리뷰하기                                                                                                            | 채팅페이지                                                                                                          |
-| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| ![image](https://github.com/modern-agile-team/Menbosha-front/assets/137866369/76813dc0-795f-41c3-9594-bef88ce0b9d0) | ![image](https://github.com/modern-agile-team/Menbosha-front/assets/137866369/ee0036e1-ad07-4861-afad-a93088c8670b) | ![image](https://github.com/modern-agile-team/Menbosha-front/assets/137866369/ad7c9a48-cffb-4338-b523-13c33587b91f) | ![image](https://github.com/modern-agile-team/Menbosha-front/assets/137866369/eacae52d-368e-4a95-a1c7-e03352d6c047) |
-| 멘토 게시글과 도와주세요 게시글을 작성 가능                                                                         | 유저 신고를 위한 모달                                                                                               | 채팅 후 후기 작성 모달,                                                                                             | 1:1 채팅 페이지                                                                                                     |
+⭐ 채팅 기능을 통해서 연인과, 여러 이야기를 나눌 수 있습니다.
 
-| 나의 프로필                                                                                                         | 나의 랭크                                                                                                           | 나의 후기                                                                                                           | 나의 기록                                                                                                           |
-| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| ![image](https://github.com/modern-agile-team/Menbosha-front/assets/137866369/00d9768e-2303-4299-8049-ad6762b59b12) | ![image](https://github.com/modern-agile-team/Menbosha-front/assets/137866369/a73cfe6f-ea25-45d4-a207-e3bbdf153420) | ![image](https://github.com/modern-agile-team/Menbosha-front/assets/137866369/7c6351be-1e85-42cd-80da-93c5dab5c443) | ![image](https://github.com/modern-agile-team/Menbosha-front/assets/137866369/418d69e5-a3bb-4838-b0f9-809fcd6de167) |
-| 본인 프로필 확인과 편집 페이지                                                                                      | 본인의 랭크와 뱃지 확인 페이지                                                                                      | 본인이 받은 후기 확인 페이지                                                                                        | 본인이 쓴 게시글 확인 페이지                                                                                        |
+[링크](/docs/about_site.md)
 
-| 마이 페이지                                                                                                         | 고객지원                                                                                                            | 자주하는 질문                                                                                                       | 회원탈퇴                                                                                                            |
-| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| ![image](https://github.com/modern-agile-team/Menbosha-front/assets/137866369/4f864cf8-3181-4830-ad14-35de279d3a55) | ![image](https://github.com/modern-agile-team/Menbosha-front/assets/137866369/ff2ef5af-9f5d-4c30-91fa-af7b6484f39b) | ![image](https://github.com/modern-agile-team/Menbosha-front/assets/137866369/6fff00aa-b8cb-4ef4-ac7a-f1f451d0f08b) | ![image](https://github.com/modern-agile-team/Menbosha-front/assets/137866369/9d75e08c-ecea-4a6b-9077-a0e01f17a25b) |
-| 마이페이지를 한 눈에 보는 페이지                                                                                    | 웹사이트 고객지원 페이지                                                                                            | 웹 사이트의 궁금한 점을 보는 페이지                                                                                 | 회원탈퇴 페이지                                                                                                     |
+## 협업 방식
+
+[링크](/docs/collaborate.md)
