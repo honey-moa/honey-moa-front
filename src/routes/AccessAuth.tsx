@@ -3,8 +3,9 @@ import { AuthFunnelStep } from '@/components/Auth/type';
 import useFunnel from '@/hook/useFunnel';
 import { AccessAuthProps } from './type';
 import useLocalStorage from '@/hook/useLocalStorage';
+import { Outlet } from 'react-router-dom';
 
-export default function AccessAuth({ children, isPrivate }: AccessAuthProps) {
+export default function AccessAuth({ isPrivate }: AccessAuthProps) {
   const { Funnel, setStep } = useFunnel<AuthFunnelStep>('로그인');
   const { value: token } = useLocalStorage('accessToken');
 
@@ -18,7 +19,7 @@ export default function AccessAuth({ children, isPrivate }: AccessAuthProps) {
           outSideClick={false}
         />
       )}
-      {children}
+      <Outlet />
     </>
   );
 }

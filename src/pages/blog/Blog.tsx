@@ -1,19 +1,15 @@
 import * as S from './style';
 import { Navigate } from 'react-router-dom';
-import { Header, Profile, SideNavigate } from '../Layouts';
 import { UserQueries } from '@/apis/user';
 import { BlogQueries } from '@/apis/blog';
-import PrivateBlogList from './BlogList/PrivateBlogList';
+import PrivateBlogList from '@/components/Blog/BlogList/PrivateBlogList';
 import useScrollPosition from '@/hook/useScrollPosition';
-import PublicBlogList from './BlogList/PublicBlogList';
 import { GetMyInfoReturn } from '@/apis/user/type';
 import { BlogSingleInfoReturn } from '@/apis/blog/type';
+import { Header, Profile, SideNavigate } from '@/components/Layouts';
+import { Suspense } from 'react';
 
-interface BlogProps {
-  type: 'public' | 'private';
-}
-
-export default function Blog({ type }: BlogProps) {
+export default function Blog() {
   const myInfo = UserQueries.GetMyInfoQuery();
   const getBlogInfo = BlogQueries.GetSingleBlogQuery(myInfo?.id);
 
@@ -36,20 +32,18 @@ export default function Blog({ type }: BlogProps) {
         blogId={getBlogInfo.id}
         visible={visible}
       />
-      <div style={{ height: '100px' }}></div>
+      <S.Divider />
 
       <S.ContentsWrapper>
         <SideNavigate.AbleBlogSideNav blogId={getBlogInfo.id} />
         <S.BlogWrapper>
-          {type === 'private' && (
-            <>
-              {
-                <Profile.CoupleProfile
-                  myId={
-                    isTypeGuardId<GetMyInfoReturn>(myInfo!) ? myInfo.id : ''
-                  }
-                />
-              }
+          <>
+            <Suspense fallback={<div>Loading...</div>}>
+              <Profile.CoupleProfile
+                myId={isTypeGuardId<GetMyInfoReturn>(myInfo!) ? myInfo.id : ''}
+              />
+            </Suspense>
+            <Suspense fallback={<div>Loading...</div>}>
               <PrivateBlogList
                 id={
                   isTypeGuardId<BlogSingleInfoReturn>(getBlogInfo)
@@ -57,9 +51,8 @@ export default function Blog({ type }: BlogProps) {
                     : ''
                 }
               />
-            </>
-          )}
-          {type === 'public' && <PublicBlogList />}
+            </Suspense>
+          </>
         </S.BlogWrapper>
       </S.ContentsWrapper>
     </>

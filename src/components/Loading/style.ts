@@ -14,7 +14,7 @@ const rotation = keyframes`
 export const SpinnerDiv = styled.div`
   height: 30px;
   width: 30px;
-  border: 1px solid ${({ theme }) => theme.bg.primary};
+  border: 1px solid ${({ theme }) => theme.button.primary.base};
   border-radius: 50%;
   border-top: none;
   border-right: none;

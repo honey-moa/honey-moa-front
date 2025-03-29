@@ -7,7 +7,6 @@ import CreateBlogModal from './CreateBlogModal';
 import { UserQueries } from '@/apis/user';
 import { BlogQueries } from '@/apis/blog';
 import { ConnectionQueries } from '@/apis/connection';
-import useLocalStorage from '@/hook/useLocalStorage';
 import { useEffect, useState } from 'react';
 
 export default function Main() {
@@ -16,7 +15,6 @@ export default function Main() {
     status: 'ACCEPTED',
     type: 'requested',
   });
-  const { value: token } = useLocalStorage('accessToken');
   const getMyInfo = UserQueries.GetMyInfoQuery();
   const getBlogInfo = BlogQueries.GetSingleBlogQuery(getMyInfo?.id);
 
@@ -28,10 +26,6 @@ export default function Main() {
 
   if (getBlogInfo) {
     return <Navigate to={`/blog/${getBlogInfo.id}`} />;
-  }
-
-  if (!token || token === '' || token === 'undefined') {
-    return <Navigate to="/root" />;
   }
 
   return (
