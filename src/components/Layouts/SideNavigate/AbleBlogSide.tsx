@@ -18,7 +18,7 @@ export default function AbleBlogSideNav({ blogId }: AbleBLogSideNavProps) {
         </li> */}
         <li>
           <PopUp.Tooltip message="포스트 작성" direction="right">
-            <CustomLink to={`/blog/${blogId}/post/create`}>
+            <CustomLink to={blogId ? `/blog/${blogId}/post/create` : '#'}>
               <S.ItemButton>
                 <Svg.WriteIcon size={36} color={theme.text.primary} />
               </S.ItemButton>

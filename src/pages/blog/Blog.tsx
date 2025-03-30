@@ -8,6 +8,7 @@ import { GetMyInfoReturn } from '@/apis/user/type';
 import { BlogSingleInfoReturn } from '@/apis/blog/type';
 import { Header, Profile, SideNavigate } from '@/components/Layouts';
 import { Suspense } from 'react';
+import { Loading } from '@/components';
 
 export default function Blog() {
   const myInfo = UserQueries.GetMyInfoQuery();
@@ -15,44 +16,33 @@ export default function Blog() {
 
   const { visible } = useScrollPosition();
 
-  const isTypeGuardId = <T extends object>(
-    obj: T
-  ): obj is T & { id: string } => {
+  const isId = <T extends object>(obj: T): obj is T & { id: string } => {
     return 'id' in obj && typeof obj.id === 'string';
   };
-
-  if (!getBlogInfo) {
-    return <Navigate to="/blog" />;
-  }
 
   return (
     <>
       <Header.BlogHeader
         blogName={getBlogInfo?.name}
-        blogId={getBlogInfo.id}
+        blogId={getBlogInfo?.id}
         visible={visible}
       />
       <S.Divider />
-
       <S.ContentsWrapper>
-        <SideNavigate.AbleBlogSideNav blogId={getBlogInfo.id} />
+        <SideNavigate.AbleBlogSideNav
+          blogId={getBlogInfo ? getBlogInfo.id : ''}
+        />
         <S.BlogWrapper>
-          <>
-            <Suspense fallback={<div>Loading...</div>}>
-              <Profile.CoupleProfile
-                myId={isTypeGuardId<GetMyInfoReturn>(myInfo!) ? myInfo.id : ''}
-              />
-            </Suspense>
-            <Suspense fallback={<div>Loading...</div>}>
-              <PrivateBlogList
-                id={
-                  isTypeGuardId<BlogSingleInfoReturn>(getBlogInfo)
-                    ? getBlogInfo.id
-                    : ''
-                }
-              />
-            </Suspense>
-          </>
+          <Suspense
+            fallback={<Loading.SkeletonUI width="100px" height="300px" />}
+          >
+            <Profile.CoupleProfile
+              myId={isId<GetMyInfoReturn>(myInfo!) ? myInfo.id : ''}
+            />
+          </Suspense>
+          <PrivateBlogList
+            id={isId<BlogSingleInfoReturn>(getBlogInfo!) ? getBlogInfo.id : ''}
+          />
         </S.BlogWrapper>
       </S.ContentsWrapper>
     </>
