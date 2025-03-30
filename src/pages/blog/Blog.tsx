@@ -20,6 +20,10 @@ export default function Blog() {
     return 'id' in obj && typeof obj.id === 'string';
   };
 
+  if (!getBlogInfo) {
+    return <Navigate to="/blog" />;
+  }
+
   return (
     <>
       <Header.BlogHeader
@@ -41,7 +45,7 @@ export default function Blog() {
             />
           </Suspense>
           <PrivateBlogList
-            id={isId<BlogSingleInfoReturn>(getBlogInfo!) ? getBlogInfo.id : ''}
+            id={isId<BlogSingleInfoReturn>(getBlogInfo) ? getBlogInfo.id : ''}
           />
         </S.BlogWrapper>
       </S.ContentsWrapper>
