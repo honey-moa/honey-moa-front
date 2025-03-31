@@ -1,52 +1,29 @@
 import * as S from './style';
-import { Navigate } from 'react-router-dom';
-import { UserQueries } from '@/apis/user';
-import { BlogQueries } from '@/apis/blog';
-import PrivateBlogList from '@/components/Blog/BlogList/PrivateBlogList';
 import useScrollPosition from '@/hook/useScrollPosition';
-import { GetMyInfoReturn } from '@/apis/user/type';
-import { BlogSingleInfoReturn } from '@/apis/blog/type';
-import { Header, Profile, SideNavigate } from '@/components/Layouts';
+import { Header, SideNavigate } from '@/components/Layouts';
 import { Suspense } from 'react';
 import { Loading } from '@/components';
+import PrivateBlogContents from '@/components/Blog/BlogList/PrivateBlogContents';
+import CoupleProfile from '@/components/Blog/Profile/CoupleProfile';
 
 export default function Blog() {
-  const myInfo = UserQueries.GetMyInfoQuery();
-  const getBlogInfo = BlogQueries.GetSingleBlogQuery(myInfo?.id);
-
   const { visible } = useScrollPosition();
-
-  const isId = <T extends object>(obj: T): obj is T & { id: string } => {
-    return 'id' in obj && typeof obj.id === 'string';
-  };
-
-  if (!getBlogInfo) {
-    return <Navigate to="/blog" />;
-  }
 
   return (
     <>
-      <Header.BlogHeader
-        blogName={getBlogInfo?.name}
-        blogId={getBlogInfo?.id}
-        visible={visible}
-      />
+      <Suspense fallback={<Loading.SkeletonUI width="100px" height="20px" />}>
+        <Header.BlogHeader visible={visible} />
+      </Suspense>
       <S.Divider />
       <S.ContentsWrapper>
-        <SideNavigate.AbleBlogSideNav
-          blogId={getBlogInfo ? getBlogInfo.id : ''}
-        />
+        <SideNavigate.AbleBlogSideNav />
         <S.BlogWrapper>
           <Suspense
-            fallback={<Loading.SkeletonUI width="100px" height="300px" />}
+            fallback={<Loading.SkeletonUI width="100px" height="400px" />}
           >
-            <Profile.CoupleProfile
-              myId={isId<GetMyInfoReturn>(myInfo!) ? myInfo.id : ''}
-            />
+            <CoupleProfile />
           </Suspense>
-          <PrivateBlogList
-            id={isId<BlogSingleInfoReturn>(getBlogInfo) ? getBlogInfo.id : ''}
-          />
+          <PrivateBlogContents />
         </S.BlogWrapper>
       </S.ContentsWrapper>
     </>

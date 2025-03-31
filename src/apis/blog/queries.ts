@@ -1,8 +1,5 @@
 import {
-  keepPreviousData,
-  useInfiniteQuery,
   useMutation,
-  useQuery,
   useQueryClient,
   useSuspenseInfiniteQuery,
   useSuspenseQuery,
@@ -138,7 +135,7 @@ export const DeleteBlogPostMutate = () => {
 //블로그 꿀(unit) 조회 query
 export const GetBlogHoneyQuery = ({ id }: Pick<BlogHoneyType, 'id'>) => {
   const navigate = useNavigate();
-  const { data, isError, error } = useQuery({
+  const { data, isError, error } = useSuspenseQuery({
     queryKey: ['blog-honey', id],
     queryFn: () => BlogEndpoint.getBlogHoney({ id }),
     retry: false,
@@ -190,7 +187,7 @@ export const GetPrivateBlogPaginationQuery = (
 export const GetPublicBlogPaginationQuery = (
   params: Omit<PaginationBaseType, 'id'>
 ) => {
-  const response = useInfiniteQuery({
+  const response = useSuspenseInfiniteQuery({
     queryKey: ['public-blog-pagination', params.title],
     queryFn: ({ pageParam = 1 }) =>
       BlogEndpoint.getPublicBlogListPagination({
@@ -205,7 +202,6 @@ export const GetPublicBlogPaginationQuery = (
     },
     retry: false,
     refetchOnWindowFocus: false,
-    placeholderData: keepPreviousData,
   });
   if (response.isError) {
     toast.error(PaginationErrorHandler(response.error as AxiosError));

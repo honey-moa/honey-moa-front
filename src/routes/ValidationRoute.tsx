@@ -9,7 +9,7 @@ const PublicBlog = lazy(() => import('@/pages/blog/PublicBlog'));
 const ChangePassword = lazy(() => import('@/components/Auth/ChangePassword'));
 const CreatePost = lazy(() => import('@/components/Blog/Post/Post'));
 const EditPost = lazy(() => import('@/components/Blog/Post/EditBlogPost'));
-const BlogPost = lazy(() => import('@/components/Blog/Honey/Honey'));
+const BlogPost = lazy(() => import('@/pages/blog/Post'));
 const Setting = lazy(() => import('@/components/Setting/Setting'));
 const Support = lazy(() => import('@/components/Setting/Support'));
 const Chat = lazy(() => import('@/components/Chat/ChatPage'));

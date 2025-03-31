@@ -1,27 +1,11 @@
 import styled, { keyframes } from 'styled-components';
 
 export const HoneyWrapper = styled.div`
-  margin: 20px 20%;
-  width: 100%;
-`;
-
-export const HoneyContentsDivLeftAndRight = styled.div`
-  display: flex;
-  //왼쪽
-  & > :nth-child(1) {
-    position: fixed;
-  }
-  //가운대
-  & > :nth-child(2) {
-    flex: 3;
-  }
-  //오른쪽
-  & > :nth-child(3) {
-    flex: 2;
-  }
+  margin: 20px 20% 20px 20%;
 `;
 
 export const LeftSideFloatingNavWrapper = styled.div`
+  position: fixed;
   left: 10%;
   top: 25%;
   & > button {

@@ -9,8 +9,14 @@ import { BlogCommentsQueries } from '@/apis/blogComments';
 import { toast } from 'react-toastify';
 import { UserQueries } from '@/apis/user';
 import Comment from './Comment';
+import { useLocation } from 'react-router-dom';
+import { BlogQueries } from '@/apis/blog';
 
-export default function BlogComments({ id }: { id: string | undefined }) {
+export default function BlogComments() {
+  const { pathname } = useLocation();
+  const honeyId = pathname.split('/')[pathname.split('/').length - 1];
+  const honeyData = BlogQueries.GetBlogHoneyQuery({ id: honeyId });
+
   const theme = useTheme();
   const [commentInfo, setCommentInfo] = useState<BlogCommentType>({
     content: '',
@@ -20,7 +26,7 @@ export default function BlogComments({ id }: { id: string | undefined }) {
   const myInfo = UserQueries.GetMyInfoQuery();
 
   const commentList = BlogCommentsQueries.useBlogPostCommentsPaginationQuery({
-    id: id,
+    id: honeyData?.id,
   });
 
   const newCommentMutate = BlogCommentsQueries.useNewBlogPostCommentMutation();
@@ -33,7 +39,7 @@ export default function BlogComments({ id }: { id: string | undefined }) {
     e.preventDefault();
     newCommentMutate.mutate(
       {
-        id: id,
+        id: honeyData?.id,
         content: commentInfo.content,
       },
       {

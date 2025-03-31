@@ -5,15 +5,21 @@ import { BlogHeaderProps } from './type';
 import Image from '@/components/Image';
 import CustomLink from '@/components/common/CustomLink';
 import { Loading } from '@/components';
+import { BlogQueries } from '@/apis/blog';
+import { UserQueries } from '@/apis/user';
 
-export default function Blog({ blogName, blogId, visible }: BlogHeaderProps) {
+export default function Blog({ visible }: BlogHeaderProps) {
+  const myInfo = UserQueries.GetMyInfoQuery();
+  const getBlogInfo = BlogQueries.GetSingleBlogQuery(myInfo?.id);
   const theme = useTheme();
-  const isLoading = !blogName || !blogId;
 
   return (
     <S.BlogHeaderWrapper $visible={visible}>
       <S.TitleContainer>
-        <CustomLink to={blogId ? `/blog/${blogId}` : '#'} scrollTop={true}>
+        <CustomLink
+          to={getBlogInfo ? `/blog/${getBlogInfo.id}` : '#'}
+          scrollTop={true}
+        >
           <Image
             src={'/images/siteLogo.jpg'}
             width="65px"
@@ -21,10 +27,10 @@ export default function Blog({ blogName, blogId, visible }: BlogHeaderProps) {
             borderRadius="50%"
           />
         </CustomLink>
-        {isLoading ? (
+        {!getBlogInfo ? (
           <Loading.SkeletonUI width="150px" height="24px" />
         ) : (
-          <h1>{blogName}</h1>
+          <h1>{getBlogInfo.name}</h1>
         )}
       </S.TitleContainer>
 

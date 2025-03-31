@@ -1,11 +1,12 @@
 import Image from '@/components/Image';
 import * as S from './style';
-import { CoupleProfileProps } from './type';
 import { BlogQueries } from '@/apis/blog';
-import TogetherImage from './TogetherImage';
+import { UserQueries } from '@/apis/user';
+import { Profile } from '@/components/Layouts';
 
-export default function CoupleProfile({ myId }: CoupleProfileProps) {
-  const getBlogInfo = BlogQueries.GetSingleBlogQuery(myId!);
+export default function CoupleProfile() {
+  const myInfo = UserQueries.GetMyInfoQuery();
+  const getBlogInfo = BlogQueries.GetSingleBlogQuery(myInfo?.id);
 
   return (
     <>
@@ -20,7 +21,7 @@ export default function CoupleProfile({ myId }: CoupleProfileProps) {
           />
         )}
         <S.CoupleInfoWrapper>
-          <TogetherImage members={getBlogInfo?.members} />
+          <Profile.TogetherImage members={getBlogInfo?.members} />
           <S.CoupleShortIntroduction>
             <h2>{getBlogInfo?.name}</h2>
             <p>{getBlogInfo?.description}</p>

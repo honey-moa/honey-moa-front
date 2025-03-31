@@ -16,7 +16,7 @@ export default function SkeletonTable({
 }: SkeletonTableProps) {
   return (
     <S.SkeletonTableWrapper $columns={columns} $rows={rows}>
-      {Array.from({ length: columns }, (_, index) => (
+      {Array.from({ length: columns * rows }, (_, index) => (
         <div key={index} className="flex items-center gap-4">
           <SkeletonUI width={width || '100%'} height={height || '30px'} />
         </div>

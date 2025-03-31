@@ -5,6 +5,7 @@ import { BlogListEachHoneyCard } from './BlogListEachHoneyCard';
 import useObserver from '@/hook/useObserver';
 import useScrollPosition from '@/hook/useScrollPosition';
 import CustomLink from '@/components/common/CustomLink';
+import { Loading } from '@/components';
 
 export default function PublicBlogList() {
   const myInfo = UserQueries.GetMyInfoQuery();
@@ -26,36 +27,9 @@ export default function PublicBlogList() {
       <S.PublicBlogPostTitle>공개글</S.PublicBlogPostTitle>
       {getPublicBlogList?.data?.pages[0].contents.length !== 0 ? (
         <S.BlogListPaginationWrapper>
-          {getPublicBlogList?.isPlaceholderData && (
-            <>
-              <S.HoneyCardSkeletonWrapper></S.HoneyCardSkeletonWrapper>
-              <S.HoneyCardSkeletonWrapper></S.HoneyCardSkeletonWrapper>
-              <S.HoneyCardSkeletonWrapper></S.HoneyCardSkeletonWrapper>
-              <S.HoneyCardSkeletonWrapper></S.HoneyCardSkeletonWrapper>
-              <S.HoneyCardSkeletonWrapper></S.HoneyCardSkeletonWrapper>
-              <S.HoneyCardSkeletonWrapper></S.HoneyCardSkeletonWrapper>
-            </>
-          )}
-          {getPublicBlogList?.isRefetching && (
-            <>
-              <S.HoneyCardSkeletonWrapper></S.HoneyCardSkeletonWrapper>
-              <S.HoneyCardSkeletonWrapper></S.HoneyCardSkeletonWrapper>
-              <S.HoneyCardSkeletonWrapper></S.HoneyCardSkeletonWrapper>
-            </>
-          )}
-          {!getPublicBlogList?.isPlaceholderData &&
-            !getPublicBlogList?.isRefetching &&
-            getPublicBlogList?.isSuccess &&
-            flattenedContents.map(blog => {
-              return <BlogListEachHoneyCard {...blog} key={blog.id} />;
-            })}
-          {getPublicBlogList?.isFetching && (
-            <>
-              <S.HoneyCardSkeletonWrapper></S.HoneyCardSkeletonWrapper>
-              <S.HoneyCardSkeletonWrapper></S.HoneyCardSkeletonWrapper>
-              <S.HoneyCardSkeletonWrapper></S.HoneyCardSkeletonWrapper>
-            </>
-          )}
+          {flattenedContents.map(blog => {
+            return <BlogListEachHoneyCard {...blog} key={blog.id} />;
+          })}
         </S.BlogListPaginationWrapper>
       ) : (
         <S.NoBlogPleaseAddToBlogWrapper>
@@ -64,6 +38,9 @@ export default function PublicBlogList() {
             <span>👉달콤한 이야기 추가하기👈</span>
           </CustomLink>
         </S.NoBlogPleaseAddToBlogWrapper>
+      )}
+      {getPublicBlogList?.isFetchingNextPage && (
+        <Loading.SkeletonTable width="100%" height="300px" rows={2} />
       )}
       <S.ListObserver ref={obsRef}></S.ListObserver>
     </>

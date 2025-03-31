@@ -112,12 +112,6 @@ export const BlogSelectMonthButton = styled.button<{
   }
 `;
 
-export const BlogSelectMonthSpan = styled.span`
-  color: ${({ theme }) => theme.text.primary};
-  font-size: 1.2rem;
-  font-weight: bold;
-`;
-
 export const BlogListPaginationWrapper = styled.div`
   display: grid;
   gap: 24px;

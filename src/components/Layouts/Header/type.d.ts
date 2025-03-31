@@ -3,7 +3,5 @@ export interface SettingHeaderProps {
 }
 
 export interface BlogHeaderProps {
-  blogName?: string;
-  blogId?: string;
   visible?: boolean;
 }
