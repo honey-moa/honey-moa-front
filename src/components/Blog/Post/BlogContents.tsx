@@ -5,11 +5,11 @@ import { useTheme } from 'styled-components';
 import { BlogQueries } from '@/apis/blog';
 import { Profile } from '@/components/Layouts';
 import { useEffect, useMemo, useState } from 'react';
-import { darkTheme, lightTheme } from '../Post/Editor';
 import useLocalStorage from '@/hook/useLocalStorage';
 import { BlockNoteEditor, PartialBlock } from '@blocknote/core';
 import { useLocation } from 'react-router-dom';
 import { Loading } from '@/components';
+import { darkTheme, lightTheme } from '../create/Editor';
 
 export default function BlogContents() {
   const { pathname } = useLocation();

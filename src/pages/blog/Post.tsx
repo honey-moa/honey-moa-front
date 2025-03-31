@@ -1,6 +1,6 @@
-import BlogContents from '@/components/Blog/Honey/BlogContents';
-import BlogComments from '@/components/Blog/Honey/Comments/BlogComments';
-import LeftSideNav from '@/components/Blog/Honey/LeftSideNav';
+import BlogContents from '@/components/Blog/Post/BlogContents';
+import BlogComments from '@/components/Blog/Post/Comments/BlogComments';
+import LeftSideNav from '@/components/Blog/Post/LeftSideNav';
 import { Suspense } from 'react';
 
 export default function Post() {

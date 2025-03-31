@@ -1,4 +1,4 @@
-import { Header, Profile, SideNavigate } from '../Layouts';
+import { Header, SideNavigate } from '../Layouts';
 import * as S from './style';
 import { Contents } from '.';
 import { Navigate } from 'react-router-dom';
@@ -8,6 +8,7 @@ import { UserQueries } from '@/apis/user';
 import { BlogQueries } from '@/apis/blog';
 import { ConnectionQueries } from '@/apis/connection';
 import { useEffect, useState } from 'react';
+import UnConnectedProfile from '../Blog/Profile/UnConnected';
 
 export default function Main() {
   const [isCreateBlogModal, setIsCreateBlogModal] = useState(false);
@@ -45,7 +46,7 @@ export default function Main() {
         )}
 
         <div>
-          <Profile.UnConnectedProfile />
+          <UnConnectedProfile />
           <Contents.UnConnectedList />
         </div>
       </S.ContentsWrapper>

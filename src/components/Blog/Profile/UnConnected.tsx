@@ -1,4 +1,3 @@
-import { Svg } from '@/components/Svg';
 import * as S from './style';
 import Connection from '@/components/Connection/Connection';
 import { GetMyInfoQuery } from '@/apis/user/queries';
@@ -11,18 +10,13 @@ export default function UnConnectedProfile() {
     <>
       <S.UnConnectedProfileBgDiv>
         <S.UnConnectedInfoWrapper>
-          <S.EachImageContainer>
-            <S.SvgContainer>
-              <Svg.LockIcon />
-            </S.SvgContainer>
-            <Image
-              src={myInfo?.profileImageUrl as string}
-              alt="프로필사진"
-              width="65px"
-              height="65px"
-              borderRadius="50%"
-            />
-          </S.EachImageContainer>
+          <Image
+            src={myInfo?.profileImageUrl as string}
+            alt="프로필사진"
+            width="65px"
+            height="65px"
+            borderRadius="50%"
+          />
           <S.CoupleShortIntroduction>
             <h4>
               {myInfo ? myInfo.nickname : <>설정에서 이름을 설정해 주세요.</>}
