@@ -33,7 +33,7 @@ export default function PublicBlogList() {
         </S.BlogListPaginationWrapper>
       ) : (
         <S.NoBlogPleaseAddToBlogWrapper>
-          <span>아직 달콯한 이야기가 존재하지 않습니다😭</span>
+          <span>아직 달콤한 이야기가 존재하지 않습니다😭</span>
           <CustomLink to={`/blog/${getBlogInfo?.id}/post/create`}>
             <span>👉달콤한 이야기 추가하기👈</span>
           </CustomLink>

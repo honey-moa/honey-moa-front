@@ -7,35 +7,36 @@ import { ToastContainer } from 'react-toastify';
 import { Suspense, useState } from 'react';
 import * as Chat from '@/components/Chat';
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: Infinity,
-      refetchOnWindowFocus: false,
-      retry: false,
-      throwOnError: true,
-    },
-  },
-});
-
 /**
  * 여러 Provider를 한번에 관리하는 컴포넌트
  */
 export default function AppProvider({ children }: AppProviderProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: Infinity,
+            refetchOnWindowFocus: false,
+            retry: false,
+          },
+        },
+      })
+  );
   return (
-    <Suspense fallback={<div>페이지 들어가는 중...</div>}>
-      <QueryClientProvider client={queryClient}>
-        <Error.ErrorBoundary>
-          <BrowserRouter>
-            <ToastContainer position="bottom-left" />
+    <QueryClientProvider client={queryClient}>
+      <Error.ErrorBoundary>
+        <BrowserRouter>
+          <ToastContainer position="bottom-left" />
+          <Suspense fallback={<div>페이지 들어가는 중...</div>}>
             <>{children}</>
-            <Chat.ChatBox setIsOpen={setIsOpen} isOpen={isOpen} />
-          </BrowserRouter>
-          <ReactQueryDevtools initialIsOpen={false} />
-        </Error.ErrorBoundary>
-      </QueryClientProvider>
-    </Suspense>
+          </Suspense>
+          <Chat.ChatBox setIsOpen={setIsOpen} isOpen={isOpen} />
+        </BrowserRouter>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </Error.ErrorBoundary>
+    </QueryClientProvider>
   );
 }
