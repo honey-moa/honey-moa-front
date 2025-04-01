@@ -13,19 +13,15 @@ export default function Blog() {
     <>
       <Suspense fallback={<Loading.SkeletonUI width="100px" height="20px" />}>
         <Header.BlogHeader visible={visible} />
-      </Suspense>
-      <S.Divider />
-      <S.ContentsWrapper>
-        <SideNavigate.AbleBlogSideNav />
-        <S.BlogWrapper>
-          <Suspense
-            fallback={<Loading.SkeletonUI width="100px" height="400px" />}
-          >
+        <S.Divider />
+        <S.ContentsWrapper>
+          <SideNavigate.AbleBlogSideNav />
+          <S.BlogWrapper>
             <CoupleProfile />
-          </Suspense>
-          <PrivateBlogContents />
-        </S.BlogWrapper>
-      </S.ContentsWrapper>
+            <PrivateBlogContents />
+          </S.BlogWrapper>
+        </S.ContentsWrapper>
+      </Suspense>
     </>
   );
 }
