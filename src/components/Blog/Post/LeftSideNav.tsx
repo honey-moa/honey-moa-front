@@ -5,15 +5,14 @@ import { useState } from 'react';
 import { changeInfo } from '@/utils';
 import { toast } from 'react-toastify';
 import { BlogQueries } from '@/apis/blog';
-import { HoneyLeftSideNavProps } from './type';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { UserQueries } from '@/apis/user';
 
-export default function LeftSideNav({
-  id,
-  blogId,
-  userId,
-}: HoneyLeftSideNavProps) {
+export default function LeftSideNav() {
+  const { pathname } = useLocation();
+  const honeyId = pathname.split('/')[pathname.split('/').length - 1];
+  const honeyData = BlogQueries.GetBlogHoneyQuery({ id: honeyId });
+
   const theme = useTheme();
   const navigation = useNavigate();
   const [share, setShare] = useState({
@@ -49,18 +48,20 @@ export default function LeftSideNav({
   const onClickEditHandler = (type: 'edit' | 'delete') => {
     const obj = {
       edit: () => {
-        navigation(`/blog/${blogId}/post/${id}/edit`, { replace: true });
+        navigation(`/blog/${honeyData?.blogId}/post/${honeyData?.id}/edit`, {
+          replace: true,
+        });
       },
       delete: () => {
         if (confirm('해당 이야기를 삭제하시겠습니까?')) {
           deleteMutation.mutate(
             {
-              blogId: blogId,
-              postId: id,
+              blogId: honeyData?.blogId,
+              postId: honeyData?.id,
             },
             {
               onSuccess: () => {
-                navigation(`/blog/${blogId}`);
+                navigation(`/blog/${honeyData?.blogId}`);
               },
             }
           );
@@ -92,7 +93,7 @@ export default function LeftSideNav({
           >
             <Svg.FileIcon color={theme.text.primary} />
           </S.ShareBoxButton>
-          {userId === myInfo?.id && (
+          {honeyData?.userId === myInfo?.id && (
             <>
               <S.ShareBoxButton
                 $index={3}

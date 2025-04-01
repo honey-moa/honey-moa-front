@@ -5,12 +5,17 @@ import { useTheme } from 'styled-components';
 import { BlogQueries } from '@/apis/blog';
 import { Profile } from '@/components/Layouts';
 import { useEffect, useMemo, useState } from 'react';
-import { darkTheme, lightTheme } from '../Post/Editor';
 import useLocalStorage from '@/hook/useLocalStorage';
 import { BlockNoteEditor, PartialBlock } from '@blocknote/core';
-import { HoneyContentType } from './type';
+import { useLocation } from 'react-router-dom';
+import { Loading } from '@/components';
+import { darkTheme, lightTheme } from '../create/Editor';
 
-export default function BlogContents(honeyData: Partial<HoneyContentType>) {
+export default function BlogContents() {
+  const { pathname } = useLocation();
+  const honeyId = pathname.split('/')[pathname.split('/').length - 1];
+  const honeyData = BlogQueries.GetBlogHoneyQuery({ id: honeyId });
+
   const theme = useTheme();
   const { value: themeColor } = useLocalStorage('theme');
 
@@ -46,14 +51,14 @@ export default function BlogContents(honeyData: Partial<HoneyContentType>) {
   }, [bloggerInfo]);
 
   if (editor === undefined) {
-    return 'Loading content...';
+    return <Loading.Spinner />;
   }
 
   return (
     <S.HoneyWrapper>
       <S.HoneyHeader>
         <S.TagsWrapper>
-          {honeyData.tags &&
+          {honeyData?.tags &&
             honeyData.tags.map(tag => (
               <div key={`${tag.id}-tag`}>#{tag.name}</div>
             ))}

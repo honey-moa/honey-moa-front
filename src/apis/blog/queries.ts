@@ -1,9 +1,8 @@
 import {
-  keepPreviousData,
-  useInfiniteQuery,
   useMutation,
-  useQuery,
   useQueryClient,
+  useSuspenseInfiniteQuery,
+  useSuspenseQuery,
 } from '@tanstack/react-query';
 import { BlogEndpoint } from '.';
 import { toast } from 'react-toastify';
@@ -44,10 +43,9 @@ export const CreateBlogMutate = () => {
 
 //블로그 단일 조회 query
 export const GetSingleBlogQuery = (id?: string) => {
-  const { data, isError, error } = useQuery({
+  const { data, isError, error } = useSuspenseQuery({
     queryKey: ['single-blog', id],
     queryFn: () => BlogEndpoint.getSingleBlog({ id }),
-    enabled: !!id,
     retry: false,
     refetchOnWindowFocus: false,
   });
@@ -137,7 +135,7 @@ export const DeleteBlogPostMutate = () => {
 //블로그 꿀(unit) 조회 query
 export const GetBlogHoneyQuery = ({ id }: Pick<BlogHoneyType, 'id'>) => {
   const navigate = useNavigate();
-  const { data, isError, error } = useQuery({
+  const { data, isError, error } = useSuspenseQuery({
     queryKey: ['blog-honey', id],
     queryFn: () => BlogEndpoint.getBlogHoney({ id }),
     retry: false,
@@ -162,7 +160,7 @@ export const GetBlogHoneyQuery = ({ id }: Pick<BlogHoneyType, 'id'>) => {
 export const GetPrivateBlogPaginationQuery = (
   params: PrivateBlogPaginationType
 ) => {
-  const response = useInfiniteQuery({
+  const response = useSuspenseInfiniteQuery({
     queryKey: [
       'private-blog-pagination',
       params.datePeriod,
@@ -182,20 +180,14 @@ export const GetPrivateBlogPaginationQuery = (
 
     retry: false,
     refetchOnWindowFocus: false,
-    enabled: !!params.id,
-    placeholderData: keepPreviousData,
   });
-  if (response.isError) {
-    toast.error(PaginationErrorHandler(response.error as AxiosError));
-    return;
-  }
   return response;
 };
 
 export const GetPublicBlogPaginationQuery = (
   params: Omit<PaginationBaseType, 'id'>
 ) => {
-  const response = useInfiniteQuery({
+  const response = useSuspenseInfiniteQuery({
     queryKey: ['public-blog-pagination', params.title],
     queryFn: ({ pageParam = 1 }) =>
       BlogEndpoint.getPublicBlogListPagination({
@@ -210,7 +202,6 @@ export const GetPublicBlogPaginationQuery = (
     },
     retry: false,
     refetchOnWindowFocus: false,
-    placeholderData: keepPreviousData,
   });
   if (response.isError) {
     toast.error(PaginationErrorHandler(response.error as AxiosError));

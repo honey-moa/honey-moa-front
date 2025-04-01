@@ -1,5 +1,4 @@
 export interface AccessAuthProps {
-  children: React.ReactNode;
   isPrivate: boolean;
 }
 

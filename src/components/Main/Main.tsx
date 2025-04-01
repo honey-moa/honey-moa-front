@@ -1,4 +1,4 @@
-import { Header, Profile, SideNavigate } from '../Layouts';
+import { Header, SideNavigate } from '../Layouts';
 import * as S from './style';
 import { Contents } from '.';
 import { Navigate } from 'react-router-dom';
@@ -7,8 +7,8 @@ import CreateBlogModal from './CreateBlogModal';
 import { UserQueries } from '@/apis/user';
 import { BlogQueries } from '@/apis/blog';
 import { ConnectionQueries } from '@/apis/connection';
-import useLocalStorage from '@/hook/useLocalStorage';
 import { useEffect, useState } from 'react';
+import UnConnectedProfile from '../Blog/Profile/UnConnected';
 
 export default function Main() {
   const [isCreateBlogModal, setIsCreateBlogModal] = useState(false);
@@ -16,7 +16,6 @@ export default function Main() {
     status: 'ACCEPTED',
     type: 'requested',
   });
-  const { value: token } = useLocalStorage('accessToken');
   const getMyInfo = UserQueries.GetMyInfoQuery();
   const getBlogInfo = BlogQueries.GetSingleBlogQuery(getMyInfo?.id);
 
@@ -28,10 +27,6 @@ export default function Main() {
 
   if (getBlogInfo) {
     return <Navigate to={`/blog/${getBlogInfo.id}`} />;
-  }
-
-  if (!token || token === '' || token === 'undefined') {
-    return <Navigate to="/root" />;
   }
 
   return (
@@ -51,7 +46,7 @@ export default function Main() {
         )}
 
         <div>
-          <Profile.UnConnectedProfile />
+          <UnConnectedProfile />
           <Contents.UnConnectedList />
         </div>
       </S.ContentsWrapper>

@@ -100,7 +100,7 @@ type CursorValue = string;
 type CursorArrayType = `${CursorKey}:${CursorValue}`[];
 //페이지네이션 타이
 export interface PaginationBaseType {
-  id: string;
+  id: string | undefined;
   page?: number;
   limit?: number;
   title?: string; //필터링 할 제목(검색에 사용)

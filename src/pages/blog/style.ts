@@ -13,3 +13,7 @@ export const BlogWrapper = styled.div`
   height: 100%;
   box-sizing: border-box;
 `;
+
+export const Divider = styled.div`
+  height: 100px;
+`;

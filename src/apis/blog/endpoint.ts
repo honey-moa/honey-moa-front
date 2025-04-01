@@ -84,7 +84,7 @@ export async function getBlogHoney({
 //private 블로그 pagination
 export async function getPrivateBlogListPagination({
   id,
-  limit = 12,
+  limit = 20,
   showPrivatePosts,
   ...params
 }: PrivateBlogPaginationType): Promise<PaginationOffsetType> {
