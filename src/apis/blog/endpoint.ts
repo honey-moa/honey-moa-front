@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import { instanceToken } from '../axiosInstance';
 import {
   BlogHoneyType,
@@ -26,9 +27,16 @@ export async function postCreateBlog(
 //블로그 단일 조회
 export async function getSingleBlog({
   id,
-}: BlogSingleParamsType): Promise<BlogSingleInfoReturn> {
-  const response = await instanceToken.get(`/users/${id}/blog`);
-  return response.data;
+}: BlogSingleParamsType): Promise<BlogSingleInfoReturn | null> {
+  try {
+    const response = await instanceToken.get(`/users/${id}/blog`);
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error && (error as AxiosError).status === 404) {
+      return null;
+    }
+  }
+  return null;
 }
 
 //블로그 커플 정보 수정

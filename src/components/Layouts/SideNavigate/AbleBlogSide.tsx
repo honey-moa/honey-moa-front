@@ -24,7 +24,7 @@ export default function AbleBlogSideNav() {
             <CustomLink
               to={getBlogInfo ? `/blog/${getBlogInfo.id}/post/create` : '#'}
             >
-              <S.ItemButton>
+              <S.ItemButton disabled={!getBlogInfo}>
                 <Svg.WriteIcon size={36} color={theme.text.primary} />
               </S.ItemButton>
             </CustomLink>

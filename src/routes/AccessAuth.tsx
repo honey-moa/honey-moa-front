@@ -9,17 +9,16 @@ export default function AccessAuth({ isPrivate }: AccessAuthProps) {
   const { Funnel, setStep } = useFunnel<AuthFunnelStep>('로그인');
   const { value: token } = useLocalStorage('accessToken');
 
-  return (
-    <>
-      {isPrivate && !token && (
-        <AuthFunnelModal
-          Funnel={Funnel}
-          setStep={setStep}
-          isShow={true}
-          outSideClick={false}
-        />
-      )}
-      <Outlet />
-    </>
-  );
+  if (isPrivate && !token) {
+    return (
+      <AuthFunnelModal
+        Funnel={Funnel}
+        setStep={setStep}
+        isShow={true}
+        outSideClick={false}
+      />
+    );
+  }
+
+  return <Outlet />;
 }

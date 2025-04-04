@@ -1,6 +1,6 @@
 import useSessionStorage from '@/hook/useSessionStorage';
 import React, { AnchorHTMLAttributes, ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface CustomLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   to: string;
@@ -24,9 +24,9 @@ const CustomLink = ({ to, children, scrollTop, ...props }: CustomLinkProps) => {
   };
 
   return (
-    <a href={to} onClick={handleClick} {...props}>
+    <Link to={to} onClick={handleClick} {...props}>
       {children}
-    </a>
+    </Link>
   );
 };
 

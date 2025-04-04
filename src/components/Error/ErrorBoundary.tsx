@@ -43,6 +43,7 @@
 
 import { useQueryErrorResetBoundary } from '@tanstack/react-query'; // (*)
 import { ErrorBoundary } from 'react-error-boundary'; // (*)
+import Fallback from './Fallback';
 
 interface Props {
   children: React.ReactNode;
@@ -55,11 +56,7 @@ const QueryErrorBoundary = ({ children }: Props) => {
     <ErrorBoundary
       onReset={reset}
       fallbackRender={({ resetErrorBoundary }) => (
-        <div>
-          <p>페이지를 불러오는데 실패했습니다.</p>
-          <p>재시도 해주세요.</p>
-          <button onClick={() => resetErrorBoundary()}>재시도</button>
-        </div>
+        <Fallback resetErrorBoundary={resetErrorBoundary} />
       )}
     >
       {children}

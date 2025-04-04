@@ -44,7 +44,6 @@ export default function Main() {
             <CreateBlogModal />
           </Modal>
         )}
-
         <div>
           <UnConnectedProfile />
           <Contents.UnConnectedList />
