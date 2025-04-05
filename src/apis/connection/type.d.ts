@@ -1,12 +1,22 @@
+export interface GetAllUsersParams {
+  page?: number;
+  limit?: number;
+  email?: string;
+  nickname?: string;
+  isEmailVerified?: boolean;
+  orderBy?: string;
+  cursor?: string;
+}
+
 export interface GetAllUsersReturn {
   totalCount: number;
   limit: number;
   contents: Array<EachUserInfo>;
-  //   nextCursor: {
-  //     id: string;
-  //     createdAt: string;
-  //     updatedAt: string;
-  //   };
+  nextCursor: {
+    id: string;
+    createdAt: string;
+    updatedAt: string;
+  };
 }
 
 export interface PostConnectionReturn {

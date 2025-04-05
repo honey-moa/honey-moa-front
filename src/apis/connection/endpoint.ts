@@ -3,16 +3,29 @@ import { ConnectionInfo } from '../user/type';
 import {
   ConnectionPaginationParams,
   ConnectionStatus,
+  GetAllUsersParams,
   GetAllUsersReturn,
   GetConnectionReturn,
   PostConnectionReturn,
 } from './type';
 
 //email을 통한 유저 검색 api
-export async function getUserEmail(email: string): Promise<GetAllUsersReturn> {
-  const url = !email ? '/users' : `/users?email=${email}`;
-  const response = await instanceToken.get(url);
-
+export async function getUserEmail({
+  limit = 10,
+  ...params
+}: GetAllUsersParams): Promise<GetAllUsersReturn> {
+  const obj: GetAllUsersParams = {
+    limit,
+    orderBy: JSON.stringify(['createdAt:asc']),
+  };
+  if (params.email) {
+    obj['email'] = params.email;
+  } else if (params.nickname) {
+    obj['nickname'] = params.nickname;
+  }
+  const response = await instanceToken.get('/users', {
+    params: obj,
+  });
   return response.data;
 }
 //연결 요청 api

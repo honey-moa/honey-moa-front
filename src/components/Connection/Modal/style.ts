@@ -150,7 +150,12 @@ export const InputWrapper = styled.div`
 `;
 export const SearchInput = styled.input`
   border: 0px;
+  width: 100%;
   outline: none;
+`;
+
+export const SearchTypeToggleWrapper = styled.div`
+  display: flex;
 `;
 
 export const SearchButton = styled.button`

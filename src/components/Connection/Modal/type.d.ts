@@ -13,3 +13,9 @@ export interface ConnectionInfoProps {
 export interface RequestMangerComponentProps {
   requestList: ConnectionListContent[] | undefined;
 }
+
+export interface SearchInputType {
+  email: string;
+  nickname: string;
+  isEmail: boolean;
+}
