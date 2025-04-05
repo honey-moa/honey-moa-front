@@ -38,5 +38,15 @@ export default function useSessionStorage(
     dispatchEvent(new StorageEvent('storage', { key: key }));
   }, [key]);
 
-  return { value: store, set: setStorage, remove: removeStorage };
+  const clearStorage = useCallback(() => {
+    sessionStorage.clear();
+    dispatchEvent(new StorageEvent('storage', { key: key }));
+  }, [key]);
+
+  return {
+    value: store,
+    set: setStorage,
+    remove: removeStorage,
+    clear: clearStorage,
+  };
 }
