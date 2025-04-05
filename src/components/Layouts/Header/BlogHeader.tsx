@@ -4,11 +4,10 @@ import * as S from './style';
 import { BlogHeaderProps } from './type';
 import Image from '@/components/Image';
 import CustomLink from '@/components/common/CustomLink';
-import { Loading } from '@/components';
 import { BlogQueries } from '@/apis/blog';
 import { UserQueries } from '@/apis/user';
 
-export default function Blog({ visible }: BlogHeaderProps) {
+export default function Blog({ visible = true }: BlogHeaderProps) {
   const myInfo = UserQueries.GetMyInfoQuery();
   const getBlogInfo = BlogQueries.GetSingleBlogQuery(myInfo?.id);
   const theme = useTheme();
@@ -17,7 +16,7 @@ export default function Blog({ visible }: BlogHeaderProps) {
     <S.BlogHeaderWrapper $visible={visible}>
       <S.TitleContainer>
         <CustomLink
-          to={getBlogInfo ? `/blog/${getBlogInfo.id}` : '#'}
+          to={getBlogInfo ? `/blog/${getBlogInfo.id}` : '/blog'}
           scrollTop={true}
         >
           <Image
@@ -28,7 +27,10 @@ export default function Blog({ visible }: BlogHeaderProps) {
           />
         </CustomLink>
         {!getBlogInfo ? (
-          <Loading.SkeletonUI width="150px" height="24px" />
+          <>
+            <Svg.UnConnectedIcon size={24} />
+            <h1>커플 연결이 필요합니다</h1>
+          </>
         ) : (
           <h1>{getBlogInfo.name}</h1>
         )}
