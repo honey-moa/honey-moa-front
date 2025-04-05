@@ -12,7 +12,6 @@ import {
   deleteBlogPostErrorHandler,
   editBlogProfileErrorHandler,
   getBlogHoneyErrorHandler,
-  getSingleBlogErrorHandler,
   PaginationErrorHandler,
   updateBlogPostErrorHandler,
 } from './error';
@@ -43,16 +42,12 @@ export const CreateBlogMutate = () => {
 
 //블로그 단일 조회 query
 export const GetSingleBlogQuery = (id?: string) => {
-  const { data, isError, error } = useSuspenseQuery({
+  const { data } = useSuspenseQuery({
     queryKey: ['single-blog', id],
     queryFn: () => BlogEndpoint.getSingleBlog({ id }),
     retry: false,
     refetchOnWindowFocus: false,
   });
-  if (isError) {
-    toast.error(getSingleBlogErrorHandler(error as AxiosError));
-    return null;
-  }
   return data;
 };
 

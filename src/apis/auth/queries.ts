@@ -15,9 +15,7 @@ export const LoginQuery = () => {
       queryClient.invalidateQueries({
         queryKey: ['auth-sign-in'],
       });
-      queryClient.invalidateQueries({
-        queryKey: ['chat-rooms', 'me'],
-      });
+      queryClient.clear();
       setToken(data.accessToken);
       setRefreshToken(data.refreshToken);
       toast.success('로그인 성공');

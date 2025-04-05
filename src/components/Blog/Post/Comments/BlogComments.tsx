@@ -24,7 +24,6 @@ export default function BlogComments() {
   const commentTextRef = useRef<HTMLTextAreaElement>(null);
 
   const myInfo = UserQueries.GetMyInfoQuery();
-
   const commentList = BlogCommentsQueries.useBlogPostCommentsPaginationQuery({
     id: honeyData?.id,
   });

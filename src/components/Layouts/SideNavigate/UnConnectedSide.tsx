@@ -6,11 +6,11 @@ export default function UnConnectedSideNav() {
   return (
     <S.NavWrapper>
       <S.NavItemListContainer>
-        <li>
+        {/* <li>
           <S.ItemButtonDisabled disabled>
             <Svg.LikeIcon size={36} color="" />
           </S.ItemButtonDisabled>
-        </li>
+        </li> */}
         <li>
           <Link to="/post">
             <S.ItemButtonDisabled disabled>
