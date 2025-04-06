@@ -19,7 +19,6 @@ export default function ConnectionModal({
 }: ConnectionModalProps) {
   const [searchValue, setSearchValue] = useState<SearchInputType>({
     value: '',
-    isEmail: false,
   });
   const searchList = ConnectionQueries.SearchQuery(
     useDebounce(searchValue, 1000)

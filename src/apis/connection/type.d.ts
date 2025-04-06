@@ -1,6 +1,5 @@
 export interface GetAllUsersParams {
   value: string;
-  isEmail: boolean;
   cursor?: string;
   page?: number;
   limit?: number;
