@@ -1,9 +1,9 @@
 export interface GetAllUsersParams {
   page?: number;
   limit?: number;
-  email?: string;
-  nickname?: string;
-  isEmailVerified?: boolean;
+  email?: string | null;
+  nickname?: string | null;
+  isEmailVerified?: boolean | null;
   orderBy?: string;
   cursor?: string;
 }
@@ -32,6 +32,7 @@ export interface EachUserInfo {
   loginType: string;
   mbti: string;
   isEmailVerified: boolean;
+  profileImageUrl: string;
 }
 export interface GetConnectionReturn {
   totalCount: number;

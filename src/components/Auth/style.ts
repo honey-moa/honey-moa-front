@@ -86,7 +86,7 @@ export const LoginBottom = styled.div`
 export const LinkedInButton = styled.button`
   border: none;
   background-color: inherit;
-  color: ${({ theme }) => theme.accent};
+  color: ${({ theme }) => theme.accent.red};
   cursor: pointer;
 `;
 

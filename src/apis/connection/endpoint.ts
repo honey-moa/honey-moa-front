@@ -17,11 +17,14 @@ export async function getUserEmail({
   const obj: GetAllUsersParams = {
     limit,
     orderBy: JSON.stringify(['createdAt:asc']),
+    isEmailVerified: true,
   };
   if (params.email) {
     obj['email'] = params.email;
+    obj['isEmailVerified'] = null;
   } else if (params.nickname) {
     obj['nickname'] = params.nickname;
+    obj['isEmailVerified'] = null;
   }
   const response = await instanceToken.get('/users', {
     params: obj,

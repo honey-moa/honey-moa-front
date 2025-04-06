@@ -37,7 +37,10 @@ export const mainThemeColor: DefaultTheme = {
   shadow: {
     primary: '#D3D3D3',
   },
-  accent: '#e11d48',
+  accent: {
+    red: '#FF5252', // 강조 색상
+    green: '#00E676', // 강조 색상
+  },
 } as const;
 
 export const darkThemeColor: DefaultTheme = {
@@ -74,7 +77,10 @@ export const darkThemeColor: DefaultTheme = {
   shadow: {
     primary: '#000000', // 어두운 그림자 색상
   },
-  accent: '#FF4081', // 강조 색상
+  accent: {
+    red: '#FF5252', // 강조 색상
+    green: '#00E676', // 강조 색상
+  }, // 강조 색상
 } as const;
 
 export type MainThemeColor = typeof mainThemeColor;

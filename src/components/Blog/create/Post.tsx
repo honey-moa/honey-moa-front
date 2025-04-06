@@ -37,7 +37,7 @@ export default function Post() {
         toast.error('제목은 50글자 이하로 작성해주세요.');
       }
       if (textarea) {
-        textarea.style.color = theme.accent;
+        textarea.style.color = theme.accent.red;
       }
     } else {
       if (textarea) {

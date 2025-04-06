@@ -61,7 +61,7 @@ export default function Setting() {
         },
         {
           name: '로그아웃',
-          color: theme.accent,
+          color: theme.accent.red,
           event: () => {
             window.localStorage.removeItem('accessToken');
             window.localStorage.removeItem('refreshToken');
@@ -70,7 +70,7 @@ export default function Setting() {
         },
         {
           name: '회원탈퇴',
-          color: theme.accent,
+          color: theme.accent.red,
           event: async () => {
             if (
               confirm(

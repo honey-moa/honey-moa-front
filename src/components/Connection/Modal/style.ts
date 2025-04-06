@@ -12,31 +12,45 @@ export const InfoBox = styled.div`
   display: flex;
 `;
 
-export const ProfileImg = styled.div`
-  border: 1px solid;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
+export const ProfileImgWrapper = styled.div`
   margin-right: 10px;
 `;
 
 export const NameContainer = styled.div`
   display: flex;
   flex-direction: column;
+  color: ${({ theme }) => theme.text.primary};
 `;
 
-export const NickName = styled.h5``;
+export const NickName = styled.span`
+  font-size: 16px;
+  font-weight: 700;
+`;
 export const Email = styled.span`
-  color: gray;
+  color: ${({ theme }) => theme.text.tertiary};
   font-size: smaller;
+`;
+export const EmailVerifiedWrapper = styled.div<{ $isVerified: boolean }>`
+  & > span {
+    font-size: 12px;
+    color: ${({ theme, $isVerified }) =>
+      $isVerified ? theme.accent.green : theme.accent.red};
+    font-weight: 500;
+  }
 `;
 
 export const ConnectButton = styled.div`
   display: flex;
   cursor: pointer;
   align-items: center;
+  color: ${({ theme }) => theme.text.primary};
+  padding: 8px 16px;
+  border-radius: 8px;
   * {
     margin-right: 10px;
+  }
+  &:hover {
+    background-color: ${({ theme }) => theme.bg.secondary};
   }
 `;
 
@@ -131,6 +145,7 @@ export const ModalHeader = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
+  color: ${({ theme }) => theme.text.primary};
   h2 {
     font-size: 18px;
     margin-left: 16px;
@@ -152,10 +167,25 @@ export const SearchInput = styled.input`
   border: 0px;
   width: 100%;
   outline: none;
+  background-color: ${({ theme }) => theme.bg.primary};
+  color: ${({ theme }) => theme.text.primary};
 `;
 
 export const SearchTypeToggleWrapper = styled.div`
+  color: ${({ theme }) => theme.text.primary};
   display: flex;
+  padding: 12px 0px;
+  border-bottom: 1px solid ${({ theme }) => theme.border.primary};
+  & > input {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+  }
+  & > label {
+    margin-left: 8px;
+    font-size: 14px;
+  }
 `;
 
 export const SearchButton = styled.button`

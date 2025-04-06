@@ -182,7 +182,7 @@ export default function EditCoupleProfileModal({
               borderRadius="50%"
             />
             <S.DuringRelationshipDateWrapper>
-              <Svg.LikeIcon color={theme.accent} />
+              <Svg.LikeIcon color={theme.accent.red} />
               <label htmlFor="startDate">
                 + {calculateDurationRelationship()}
               </label>

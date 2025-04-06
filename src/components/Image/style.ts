@@ -7,6 +7,7 @@ export const StyledImage = styled.img<StyledImageProps>`
   height: ${({ $height }) => $height || 'auto'};
   object-fit: ${({ $fit }) => $fit || 'cover'};
   border-radius: ${({ $borderRadius }) => $borderRadius || '0'};
+  background-color: ${({ theme }) => theme.bg.tertiary};
 `;
 
 export const Placeholder = styled.div<PlaceholderProps>`

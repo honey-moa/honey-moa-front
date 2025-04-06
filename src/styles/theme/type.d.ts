@@ -35,6 +35,9 @@ declare module 'styled-components' {
     shadow: {
       primary: string;
     };
-    accent: string;
+    accent: {
+      red: string;
+      green: string;
+    };
   }
 }

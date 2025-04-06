@@ -283,7 +283,7 @@ export const DisConnectedCoupleButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: ${({ theme }) => theme.accent};
+  color: ${({ theme }) => theme.accent.red};
   gap: 12px;
   padding: 8px 16px;
   border: none;
