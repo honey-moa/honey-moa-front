@@ -154,6 +154,12 @@ export const ModalHeader = styled.div`
     font-weight: 700;
   }
   margin-bottom: 12px;
+  :nth-child(3) {
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+    justify-content: center;
+  }
 `;
 export const InputWrapper = styled.div`
   border: 1px solid ${({ theme }) => theme.border.primary};

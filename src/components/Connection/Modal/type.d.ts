@@ -15,7 +15,6 @@ export interface RequestMangerComponentProps {
 }
 
 export interface SearchInputType {
-  email: string;
-  nickname: string;
+  value: string;
   isEmail: boolean;
 }

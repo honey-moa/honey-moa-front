@@ -1,11 +1,11 @@
 export interface GetAllUsersParams {
+  value: string;
+  isEmail: boolean;
+  cursor?: string;
   page?: number;
   limit?: number;
-  email?: string | null;
-  nickname?: string | null;
   isEmailVerified?: boolean | null;
   orderBy?: string;
-  cursor?: string;
 }
 
 export interface GetAllUsersReturn {

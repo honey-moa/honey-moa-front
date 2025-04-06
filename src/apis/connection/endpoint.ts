@@ -1,3 +1,4 @@
+import { isEmail } from '@/utils/string/isEmail';
 import { instanceToken } from '../axiosInstance';
 import { ConnectionInfo } from '../user/type';
 import {
@@ -14,19 +15,23 @@ export async function getUserEmail({
   limit = 6,
   ...params
 }: GetAllUsersParams): Promise<GetAllUsersReturn> {
-  const obj: GetAllUsersParams = {
+  let email = null;
+  let nickname = null;
+  if (isEmail(params.value)) {
+    email = params.value;
+  } else {
+    nickname = params.value;
+  }
+
+  const obj = {
     limit,
     orderBy: JSON.stringify(['createdAt:asc']),
     cursor: params.cursor,
     isEmailVerified: null,
-  };
-  if (params.email) {
-    obj['email'] = params.email;
-    obj['isEmailVerified'] = null;
-  } else if (params.nickname) {
-    obj['nickname'] = params.nickname;
-    obj['isEmailVerified'] = null;
-  }
+    email,
+    nickname,
+  } as const;
+
   const response = await instanceToken.get('/users', {
     params: obj,
   });

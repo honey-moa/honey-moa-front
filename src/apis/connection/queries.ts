@@ -22,7 +22,7 @@ import {
 // 이메일 검색 쿼리
 export function SearchQuery(params: GetAllUsersParams) {
   const response = useInfiniteQuery({
-    queryKey: ['search-user', params.email, params.nickname],
+    queryKey: ['search-user', params.value],
     queryFn: ({ pageParam }: { pageParam?: string }) =>
       ConnectionEndPoint.getUserEmail({
         cursor: pageParam ? JSON.stringify([`id:${pageParam}`]) : undefined,
