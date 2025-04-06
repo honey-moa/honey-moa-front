@@ -11,13 +11,14 @@ import {
 
 //email을 통한 유저 검색 api
 export async function getUserEmail({
-  limit = 10,
+  limit = 6,
   ...params
 }: GetAllUsersParams): Promise<GetAllUsersReturn> {
   const obj: GetAllUsersParams = {
     limit,
     orderBy: JSON.stringify(['createdAt:asc']),
-    isEmailVerified: true,
+    cursor: params.cursor,
+    isEmailVerified: null,
   };
   if (params.email) {
     obj['email'] = params.email;

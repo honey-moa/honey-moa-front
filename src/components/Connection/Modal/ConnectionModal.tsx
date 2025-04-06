@@ -2,7 +2,7 @@ import Modal from '@/components/Modal';
 import { ConnectionModalProps } from '../type';
 import * as S from './style';
 import { Svg } from '@/components/Svg';
-import { useEffect, useRef, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { ConnectionQueries } from '@/apis/connection';
 import { EachUserInfo } from '@/apis/connection/type';
 import UserInfo from './UserInfo';
@@ -10,6 +10,8 @@ import { useTheme } from 'styled-components';
 import { changeInfo } from '@/utils';
 import { SearchInputType } from './type';
 import useDebounce from '@/hook/useDebounce';
+import { toast } from 'react-toastify';
+import { Loading } from '@/components';
 
 export default function ConnectionModal({
   isOpen,
@@ -39,6 +41,14 @@ export default function ConnectionModal({
   const submitSearch: React.FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
     searchList.refetch();
+  };
+
+  const nextCursorSearchListHandler = () => {
+    if (searchList.hasNextPage) {
+      searchList.fetchNextPage();
+    } else {
+      toast.info('더 이상 검색할 수 없습니다.');
+    }
   };
 
   useEffect(() => {
@@ -84,8 +94,37 @@ export default function ConnectionModal({
         </S.SearchTypeToggleWrapper>
         <S.ListContainer>
           {searchListFlatten?.map((userInfo: EachUserInfo) => {
-            return <UserInfo userInfo={userInfo} />;
+            return (
+              <Suspense
+                fallback={
+                  <Loading.SkeletonTable
+                    width="100%"
+                    height="60px"
+                    rows={6}
+                    columns={1}
+                  />
+                }
+              >
+                <UserInfo userInfo={userInfo} />
+              </Suspense>
+            );
           })}
+          {searchList.hasNextPage &&
+            (searchList.isFetchingNextPage ? (
+              <Loading.SkeletonTable
+                width="100%"
+                height="60px"
+                rows={3}
+                columns={1}
+              />
+            ) : (
+              <S.MoreSearchListButton
+                type="button"
+                onClick={nextCursorSearchListHandler}
+              >
+                더보기
+              </S.MoreSearchListButton>
+            ))}
         </S.ListContainer>
       </S.SearchModalWrapper>
     </Modal>

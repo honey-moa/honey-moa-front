@@ -127,6 +127,8 @@ export const CoupleConnectionButtonModalWrapper = styled.div`
 
 const ModalWrapperStyle = css`
   width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
   padding: 24px;
   border-radius: 16px;
   background-color: ${({ theme }) => theme.bg.primary};
@@ -158,7 +160,6 @@ export const InputWrapper = styled.div`
   height: 42px;
   border-radius: 8px;
   display: flex;
-  overflow: hidden;
   padding: 10px;
   justify-content: space-between;
   align-items: center;
@@ -208,4 +209,19 @@ export const ListContainer = styled.div`
 
 export const ConnectionItemWrapper = styled.div`
   margin: 12px;
+`;
+
+export const MoreSearchListButton = styled.button`
+  width: 100%;
+  background-color: inherit;
+  color: ${({ theme }) => theme.text.primary};
+  border: 1px solid ${({ theme }) => theme.border.primary};
+  padding: 8px 0px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    background-color: ${({ theme }) => theme.button.primary.hover};
+  }
 `;
