@@ -23,17 +23,15 @@ export async function getUserEmail({
     nickname = params.value;
   }
 
-  const obj = {
-    limit,
-    orderBy: JSON.stringify(['createdAt:asc']),
-    cursor: params.cursor,
-    isEmailVerified: null,
-    email,
-    nickname,
-  } as const;
-
   const response = await instanceToken.get('/users', {
-    params: obj,
+    params: {
+      limit,
+      orderBy: JSON.stringify(['createdAt:asc']),
+      cursor: params.cursor,
+      isEmailVerified: null,
+      email,
+      nickname,
+    },
   });
   return response.data;
 }
