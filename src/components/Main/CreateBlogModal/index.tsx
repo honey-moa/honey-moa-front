@@ -26,12 +26,15 @@ export default function CreateBlogModal() {
   });
 
   const createBlogMutate = BlogQueries.CreateBlogMutate();
-  const { clear: clearLocalStorage } = useLocalStorage('');
-  const { clear: clearSessionStorage } = useSessionStorage('');
+  const { remove: removeLocalStorage } = useLocalStorage('accessToken');
+  const { remove: removeSessionStorage } = useSessionStorage('refreshToken');
 
   const logoutHandler = () => {
-    clearLocalStorage();
-    clearSessionStorage();
+    removeLocalStorage('accessToken');
+    removeLocalStorage('refreshToken');
+
+    removeSessionStorage('accessToken');
+    removeSessionStorage('refreshToken');
     navigate('/root');
   };
 

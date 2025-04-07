@@ -33,10 +33,13 @@ export default function useSessionStorage(
     [key]
   );
 
-  const removeStorage = useCallback(() => {
-    sessionStorage.removeItem(key);
-    dispatchEvent(new StorageEvent('storage', { key: key }));
-  }, [key]);
+  const removeStorage = useCallback(
+    (removeValue: string) => {
+      sessionStorage.removeItem(removeValue);
+      dispatchEvent(new StorageEvent('storage', { key: removeValue }));
+    },
+    [key]
+  );
 
   const clearStorage = useCallback(() => {
     sessionStorage.clear();
