@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { ConnectionEndPoint } from '.';
 import axios, { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
@@ -10,21 +15,27 @@ import {
 import {
   ConnectionListContent,
   ConnectionPaginationParams,
+  GetAllUsersParams,
   GetConnectionReturn,
 } from './type';
 
 // 이메일 검색 쿼리
-export function SearchQuery() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ConnectionEndPoint.getUserEmail,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['search-users'],
-      });
+export function SearchQuery(params: GetAllUsersParams) {
+  const response = useInfiniteQuery({
+    queryKey: ['search-user', params.value],
+    queryFn: ({ pageParam }: { pageParam?: string }) =>
+      ConnectionEndPoint.getUserEmail({
+        cursor: pageParam ? JSON.stringify([`id:${pageParam}`]) : undefined,
+        ...params,
+      }),
+    initialPageParam: undefined,
+    getNextPageParam: allPages => {
+      return allPages.nextCursor !== null ? allPages.nextCursor.id : undefined;
     },
-    onError: (error: AxiosError) => error,
+    retry: false,
+    refetchOnWindowFocus: false,
   });
+  return response;
 }
 
 // 연결 요청 쿼리

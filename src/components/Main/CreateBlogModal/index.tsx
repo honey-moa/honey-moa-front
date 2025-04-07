@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { BlogInfoType } from './type';
 import { changeInfo } from '@/utils';
 import { useNavigate } from 'react-router-dom';
+import useLocalStorage from '@/hook/useLocalStorage';
+import useSessionStorage from '@/hook/useSessionStorage';
 
 export default function CreateBlogModal() {
   const navigate = useNavigate();
@@ -24,6 +26,17 @@ export default function CreateBlogModal() {
   });
 
   const createBlogMutate = BlogQueries.CreateBlogMutate();
+  const { remove: removeLocalStorage } = useLocalStorage('accessToken');
+  const { remove: removeSessionStorage } = useSessionStorage('refreshToken');
+
+  const logoutHandler = () => {
+    removeLocalStorage('accessToken');
+    removeLocalStorage('refreshToken');
+
+    removeSessionStorage('accessToken');
+    removeSessionStorage('refreshToken');
+    navigate('/root');
+  };
 
   const onSubmitCreateBlog: React.FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
@@ -67,6 +80,9 @@ export default function CreateBlogModal() {
           placeholder="블로그 소개글을 입력해주세요."
         />
         <button type="submit">블로그 생성하기</button>
+        <button type="button" onClick={logoutHandler}>
+          로그아웃
+        </button>
       </S.CreateBlogForm>
     </S.ModalWrapper>
   );

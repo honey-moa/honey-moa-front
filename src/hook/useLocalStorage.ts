@@ -54,10 +54,23 @@ export default function useLocalStorage(
     [key]
   );
 
-  const removeStorage = useCallback(() => {
-    localStorage.removeItem(key);
+  const removeStorage = useCallback(
+    (removeValue: string) => {
+      localStorage.removeItem(removeValue);
+      dispatchEvent(new StorageEvent('storage', { key: removeValue }));
+    },
+    [key]
+  );
+
+  const clearStorage = useCallback(() => {
+    localStorage.clear();
     dispatchEvent(new StorageEvent('storage', { key: key }));
   }, [key]);
 
-  return { value: store, set: setStorage, remove: removeStorage };
+  return {
+    value: store,
+    set: setStorage,
+    remove: removeStorage,
+    clear: clearStorage,
+  };
 }

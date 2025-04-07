@@ -1,18 +1,38 @@
+import { isEmail } from '@/utils/string/isEmail';
 import { instanceToken } from '../axiosInstance';
 import { ConnectionInfo } from '../user/type';
 import {
   ConnectionPaginationParams,
   ConnectionStatus,
+  GetAllUsersParams,
   GetAllUsersReturn,
   GetConnectionReturn,
   PostConnectionReturn,
 } from './type';
 
 //email을 통한 유저 검색 api
-export async function getUserEmail(email: string): Promise<GetAllUsersReturn> {
-  const url = !email ? '/users' : `/users?email=${email}`;
-  const response = await instanceToken.get(url);
+export async function getUserEmail({
+  limit = 6,
+  ...params
+}: GetAllUsersParams): Promise<GetAllUsersReturn> {
+  let email = null;
+  let nickname = null;
+  if (isEmail(params.value)) {
+    email = params.value;
+  } else {
+    nickname = params.value;
+  }
 
+  const response = await instanceToken.get('/users', {
+    params: {
+      limit,
+      orderBy: JSON.stringify(['createdAt:asc']),
+      cursor: params.cursor,
+      isEmailVerified: null,
+      email,
+      nickname,
+    },
+  });
   return response.data;
 }
 //연결 요청 api

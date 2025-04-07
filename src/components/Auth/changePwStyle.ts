@@ -33,7 +33,7 @@ export const NotificationChangePasswordValidationP = styled.p`
   width: 45%;
   margin-top: 20px;
   text-align: center;
-  color: ${({ theme }) => theme.accent};
+  color: ${({ theme }) => theme.accent.red};
 `;
 
 export const ChangePasswordForm = styled.form`

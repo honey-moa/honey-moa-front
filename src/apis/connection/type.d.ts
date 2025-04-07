@@ -1,12 +1,21 @@
+export interface GetAllUsersParams {
+  value: string;
+  cursor?: string;
+  page?: number;
+  limit?: number;
+  isEmailVerified?: boolean | null;
+  orderBy?: string;
+}
+
 export interface GetAllUsersReturn {
   totalCount: number;
   limit: number;
   contents: Array<EachUserInfo>;
-  //   nextCursor: {
-  //     id: string;
-  //     createdAt: string;
-  //     updatedAt: string;
-  //   };
+  nextCursor: {
+    id: string;
+    createdAt: string;
+    updatedAt: string;
+  };
 }
 
 export interface PostConnectionReturn {
@@ -22,6 +31,7 @@ export interface EachUserInfo {
   loginType: string;
   mbti: string;
   isEmailVerified: boolean;
+  profileImageUrl: string;
 }
 export interface GetConnectionReturn {
   totalCount: number;

@@ -13,3 +13,7 @@ export interface ConnectionInfoProps {
 export interface RequestMangerComponentProps {
   requestList: ConnectionListContent[] | undefined;
 }
+
+export interface SearchInputType {
+  value: string;
+}

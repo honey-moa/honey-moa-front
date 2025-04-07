@@ -12,31 +12,45 @@ export const InfoBox = styled.div`
   display: flex;
 `;
 
-export const ProfileImg = styled.div`
-  border: 1px solid;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
+export const ProfileImgWrapper = styled.div`
   margin-right: 10px;
 `;
 
 export const NameContainer = styled.div`
   display: flex;
   flex-direction: column;
+  color: ${({ theme }) => theme.text.primary};
 `;
 
-export const NickName = styled.h5``;
+export const NickName = styled.span`
+  font-size: 16px;
+  font-weight: 700;
+`;
 export const Email = styled.span`
-  color: gray;
+  color: ${({ theme }) => theme.text.tertiary};
   font-size: smaller;
+`;
+export const EmailVerifiedWrapper = styled.div<{ $isVerified: boolean }>`
+  & > span {
+    font-size: 12px;
+    color: ${({ theme, $isVerified }) =>
+      $isVerified ? theme.accent.green : theme.accent.red};
+    font-weight: 500;
+  }
 `;
 
 export const ConnectButton = styled.div`
   display: flex;
   cursor: pointer;
   align-items: center;
+  color: ${({ theme }) => theme.text.primary};
+  padding: 8px 16px;
+  border-radius: 8px;
   * {
     margin-right: 10px;
+  }
+  &:hover {
+    background-color: ${({ theme }) => theme.bg.secondary};
   }
 `;
 
@@ -113,6 +127,8 @@ export const CoupleConnectionButtonModalWrapper = styled.div`
 
 const ModalWrapperStyle = css`
   width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
   padding: 24px;
   border-radius: 16px;
   background-color: ${({ theme }) => theme.bg.primary};
@@ -131,26 +147,52 @@ export const ModalHeader = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
+  color: ${({ theme }) => theme.text.primary};
   h2 {
     font-size: 18px;
     margin-left: 16px;
     font-weight: 700;
   }
   margin-bottom: 12px;
+  :nth-child(3) {
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+    justify-content: center;
+  }
 `;
 export const InputWrapper = styled.div`
   border: 1px solid ${({ theme }) => theme.border.primary};
   height: 42px;
   border-radius: 8px;
   display: flex;
-  overflow: hidden;
   padding: 10px;
   justify-content: space-between;
   align-items: center;
 `;
 export const SearchInput = styled.input`
   border: 0px;
+  width: 100%;
   outline: none;
+  background-color: ${({ theme }) => theme.bg.primary};
+  color: ${({ theme }) => theme.text.primary};
+`;
+
+export const SearchTypeToggleWrapper = styled.div`
+  color: ${({ theme }) => theme.text.primary};
+  display: flex;
+  padding: 12px 0px;
+  border-bottom: 1px solid ${({ theme }) => theme.border.primary};
+  & > input {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+  }
+  & > label {
+    margin-left: 8px;
+    font-size: 14px;
+  }
 `;
 
 export const SearchButton = styled.button`
@@ -173,4 +215,19 @@ export const ListContainer = styled.div`
 
 export const ConnectionItemWrapper = styled.div`
   margin: 12px;
+`;
+
+export const MoreSearchListButton = styled.button`
+  width: 100%;
+  background-color: inherit;
+  color: ${({ theme }) => theme.text.primary};
+  border: 1px solid ${({ theme }) => theme.border.primary};
+  padding: 8px 0px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    background-color: ${({ theme }) => theme.button.primary.hover};
+  }
 `;
