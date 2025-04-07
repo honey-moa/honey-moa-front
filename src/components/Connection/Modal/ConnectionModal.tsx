@@ -88,7 +88,7 @@ export default function ConnectionModal({
                   />
                 }
               >
-                <UserInfo userInfo={userInfo} />
+                <UserInfo userInfo={userInfo} key={userInfo.id} />
               </Suspense>
             );
           })}
