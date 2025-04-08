@@ -1,16 +1,14 @@
-import { Header, SideNavigate } from '../Layouts';
 import * as S from './style';
-import { Contents } from '.';
 import { Navigate } from 'react-router-dom';
-import Modal from '../Modal';
 import CreateBlogModal from './CreateBlogModal';
 import { UserQueries } from '@/apis/user';
 import { BlogQueries } from '@/apis/blog';
 import { ConnectionQueries } from '@/apis/connection';
 import { useEffect, useState } from 'react';
-import UnConnectedProfile from '../Blog/Profile/UnConnected';
+import Modal from '@/components/Modal';
+import UnConnectedList from '@/components/Blog/UnConnectBlog/UnConnectedList';
 
-export default function Main() {
+export default function UnConnectBlog() {
   const [isCreateBlogModal, setIsCreateBlogModal] = useState(false);
   const connectionInfo = ConnectionQueries.GetConnectionListPaginationQuery({
     status: 'ACCEPTED',
@@ -30,25 +28,18 @@ export default function Main() {
   }
 
   return (
-    <>
-      <Header.UnConnectedHeader />
-      <S.ContentsWrapper>
-        <SideNavigate.UnConnectedSideNav />
-        {isCreateBlogModal && (
-          <Modal
-            shouldCloseToClickOutside={false}
-            blur={true}
-            isShow={isCreateBlogModal}
-            setIsShow={setIsCreateBlogModal}
-          >
-            <CreateBlogModal />
-          </Modal>
-        )}
-        <div>
-          <UnConnectedProfile />
-          <Contents.UnConnectedList />
-        </div>
-      </S.ContentsWrapper>
-    </>
+    <S.ContentsWrapper>
+      {isCreateBlogModal && (
+        <Modal
+          shouldCloseToClickOutside={false}
+          blur={true}
+          isShow={isCreateBlogModal}
+          setIsShow={setIsCreateBlogModal}
+        >
+          <CreateBlogModal />
+        </Modal>
+      )}
+      <UnConnectedList />
+    </S.ContentsWrapper>
   );
 }

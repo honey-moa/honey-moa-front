@@ -1,11 +1,11 @@
 import { Svg } from '@/components/Svg';
-import * as S from './style';
+import * as S from '../style';
 import { useTheme } from 'styled-components';
 import {
   onChangeYearHandler,
   onClickYearPrevAndNextHandler,
   onFilterHandler,
-} from './utils';
+} from '../utils';
 import { useFilterPageStore } from '@/store/paginationStore/useFilterPageStore';
 import { date } from '@/utils';
 

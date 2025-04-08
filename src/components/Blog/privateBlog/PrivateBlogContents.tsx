@@ -1,4 +1,4 @@
-import * as S from './style';
+import * as S from '../style';
 import SelectBlogDateSection from './SelectBlogDateSection';
 import PrivateBlogList from './PrivateBlogList';
 import { Suspense } from 'react';

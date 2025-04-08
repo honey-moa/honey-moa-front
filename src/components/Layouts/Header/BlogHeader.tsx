@@ -13,27 +13,31 @@ export default function Blog({ visible = true }: BlogHeaderProps) {
   const theme = useTheme();
 
   return (
-    <S.BlogHeaderWrapper $visible={visible}>
+    <S.BlogHeaderWrapper $visible={getBlogInfo ? visible : true}>
       <S.TitleContainer>
         <CustomLink
-          to={getBlogInfo ? `/blog/${getBlogInfo.id}` : '/blog'}
+          to={getBlogInfo ? `/blog/${getBlogInfo.id}` : `/blog/${myInfo?.id}`}
           scrollTop={true}
         >
           <Image
-            src={'/images/siteLogo.jpg'}
+            src="/images/siteLogo.jpg"
             width="65px"
             height="65px"
             borderRadius="50%"
+            alt="로고 이미지"
+            lazy={false}
           />
         </CustomLink>
-        {!getBlogInfo ? (
-          <>
-            <Svg.UnConnectedIcon size={24} />
-            <h1>커플 연결이 필요합니다</h1>
-          </>
-        ) : (
-          <h1>{getBlogInfo.name}</h1>
-        )}
+        <S.BlogNameSpaceContainer>
+          {!getBlogInfo ? (
+            <>
+              <Svg.UnConnectedIcon size={24} />
+              <h1>커플 연결이 필요합니다</h1>
+            </>
+          ) : (
+            <h1>{getBlogInfo.name}</h1>
+          )}
+        </S.BlogNameSpaceContainer>
       </S.TitleContainer>
 
       <S.SettingContainer>
