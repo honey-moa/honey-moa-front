@@ -24,9 +24,15 @@ export default function AbleBlogSideNav() {
             <CustomLink
               to={getBlogInfo ? `/blog/${getBlogInfo.id}/post/create` : '#`'}
             >
-              <S.ItemButton disabled={!getBlogInfo}>
-                <Svg.WriteIcon size={36} color={theme.text.primary} />
-              </S.ItemButton>
+              {getBlogInfo ? (
+                <S.ItemButton>
+                  <Svg.WriteIcon size={36} color={theme.text.primary} />
+                </S.ItemButton>
+              ) : (
+                <S.ItemButtonDisabled disabled>
+                  <Svg.WriteIcon size={36} />
+                </S.ItemButtonDisabled>
+              )}
             </CustomLink>
           </PopUp.Tooltip>
         </li>

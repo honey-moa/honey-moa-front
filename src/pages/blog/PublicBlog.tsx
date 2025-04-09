@@ -2,8 +2,8 @@ import * as S from './style';
 import useScrollPosition from '@/hook/useScrollPosition';
 import { Suspense } from 'react';
 import { Header, SideNavigate } from '@/components/Layouts';
-import PublicBlogList from '@/components/Blog/BlogList/PublicBlogList';
 import { Loading } from '@/components';
+import PublicBlogList from '@/components/Blog/publicBlog/PublicBlogList';
 
 export default function PublicBlog() {
   const { visible } = useScrollPosition();

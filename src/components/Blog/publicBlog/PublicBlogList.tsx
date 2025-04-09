@@ -1,7 +1,7 @@
-import * as S from './style';
+import * as S from '../style';
 import { BlogQueries } from '@/apis/blog';
 import { UserQueries } from '@/apis/user';
-import { BlogListEachHoneyCard } from './BlogListEachHoneyCard';
+import { BlogListEachHoneyCard } from '../BlogListEachHoneyCard';
 import useObserver from '@/hook/useObserver';
 import useScrollPosition from '@/hook/useScrollPosition';
 import CustomLink from '@/components/common/CustomLink';

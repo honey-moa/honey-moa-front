@@ -73,6 +73,18 @@ export const TitleContainer = styled.div`
   }
 `;
 
+export const BlogNameSpaceContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: ${({ theme }) => theme.text.primary};
+  & > h1 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-left: 8px;
+  }
+`;
+
 export const UnConnectedTitleContainer = styled.div`
   display: flex;
   flex-direction: row;

@@ -1,4 +1,4 @@
-import { PaginationContents } from '@/components/Blog/BlogList/type';
+import { PaginationContents } from '@/components/Blog/type';
 
 export interface CreateBlogParams {
   name: string;

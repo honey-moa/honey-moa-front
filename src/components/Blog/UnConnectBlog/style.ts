@@ -1,5 +1,14 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
+import { css } from 'styled-components';
 import { HoneyListMonthsProps } from './type';
+
+export const ContentsWrapper = styled.div`
+  display: flex;
+  //메인 컨텐츠
+  & > :nth-child(2) {
+    flex: 1;
+  }
+`;
 
 export const HoneyListWrapper = styled.div`
   display: flex;
@@ -183,6 +192,7 @@ export const UnConnectedWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: 50vh;
   gap: 16px;
   padding: 24px;
 `;

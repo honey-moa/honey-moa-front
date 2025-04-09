@@ -3,8 +3,8 @@ import useScrollPosition from '@/hook/useScrollPosition';
 import { Header, SideNavigate } from '@/components/Layouts';
 import { Suspense } from 'react';
 import { Loading } from '@/components';
-import PrivateBlogContents from '@/components/Blog/BlogList/PrivateBlogContents';
-import CoupleProfile from '@/components/Blog/Profile/CoupleProfile';
+import MappingBlog from '@/components/Blog/MappingBlog';
+import MappingProfile from '@/components/Blog/MappingProfile';
 
 export default function Blog() {
   const { visible } = useScrollPosition();
@@ -17,8 +17,16 @@ export default function Blog() {
         <S.ContentsWrapper>
           <SideNavigate.AbleBlogSideNav />
           <S.BlogWrapper>
-            <CoupleProfile />
-            <PrivateBlogContents />
+            <Suspense
+              fallback={<Loading.SkeletonUI width="100%" height="100%" />}
+            >
+              <MappingProfile />
+            </Suspense>
+            <Suspense
+              fallback={<Loading.SkeletonUI width="100%" height="100%" />}
+            >
+              <MappingBlog />
+            </Suspense>
           </S.BlogWrapper>
         </S.ContentsWrapper>
       </Suspense>

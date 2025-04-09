@@ -1,7 +1,10 @@
 import { Svg } from '@/components/Svg';
 import * as S from './style';
+import { date } from '@/utils';
 
 export default function UnConnectedList() {
+  const year = date.getNowDate.year;
+
   return (
     <S.UnConnectedWrapper>
       <S.UnConnectedHeader>
@@ -13,7 +16,7 @@ export default function UnConnectedList() {
           <button disabled>
             <Svg.PrevIcon />
           </button>
-          <span>{2024}년 기록 시작하기</span>
+          <span>{year}년 기록 시작하기</span>
           <button disabled>
             <Svg.NextIcon />
           </button>

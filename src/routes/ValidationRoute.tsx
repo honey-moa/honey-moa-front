@@ -1,9 +1,9 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import AccessAuth from './AccessAuth';
 import { lazy } from 'react';
+import RedirectedBlog from '@/components/Blog/RedirectedBlog';
 
 const Root = lazy(() => import('@/pages/root/Root'));
-const SingleBlog = lazy(() => import('@/components/Main/Main'));
 const Blog = lazy(() => import('@/pages/blog/Blog'));
 const PublicBlog = lazy(() => import('@/pages/blog/PublicBlog'));
 const ChangePassword = lazy(() => import('@/components/Auth/ChangePassword'));
@@ -33,7 +33,7 @@ export default function ValidationRoute() {
       {/*로그인 사용자 접근*/}
       <Route element={<AccessAuth isPrivate={true} />}>
         <Route path="/setting" element={<Setting />} />
-        <Route path="/blog" element={<SingleBlog />} />
+        <Route path="/blog" element={<RedirectedBlog />} />
         <Route path="/blog/:id" element={<Blog />} />
         <Route path="/public/posts" element={<PublicBlog />} />
         <Route path="/blog/:blogId/post/create" element={<CreatePost />} />

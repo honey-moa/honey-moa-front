@@ -1,5 +1,5 @@
-import * as S from './style';
-import { BlogListEachHoneyCard } from './BlogListEachHoneyCard';
+import * as S from '../style';
+import { BlogListEachHoneyCard } from '../BlogListEachHoneyCard';
 import { useMemo } from 'react';
 import { GetPrivateBlogPaginationQuery } from '@/apis/blog/queries';
 import useObserver from '@/hook/useObserver';
