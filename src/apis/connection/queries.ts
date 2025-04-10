@@ -60,7 +60,7 @@ export function GetConnectionListPaginationQuery(
   }
 ) {
   const { data, isError, error } = useQuery({
-    queryKey: ['connection-list-pagination', params.type],
+    queryKey: ['connection-list-pagination', params.status, params.type],
     queryFn: () => ConnectionEndPoint.getConnectionListPagination(params),
     refetchOnWindowFocus: false,
   });

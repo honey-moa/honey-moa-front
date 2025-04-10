@@ -45,15 +45,13 @@ export default function UserInfo({ userInfo }: UserInfoProps) {
           </S.EmailVerifiedWrapper>
         </S.NameContainer>
       </S.InfoBox>
-      <S.ConnectButton>
+      <S.ConnectButton
+        onClick={() => {
+          connectionHandler(userInfo.id);
+        }}
+      >
         <Svg.ConnectedIcon size={15} color={theme.text.primary} />
-        <p
-          onClick={() => {
-            connectionHandler(userInfo.id);
-          }}
-        >
-          Connect
-        </p>
+        <p>Connect</p>
       </S.ConnectButton>
     </S.EachUserInfoWrapper>
   );

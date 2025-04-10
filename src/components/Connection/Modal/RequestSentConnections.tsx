@@ -1,17 +1,20 @@
 import Image from '@/components/Image';
 import * as S from './style';
-import { RequestMangerComponentProps } from './type';
 import { ConnectionQueries } from '@/apis/connection';
 import { GetConnectionListErrorHandler } from '@/apis/connection/error';
 import { toast } from 'react-toastify';
 import { ConnectionStatus } from '@/apis/connection/type';
 
-export default function RequestSentConnections({
-  requestList,
-}: RequestMangerComponentProps) {
+export default function RequestSentConnections() {
+  const requesterQuery = ConnectionQueries.GetConnectionListPaginationQuery({
+    showRequest: true,
+    showRequested: false,
+    type: 'requester',
+    status: 'PENDING',
+  });
   const connectionMutation = ConnectionQueries.PutConnectionQuery();
 
-  const getRequestListWithoutAccepted = requestList?.filter(
+  const getRequestListWithoutAccepted = requesterQuery?.contents?.filter(
     info => info.status === 'PENDING'
   );
 

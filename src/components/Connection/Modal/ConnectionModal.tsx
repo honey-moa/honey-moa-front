@@ -1,5 +1,3 @@
-import Modal from '@/components/Modal';
-import { ConnectionModalProps } from '../type';
 import * as S from './style';
 import { Svg } from '@/components/Svg';
 import { Suspense, useCallback, useState } from 'react';
@@ -13,10 +11,7 @@ import useDebounce from '@/hook/useDebounce';
 import { toast } from 'react-toastify';
 import { Loading, PopUp } from '@/components';
 
-export default function ConnectionModal({
-  isOpen,
-  setIsOpen,
-}: ConnectionModalProps) {
+export default function ConnectionModal() {
   const [searchValue, setSearchValue] = useState<SearchInputType>({
     value: '',
   });
@@ -50,7 +45,7 @@ export default function ConnectionModal({
     }
   }, []);
   return (
-    <Modal isShow={isOpen} setIsShow={setIsOpen}>
+    <>
       <S.SearchModalWrapper onSubmit={submitSearch}>
         <S.ModalHeader>
           <Svg.SearchIcon color={theme.button.primary.base} />
@@ -113,6 +108,6 @@ export default function ConnectionModal({
           )}
         </S.ListContainer>
       </S.SearchModalWrapper>
-    </Modal>
+    </>
   );
 }

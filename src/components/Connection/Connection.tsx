@@ -3,20 +3,22 @@ import * as S from './Modal/style';
 import { changeInfo } from '@/utils';
 import { ConnectionStateType } from './type';
 import { ManageConnectionModal, SearchConnectionModal } from './Modal';
+import Modal from '../Modal';
 
 export default function Connection() {
-  const [isConnection, setIsConnection] = useState<ConnectionStateType>({
-    search: false,
-    manage: false,
-  });
+  const [isConnectionModal, setIsConnectionModal] =
+    useState<ConnectionStateType>({
+      search: false,
+      manage: false,
+    });
 
   const onToggleSearchModal = changeInfo.toggle<ConnectionStateType>({
-    setState: setIsConnection,
+    setState: setIsConnectionModal,
     key: 'search',
   });
 
   const onToggleManageModal = changeInfo.toggle<ConnectionStateType>({
-    setState: setIsConnection,
+    setState: setIsConnectionModal,
     key: 'manage',
   });
 
@@ -27,17 +29,15 @@ export default function Connection() {
           커플 연결하기
         </S.ConnectedCoupleButton>
         <S.ConnectedCoupleButton onClick={onToggleManageModal}>
-          나에게 온 요청
+          내 요청 관리
         </S.ConnectedCoupleButton>
       </S.CoupleConnectionButtonModalWrapper>
-      <SearchConnectionModal
-        isOpen={isConnection.search}
-        setIsOpen={setIsConnection}
-      />
-      <ManageConnectionModal
-        isOpen={isConnection.manage}
-        setIsOpen={setIsConnection}
-      />
+      <Modal isShow={isConnectionModal.search} setIsShow={setIsConnectionModal}>
+        <SearchConnectionModal />
+      </Modal>
+      <Modal isShow={isConnectionModal.manage} setIsShow={setIsConnectionModal}>
+        <ManageConnectionModal />
+      </Modal>
     </>
   );
 }
