@@ -9,8 +9,9 @@ import { Profile } from '@/components/Layouts';
 import { useChattingMessagePagination } from '@/apis/chat/queries';
 import { changeInfo, date } from '@/utils';
 import { useEffect, useMemo, useState } from 'react';
-import { scrollToBottom, useReceivedMessage } from '../hooks';
+import { useReceivedMessage } from '../hooks';
 import useObserver from '@/hook/useObserver';
+import { scrollToBottom } from '../utils';
 
 export default function ChatRoomModal({
   closeChatModal,
