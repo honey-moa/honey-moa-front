@@ -1,5 +1,4 @@
 import * as S from './style';
-import { Link } from 'react-router-dom';
 import { Svg } from '@/components/Svg';
 import { ChatQueries } from '@/apis/chat';
 import { toast } from 'react-toastify';
@@ -14,8 +13,8 @@ import { scrollToBottom, useReceivedMessage } from '../hooks';
 import useObserver from '@/hook/useObserver';
 
 export default function ChatRoomModal({
-  setIsOpen,
-  belongToChatRoomData,
+  closeChatModal,
+  belongToChatRoom,
   socket,
   scrollToBottomRef,
 }: ChatModalProps) {
@@ -42,7 +41,7 @@ export default function ChatRoomModal({
     return typeof value === 'string';
   };
   const messages = useChattingMessagePagination({
-    id: isString(belongToChatRoomData?.id) ? belongToChatRoomData.id : '',
+    id: isString(belongToChatRoom?.id) ? belongToChatRoom.id : '',
     orderBy: JSON.stringify(['createdAt:desc']),
   });
 
@@ -106,7 +105,7 @@ export default function ChatRoomModal({
     socket?.emit(
       'send_message',
       {
-        roomId: belongToChatRoomData?.id,
+        roomId: belongToChatRoom?.id,
         message: chatInfo.message,
       },
       (res: ChatAckResponse) => {
@@ -120,7 +119,7 @@ export default function ChatRoomModal({
 
   const onChangeMessage = changeInfo.text({ setState: setChatInfo });
 
-  if (belongToChatRoomData === undefined)
+  if (belongToChatRoom === undefined)
     return (
       <S.BeforeChattingStartBox>
         <button onClick={onClickStartChatting}>연인과 채팅 시작하기</button>
@@ -135,12 +134,7 @@ export default function ChatRoomModal({
           <span></span>
         </S.ChatInfo>
         <S.ChatControl>
-          <S.IconWrapper onClick={() => setIsOpen(false)}>
-            <Link to="/chat">
-              <Svg.FullIcon />
-            </Link>
-          </S.IconWrapper>
-          <S.IconWrapper onClick={() => setIsOpen(false)}>
+          <S.IconWrapper onClick={closeChatModal}>
             <Svg.CloseIcon />
           </S.IconWrapper>
         </S.ChatControl>

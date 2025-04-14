@@ -5,8 +5,8 @@ import {
 import { Socket } from 'socket.io-client';
 
 export interface ChatModalProps {
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  belongToChatRoomData: BelongToMeChatRoomReturnType | undefined;
+  closeChatModal: () => void;
+  belongToChatRoom: BelongToMeChatRoomReturnType | undefined;
   socket: Socket | null;
   scrollToBottomRef: React.RefObject<HTMLDivElement>;
 }

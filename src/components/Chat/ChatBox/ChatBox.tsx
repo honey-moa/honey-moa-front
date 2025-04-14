@@ -1,14 +1,17 @@
-import { ChatBoxProps } from '../type';
 import * as S from './style';
 import { Svg } from '@/components/Svg';
 import useLocalStorage from '@/hook/useLocalStorage';
 import ChatRoomModal from './ChatModal';
 import { ChatQueries } from '@/apis/chat';
 import { useSocket } from '@/hook/useSocket';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { scrollToBottom, useReceivedMessage } from '../hooks';
+import { changeInfo } from '@/utils';
 
-export default function ChatBox({ isOpen, setIsOpen }: ChatBoxProps) {
+export default function ChatBox() {
+  const [isOpenChatModal, setIsOpenChatModal] = useState({
+    chat: false,
+  });
   const { value: token } = useLocalStorage('accessToken');
   const belongToChatRoom = ChatQueries.useGetBelongToChatRoom();
 
@@ -17,9 +20,10 @@ export default function ChatBox({ isOpen, setIsOpen }: ChatBoxProps) {
 
   const scrollToBottomRef = useRef<HTMLDivElement>(null);
 
-  const openChatModalHandler = () => {
-    setIsOpen(prev => !prev);
-  };
+  const handlerOpenChatModal = changeInfo.toggle({
+    setState: setIsOpenChatModal,
+    key: 'chat',
+  });
 
   useEffect(() => {
     socket?.emit('enter_chat_room', { roomId: belongToChatRoom?.id });
@@ -38,22 +42,22 @@ export default function ChatBox({ isOpen, setIsOpen }: ChatBoxProps) {
   }, [socket]);
 
   useEffect(() => {
-    if (isOpen) {
+    if (isOpenChatModal) {
       scrollToBottom(scrollToBottomRef);
     }
-  }, [isOpen]);
+  }, [isOpenChatModal]);
 
   if (!token) return;
 
   return (
     <>
-      <S.ButtonWrapper onClick={openChatModalHandler}>
+      <S.ButtonWrapper onClick={handlerOpenChatModal}>
         <Svg.ChatIcon size={40} />
       </S.ButtonWrapper>
-      {isOpen && (
+      {isOpenChatModal.chat && (
         <ChatRoomModal
-          setIsOpen={setIsOpen}
-          belongToChatRoomData={belongToChatRoom}
+          closeChatModal={handlerOpenChatModal}
+          belongToChatRoom={belongToChatRoom}
           socket={socket}
           scrollToBottomRef={scrollToBottomRef}
         />

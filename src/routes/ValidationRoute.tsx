@@ -12,7 +12,6 @@ const EditPost = lazy(() => import('@/components/Blog/create/EditBlogPost'));
 const BlogPost = lazy(() => import('@/pages/blog/Post'));
 const Setting = lazy(() => import('@/components/Setting/Setting'));
 const Support = lazy(() => import('@/components/Setting/Support'));
-const Chat = lazy(() => import('@/components/Chat/ChatPage'));
 const NotFound = lazy(() => import('@/components/Error/NotFound'));
 
 export default function ValidationRoute() {
@@ -39,7 +38,6 @@ export default function ValidationRoute() {
         <Route path="/blog/:blogId/post/create" element={<CreatePost />} />
         <Route path="/blog/:blogId/post/:postId/edit" element={<EditPost />} />
         <Route path="/blog/:blogId/post/:honeyId" element={<BlogPost />} />
-        <Route path="/chat" element={<Chat />} />
       </Route>
     </Routes>
   );
