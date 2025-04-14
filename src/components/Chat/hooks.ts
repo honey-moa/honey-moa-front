@@ -1,7 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import {
+  ChatAckResponse,
   ChatCurrentDataType,
-  ChatMessageListType,
   UseMessageListenerPrams,
 } from './type';
 import { useEffect } from 'react';
@@ -24,7 +24,7 @@ export const useReceivedMessage = () => {
     };
   };
 
-  const onMessageReceived = (data: ChatMessageListType) => {
+  const onMessageReceived = (data: ChatAckResponse) => {
     queryClient.setQueryData(
       ['chat-rooms', 'messages'],
       (oldData: ChatCurrentDataType) => {
@@ -67,18 +67,17 @@ export const useMessageListener = ({
 }: UseMessageListenerPrams) => {
   const { onMessageReceived } = useReceivedMessage();
   useEffect(() => {
-    socket?.emit('enter_chat_room', { roomId });
-    socket?.on('receive_message', res => {
+    const receivingAction = (res: ChatAckResponse) => {
       onMessageReceived(res);
       scrollToBottom(scrollToBottomRef);
-    });
+    };
+
+    socket?.emit('enter_chat_room', { roomId });
+    socket?.on('receive_message', receivingAction);
 
     return () => {
       socket?.off('enter_chat_room');
-      socket?.off('receive_message', res => {
-        onMessageReceived(res);
-        scrollToBottom(scrollToBottomRef);
-      });
+      socket?.off('receive_message', receivingAction);
     };
   }, [socket]);
 };

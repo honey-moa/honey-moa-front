@@ -31,10 +31,10 @@ export default function ChatBox() {
   });
 
   useEffect(() => {
-    if (isOpenChatModal) {
+    if (isOpenChatModal.chat) {
       scrollToBottom(scrollToBottomRef);
     }
-  }, [isOpenChatModal]);
+  }, [isOpenChatModal.chat]);
 
   if (!token) return;
 

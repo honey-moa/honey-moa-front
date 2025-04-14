@@ -2,7 +2,7 @@ import * as S from './style';
 import { Svg } from '@/components/Svg';
 import { ChatQueries } from '@/apis/chat';
 import { toast } from 'react-toastify';
-import { ChatAckResponse, ChatModalProps } from './type';
+import { ChatModalProps } from './type';
 import { BlogQueries } from '@/apis/blog';
 import { UserQueries } from '@/apis/user';
 import { Profile } from '@/components/Layouts';
@@ -12,6 +12,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useReceivedMessage } from '../hooks';
 import useObserver from '@/hook/useObserver';
 import { scrollToBottom } from '../utils';
+import { ChatAckResponse } from '../type';
 
 export default function ChatRoomModal({
   closeChatModal,
@@ -112,7 +113,7 @@ export default function ChatRoomModal({
       (res: ChatAckResponse) => {
         setIsAtBottom(true);
         scrollToBottom(scrollToBottomRef);
-        onMessageReceived(res.sentMessage);
+        onMessageReceived(res);
       }
     );
     setChatInfo({ message: '' });

@@ -13,8 +13,3 @@ export interface ChatServerBaseResponse {
   roomId: string;
   blogPostUrl: string;
 }
-
-export interface ChatAckResponse {
-  statusMessage: string;
-  sentMessage: ChatMessageListType;
-}

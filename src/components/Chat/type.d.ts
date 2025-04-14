@@ -1,7 +1,7 @@
 import { ChatMessagePaginationType } from '@/apis/chat/type';
 import { Socket } from 'socket.io-client';
 
-export interface ChatMessageListType {
+export interface ChatAckResponse {
   id: string;
   createdAt: string;
   updatedAt: string;
