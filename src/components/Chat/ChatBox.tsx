@@ -10,9 +10,7 @@ import { useMessageListener } from './hooks';
 import { useSocket } from '@/hook/useSocket';
 
 export default function ChatBox() {
-  const [isOpenChatModal, setIsOpenChatModal] = useState({
-    chat: false,
-  });
+  const [isOpenChatModal, setIsOpenChatModal] = useState(false);
   const { value: token } = useLocalStorage('accessToken');
   const belongToChatRoom = ChatQueries.useGetBelongToChatRoom();
 
@@ -21,7 +19,6 @@ export default function ChatBox() {
 
   const handlerOpenChatModal = changeInfo.toggle({
     setState: setIsOpenChatModal,
-    key: 'chat',
   });
 
   useMessageListener({
@@ -31,10 +28,10 @@ export default function ChatBox() {
   });
 
   useEffect(() => {
-    if (isOpenChatModal.chat) {
+    if (isOpenChatModal) {
       scrollToBottom(scrollToBottomRef);
     }
-  }, [isOpenChatModal.chat]);
+  }, [isOpenChatModal]);
 
   if (!token) return;
 
@@ -43,7 +40,7 @@ export default function ChatBox() {
       <S.ButtonWrapper onClick={handlerOpenChatModal}>
         <Svg.ChatIcon size={40} />
       </S.ButtonWrapper>
-      {isOpenChatModal.chat && (
+      {isOpenChatModal && (
         <ChatRoomModal
           closeChatModal={handlerOpenChatModal}
           belongToChatRoom={belongToChatRoom}
