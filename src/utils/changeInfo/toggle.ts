@@ -1,11 +1,15 @@
-interface toggleCheckBoxParams<T> {
+interface ToggleOppositeParams<T> {
   setState: React.Dispatch<React.SetStateAction<T>>;
   key: keyof T;
   additionalFunction?: () => void;
 }
 
+interface ToggleOppositeSingleStateParams {
+  setState: React.Dispatch<React.SetStateAction<boolean>>;
+  additionalFunction?: () => void;
+}
 /**
- * toggleChangeBox 함수
+ * toggleOpposite 함수 - state object타입
  * @description boolean타입을 가진 toggle가능한 ui요소를 업데이트 하는데 사용하는 함수
  *
  * @template T
@@ -18,18 +22,63 @@ interface toggleCheckBoxParams<T> {
  *     <input type="checkbox" onChange={toggleCondition} />
  *    )
  */
-export default function toggleCheckBox<T>({
-  setState,
-  key,
-  additionalFunction,
-}: toggleCheckBoxParams<T>) {
-  return () => {
-    setState(prev => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
-    if (additionalFunction) {
-      additionalFunction();
-    }
-  };
+function toggleOpposite<T>(params: ToggleOppositeParams<T>): () => void;
+
+/**
+ * toggleOpposite 함수 - state single타입
+ * @template boolean
+ * @param params {setState: React.Dispatch<React.SetStateAction<boolean>>}
+ * @param params {additionalFunction?: () => void} 추가적으로 실행할 함수
+ *
+ * @description boolean타입을 가진 toggle가능한 ui요소를 업데이트 하는데 사용하는 함수
+ * @example
+ *    const toggleCondition = changeInfo.toggle({setState: setLoginInfo});
+ *   return (
+ *    <input type="checkbox" onChange={toggleCondition} />
+ *   )
+ */
+function toggleOpposite(params: ToggleOppositeSingleStateParams): () => void;
+
+function toggleOpposite<T>(
+  params: ToggleOppositeParams<T> | ToggleOppositeSingleStateParams
+): () => void {
+  if (isKeyedParams(params)) {
+    return () => {
+      params.setState(prev => ({
+        ...prev,
+        [params.key]: !prev[params.key],
+      }));
+      if (params.additionalFunction) {
+        params.additionalFunction();
+      }
+    };
+  } else {
+    return () => {
+      params.setState(prev => !prev);
+      if (params.additionalFunction) {
+        params.additionalFunction();
+      }
+    };
+  }
 }
+
+function isKeyedParams<T>(
+  params:
+    | {
+        setState: React.Dispatch<React.SetStateAction<T>>;
+        key: keyof T;
+        additionalFunction?: () => void;
+      }
+    | {
+        setState: React.Dispatch<React.SetStateAction<boolean>>;
+        additionalFunction?: () => void;
+      }
+): params is {
+  setState: React.Dispatch<React.SetStateAction<T>>;
+  key: keyof T;
+  additionalFunction?: () => void;
+} {
+  return 'key' in params;
+}
+
+export default toggleOpposite;

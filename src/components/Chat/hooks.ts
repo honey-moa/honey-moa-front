@@ -1,14 +1,11 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { ChatCurrentDataType, ChatMessageListType } from './ChatBox/type';
-
-export const scrollToBottom = (
-  scrollToBottomRef: React.RefObject<HTMLDivElement>
-) => {
-  if (scrollToBottomRef.current) {
-    scrollToBottomRef.current.scrollTop =
-      scrollToBottomRef.current.scrollHeight;
-  }
-};
+import {
+  ChatAckResponse,
+  ChatCurrentDataType,
+  UseMessageListenerPrams,
+} from './type';
+import { useEffect } from 'react';
+import { scrollToBottom } from './utils';
 
 export const useReceivedMessage = () => {
   const queryClient = useQueryClient();
@@ -27,7 +24,7 @@ export const useReceivedMessage = () => {
     };
   };
 
-  const onMessageReceived = (data: ChatMessageListType) => {
+  const onMessageReceived = (data: ChatAckResponse) => {
     queryClient.setQueryData(
       ['chat-rooms', 'messages'],
       (oldData: ChatCurrentDataType) => {
@@ -63,52 +60,24 @@ export const useReceivedMessage = () => {
   return { onMessageReceived };
 };
 
-// interface UseScrollToBottomParams {
-//   dependencies?: unknown[];
-//   isLoadingPastData?: boolean; // 과거 데이터 로드 여부
-// }
+export const useMessageListener = ({
+  roomId,
+  scrollToBottomRef,
+  socket,
+}: UseMessageListenerPrams) => {
+  const { onMessageReceived } = useReceivedMessage();
+  useEffect(() => {
+    const receivingAction = (res: ChatAckResponse) => {
+      onMessageReceived(res);
+      scrollToBottom(scrollToBottomRef);
+    };
 
-// export const useScrollToBottom = ({
-//   dependencies,
-//   isLoadingPastData = false,
-// }: UseScrollToBottomParams) => {
-//   const scrollToBottomRef = useRef<HTMLDivElement>(null);
+    socket?.emit('enter_chat_room', { roomId });
+    socket?.on('receive_message', receivingAction);
 
-//   const scrollToBottom = () => {
-//     if (scrollToBottomRef.current) {
-//       scrollToBottomRef.current.scrollTop =
-//         scrollToBottomRef.current.scrollHeight;
-//     }
-//   };
-
-//   const maintainScrollPosition = () => {
-//     const chatBody = scrollToBottomRef.current;
-//     if (!chatBody) return;
-
-//     const prevScrollHeight = chatBody.scrollHeight;
-//     const prevScrollTop = chatBody.scrollTop;
-
-//     return () => {
-//       const newScrollHeight = chatBody.scrollHeight;
-//       if (prevScrollHeight && prevScrollTop && newScrollHeight) {
-//         // 상단에 데이터가 추가되므로, 이전 위치를 유지하려면 새 높이 차이를 더함
-//         chatBody.scrollTop =
-//           prevScrollTop + (newScrollHeight - prevScrollHeight);
-//       }
-//     };
-//   };
-
-//   useEffect(() => {
-//     if (!scrollToBottomRef.current) return;
-
-//     if (isLoadingPastData) {
-//       // 과거 데이터 로드 중: 현재 위치 유지
-//       maintainScrollPosition();
-//     } else {
-//       // 새 메시지 추가 시: 하단으로 이동
-//       scrollToBottom();
-//     }
-//   }, dependencies);
-
-//   return { scrollToBottomRef };
-// };
+    return () => {
+      socket?.off('enter_chat_room');
+      socket?.off('receive_message', receivingAction);
+    };
+  }, [socket]);
+};

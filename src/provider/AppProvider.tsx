@@ -5,14 +5,11 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Error } from '@/components';
 import { ToastContainer } from 'react-toastify';
 import { Suspense, useState } from 'react';
-import * as Chat from '@/components/Chat';
 
 /**
  * 여러 Provider를 한번에 관리하는 컴포넌트
  */
 export default function AppProvider({ children }: AppProviderProps) {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -33,7 +30,6 @@ export default function AppProvider({ children }: AppProviderProps) {
           <Suspense fallback={<div>페이지 들어가는 중...</div>}>
             <>{children}</>
           </Suspense>
-          <Chat.ChatBox setIsOpen={setIsOpen} isOpen={isOpen} />
         </BrowserRouter>
         <ReactQueryDevtools initialIsOpen={false} />
       </Error.ErrorBoundary>
