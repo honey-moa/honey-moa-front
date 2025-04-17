@@ -32,8 +32,8 @@ export default function RegisterModal({ setStep }: ModalProps<AuthFunnelStep>) {
     key: 'conditions',
   });
 
-  const mutationRegister = AuthQueries.RegisterQuery();
-  const mutationLogin = AuthQueries.LoginQuery();
+  const mutationRegister = AuthQueries.useRegisterQuery();
+  const mutationLogin = AuthQueries.useLoginQuery();
 
   const onSubmitRegister: React.FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
@@ -67,7 +67,7 @@ export default function RegisterModal({ setStep }: ModalProps<AuthFunnelStep>) {
       <S.ModalWrapper>
         <S.ModalHeader>
           <Image
-            src="siteLogo.jpg"
+            src="images/siteLogo.jpg"
             alt="intro"
             width="36px"
             height="36px"

@@ -8,11 +8,19 @@ import { changeInfo } from '@/utils';
 import { scrollToBottom } from './utils';
 import { useMessageListener } from './hooks';
 import { useSocket } from '@/hook/useSocket';
+import useSessionStorage from '@/hook/useSessionStorage';
+import { isStorageWithKey } from '@/utils/storage/isStorageWithKey';
 
 export default function ChatBox() {
   const [isOpenChatModal, setIsOpenChatModal] = useState(false);
-  const { value: token } = useLocalStorage('accessToken');
+  const { value: accessTokenInLocalStorage } = useLocalStorage('accessToken');
+  const { value: accessTokenInSessionStorage } =
+    useSessionStorage('accessToken');
   const belongToChatRoom = ChatQueries.useGetBelongToChatRoom();
+
+  const token = isStorageWithKey('accessToken')
+    ? accessTokenInLocalStorage
+    : accessTokenInSessionStorage;
 
   const scrollToBottomRef = useRef<HTMLDivElement>(null);
   const socket = useSocket();

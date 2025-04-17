@@ -75,8 +75,9 @@ export async function putChangePassword({
   return response.data;
 }
 
-export async function reissueAccessToken(): Promise<ReissueAccessTokenReturn> {
-  const refreshToken = window.localStorage.getItem('refreshToken');
+export async function reissueAccessToken(
+  token: string | null
+): Promise<ReissueAccessTokenReturn> {
   const response = await axios.post(
     `${import.meta.env.BASE_URL}/api/v1/auth/reissue/access-token`,
     {},
@@ -84,7 +85,7 @@ export async function reissueAccessToken(): Promise<ReissueAccessTokenReturn> {
       headers: {
         'X-Api-Key': import.meta.env.VITE_API_KEY,
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${refreshToken}`,
+        Authorization: `Bearer ${token}`,
       },
     }
   );

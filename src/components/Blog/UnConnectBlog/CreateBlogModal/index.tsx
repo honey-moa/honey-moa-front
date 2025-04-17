@@ -26,15 +26,21 @@ export default function CreateBlogModal() {
   });
 
   const createBlogMutate = BlogQueries.CreateBlogMutate();
-  const { remove: removeLocalStorage } = useLocalStorage('accessToken');
-  const { remove: removeSessionStorage } = useSessionStorage('refreshToken');
+  const { remove: removeAccessTokenInLocalStorage } =
+    useLocalStorage('accessToken');
+  const { remove: removeRefreshTokenInLocalStorage } =
+    useLocalStorage('refreshToken');
+  const { remove: removeAccessTokenInSessionStorage } =
+    useSessionStorage('accessToken');
+  const { remove: removeRefreshTokenInSessionStorage } =
+    useSessionStorage('refreshToken');
 
   const logoutHandler = () => {
-    removeLocalStorage('accessToken');
-    removeLocalStorage('refreshToken');
+    removeAccessTokenInLocalStorage();
+    removeRefreshTokenInLocalStorage();
 
-    removeSessionStorage('accessToken');
-    removeSessionStorage('refreshToken');
+    removeAccessTokenInSessionStorage();
+    removeRefreshTokenInSessionStorage();
     navigate('/root');
   };
 

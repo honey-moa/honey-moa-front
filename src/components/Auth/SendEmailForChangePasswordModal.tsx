@@ -17,7 +17,7 @@ export default function SendEmailForChangePasswordModal<T>({
     email: '',
   });
 
-  const mutationSendEmail = AuthQueries.SendEmailForChangePwQuery();
+  const mutationSendEmail = AuthQueries.useSendEmailForChangePwQuery();
 
   const onChangeEmailForChangePw = changeInfo.text<EmailForChangePwType>({
     setState: setForChangePw,

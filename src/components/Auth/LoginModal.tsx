@@ -9,8 +9,18 @@ import { Loading } from '..';
 import { LoginErrorHandler } from '@/apis/auth/error';
 import { changeInfo } from '@/utils';
 import { toast } from 'react-toastify';
+import useLocalStorage from '@/hook/useLocalStorage';
+import useSessionStorage from '@/hook/useSessionStorage';
 
 export default function LoginModal({ setStep }: ModalProps<AuthFunnelStep>) {
+  const { set: setAccessTokenToLocalStorage } = useLocalStorage('accessToken');
+  const { set: setRefreshTokenToLocalStorage } =
+    useLocalStorage('refreshToken');
+  const { set: setAccessTokenToSessionStorage } =
+    useSessionStorage('accessToken');
+  const { set: setRefreshTokenToSessionStorage } =
+    useSessionStorage('refreshToken');
+
   const [loginInfo, setLoginInfo] = useState<LoginInfo>({
     email: '',
     password: '',
@@ -34,13 +44,23 @@ export default function LoginModal({ setStep }: ModalProps<AuthFunnelStep>) {
 
   const onSubmit: React.FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
-    const { email, password } = loginInfo;
+    const { email, password, isAutoLogin } = loginInfo;
     const isValid = validationLoginInfo(loginInfo);
     if (isValid.result) {
       mutation.mutate(
-        { email, password },
+        { email, password, isAutoLogin },
         {
-          onSuccess: () => navigate('/blog'),
+          onSuccess: data => {
+            navigate('/blog');
+            if (isAutoLogin) {
+              setAccessTokenToLocalStorage(data.accessToken);
+              setRefreshTokenToLocalStorage(data.refreshToken);
+            } else {
+              setAccessTokenToSessionStorage(data.accessToken);
+              setRefreshTokenToSessionStorage(data.refreshToken);
+            }
+            toast.success('로그인 성공');
+          },
           onError: error => {
             toast.error(LoginErrorHandler(error));
           },
@@ -55,7 +75,7 @@ export default function LoginModal({ setStep }: ModalProps<AuthFunnelStep>) {
     <S.ModalWrapper>
       <S.ModalHeader>
         <Image
-          src="siteLogo.jpg"
+          src="/images/siteLogo.jpg"
           alt="intro"
           width="36px"
           height="36px"

@@ -1,6 +1,8 @@
 import { useCallback, useMemo, useSyncExternalStore } from 'react';
 import { toast } from 'react-toastify';
 
+const STORAGE_EVENT_NAME = 'local-storage-event';
+
 /**
  *
  * @param key 스토리지에 저장될 키 값
@@ -25,15 +27,15 @@ import { toast } from 'react-toastify';
  * </>
  * )
  */
-export default function useLocalStorage(
+export default function useLocalStorage<T = string>(
   key: string,
-  initialValue?: string | null
+  initialValue?: T
 ) {
   const getSnapshot = () => localStorage.getItem(key);
 
   const subscribe = (listener: () => void) => {
-    window.addEventListener('storage', listener);
-    return () => window.removeEventListener('storage', listener);
+    window.addEventListener(STORAGE_EVENT_NAME, listener);
+    return () => window.removeEventListener(STORAGE_EVENT_NAME, listener);
   };
 
   const externalStoreState = useSyncExternalStore(subscribe, getSnapshot);
@@ -43,10 +45,13 @@ export default function useLocalStorage(
   }, [externalStoreState, initialValue]);
 
   const setStorage = useCallback(
-    (newValue: string) => {
+    (newValue: unknown) => {
       try {
-        localStorage.setItem(key, newValue);
-        dispatchEvent(new StorageEvent('storage', { key: key, newValue }));
+        const valueToStore = JSON.stringify(newValue);
+        localStorage.setItem(key, valueToStore);
+        dispatchEvent(
+          new StorageEvent(STORAGE_EVENT_NAME, { key, newValue: valueToStore })
+        );
       } catch (error) {
         toast.error(`스토리지에 저장하는데 문제가 발생했습니다: ${error}`);
       }
@@ -54,23 +59,14 @@ export default function useLocalStorage(
     [key]
   );
 
-  const removeStorage = useCallback(
-    (removeValue: string) => {
-      localStorage.removeItem(removeValue);
-      dispatchEvent(new StorageEvent('storage', { key: removeValue }));
-    },
-    [key]
-  );
-
-  const clearStorage = useCallback(() => {
-    localStorage.clear();
-    dispatchEvent(new StorageEvent('storage', { key: key }));
+  const removeStorage = useCallback(() => {
+    localStorage.removeItem(key);
+    dispatchEvent(new StorageEvent(STORAGE_EVENT_NAME, { key }));
   }, [key]);
 
   return {
     value: store,
     set: setStorage,
     remove: removeStorage,
-    clear: clearStorage,
   };
 }

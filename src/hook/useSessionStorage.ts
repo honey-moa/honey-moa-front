@@ -1,15 +1,17 @@
 import { useCallback, useMemo, useSyncExternalStore } from 'react';
 import { toast } from 'react-toastify';
 
-export default function useSessionStorage(
+const STORAGE_EVENT_NAME = 'local-storage-event';
+
+export default function useSessionStorage<T = string>(
   key: string,
-  initialValue?: string | null
+  initialValue?: T
 ) {
   const getSnapshot = () => sessionStorage.getItem(key);
 
   const subscribe = (listener: () => void) => {
-    window.addEventListener('storage', listener);
-    return () => window.removeEventListener('storage', listener);
+    window.addEventListener(STORAGE_EVENT_NAME, listener);
+    return () => window.removeEventListener(STORAGE_EVENT_NAME, listener);
   };
 
   const externalStoreState = useSyncExternalStore(subscribe, getSnapshot);
@@ -20,11 +22,11 @@ export default function useSessionStorage(
 
   const setStorage = useCallback(
     (newValue: unknown) => {
-      const parsedValue = JSON.stringify(newValue);
       try {
+        const parsedValue = JSON.stringify(newValue);
         sessionStorage.setItem(key, parsedValue);
         dispatchEvent(
-          new StorageEvent('storage', { key: key, newValue: parsedValue })
+          new StorageEvent(STORAGE_EVENT_NAME, { key, newValue: parsedValue })
         );
       } catch (error) {
         toast.error(`스토리지에 저장하는데 문제가 발생했습니다: ${error}`);
@@ -33,23 +35,14 @@ export default function useSessionStorage(
     [key]
   );
 
-  const removeStorage = useCallback(
-    (removeValue: string) => {
-      sessionStorage.removeItem(removeValue);
-      dispatchEvent(new StorageEvent('storage', { key: removeValue }));
-    },
-    [key]
-  );
-
-  const clearStorage = useCallback(() => {
-    sessionStorage.clear();
-    dispatchEvent(new StorageEvent('storage', { key: key }));
+  const removeStorage = useCallback(() => {
+    sessionStorage.removeItem(key);
+    dispatchEvent(new StorageEvent(STORAGE_EVENT_NAME, { key }));
   }, [key]);
 
   return {
     value: store,
     set: setStorage,
     remove: removeStorage,
-    clear: clearStorage,
   };
 }
