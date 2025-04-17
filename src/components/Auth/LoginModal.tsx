@@ -30,7 +30,7 @@ export default function LoginModal({ setStep }: ModalProps<AuthFunnelStep>) {
     key: 'isAutoLogin',
   });
 
-  const mutation = AuthQueries.LoginQuery();
+  const mutation = AuthQueries.useLoginQuery();
 
   const onSubmit: React.FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();

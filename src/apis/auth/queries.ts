@@ -5,7 +5,7 @@ import useLocalStorage from '@/hook/useLocalStorage';
 import { toast } from 'react-toastify';
 
 /** 로그인 쿼리 */
-export const LoginQuery = () => {
+export const useLoginQuery = () => {
   const { set: setToken } = useLocalStorage('accessToken');
   const { set: setRefreshToken } = useLocalStorage('refreshToken');
   const queryClient = useQueryClient();
