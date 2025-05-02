@@ -26,7 +26,7 @@ export default function ChangePassword() {
   const onChangeNewPasswordInfo = passwordChange.text({
     setState: setChangeInfo,
   });
-  const mutationChangePassword = AuthQueries.ChangePasswordQuery();
+  const mutationChangePassword = AuthQueries.useChangePasswordQuery();
 
   const onSubmitChangePassword: React.FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();

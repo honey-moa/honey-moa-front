@@ -1,28 +1,20 @@
 //요청 인터셉터
-import { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import { toast } from 'react-toastify';
+import {
+  AxiosError,
+  AxiosRequestConfig,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+} from 'axios';
 import { AuthEndPoint } from './auth';
 import { instanceToken } from './axiosInstance';
+import { toast } from 'react-toastify';
+import { isStorageWithKey } from '@/utils/storage/isStorageWithKey';
 
 //요청 인터셉터
 export function CommonRequestInterceptor(
   config: InternalAxiosRequestConfig
 ): InternalAxiosRequestConfig | Promise<InternalAxiosRequestConfig> {
   config.headers['X-Api-Key'] = import.meta.env.VITE_API_KEY;
-  return config;
-}
-
-//토큰 있는 요청 인터셉터
-export function TokenRequestInterceptor(
-  config: InternalAxiosRequestConfig
-): InternalAxiosRequestConfig | Promise<InternalAxiosRequestConfig> {
-  config.headers['X-Api-Key'] = import.meta.env.VITE_API_KEY;
-  const accessToken = window.localStorage.getItem('accessToken');
-  if (accessToken) {
-    config.headers['Authorization'] = `Bearer ${accessToken}`;
-  } else {
-    throw new Error('로그인한 사용자가 아닙니다.');
-  }
   return config;
 }
 
@@ -34,37 +26,52 @@ export function CommonResponseInterceptor(
   return response;
 }
 
+//토큰 있는 요청 인터셉터
+export function TokenRequestInterceptor(
+  config: InternalAxiosRequestConfig
+): InternalAxiosRequestConfig | Promise<InternalAxiosRequestConfig> {
+  config.headers['X-Api-Key'] = import.meta.env.VITE_API_KEY;
+  const accessToken = isStorageWithKey('accessToken')
+    ? window.localStorage.getItem('accessToken')
+    : window.sessionStorage.getItem('accessToken');
+  if (accessToken) {
+    config.headers['Authorization'] = `Bearer ${JSON.parse(accessToken)}`;
+  } else {
+    throw new Error('로그인한 사용자가 아닙니다.');
+  }
+  return config;
+}
+
 //에러 인터셉터
 export async function ErrorInterceptor(error: AxiosError) {
-  const { code } = error.response?.data as { code: string };
-  if (code === 'INVALID_TOKEN') {
-    try {
-      const response = await AuthEndPoint.reissueAccessToken();
-      window.localStorage.setItem('accessToken', response.accessToken);
+  const { config } = error;
+  const originalRequest = config as AxiosRequestConfig & { _retry?: boolean };
 
-      if (error.config) {
-        error.config.headers[
-          'Authorization'
-        ] = `Bearer ${response.accessToken}`;
-        const result = await instanceToken(error.config);
-        return result;
-      }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      const { code } = error.response?.data as { code: string };
-      if (code === 'INVALID_TOKEN') {
-        toast.error('토근 재발급에 실패했습니다. 다시 로그인 해 주세요');
-        window.location.href = '/root';
-        window.localStorage.clear();
-        return;
+  if (error.response?.status === 401 && !originalRequest._retry) {
+    originalRequest._retry = true;
+    const refreshToken = isStorageWithKey('refreshToken')
+      ? window.localStorage.getItem('refreshToken')
+      : window.sessionStorage.getItem('refreshToken');
+    try {
+      const newToken = await AuthEndPoint.reissueAccessToken(refreshToken);
+      originalRequest.headers = {
+        ...originalRequest.headers,
+        Authorization: `Bearer ${newToken.accessToken}`,
+      };
+      // 재요청
+      return instanceToken(originalRequest);
+    } catch (error) {
+      // refreshToken 만료시 로그아웃 처리
+      toast.error('회원 인증이 만료되었습니다. 다시 로그인 해주세요.');
+      if (isStorageWithKey('accessToken')) {
+        window.localStorage.removeItem('accessToken');
+        window.localStorage.removeItem('refreshToken');
       } else {
-        toast.error('서버 오류 입니다. 잠시 후 다시 시도해주세요.');
-        return;
+        window.sessionStorage.removeItem('accessToken');
+        window.sessionStorage.removeItem('refreshToken');
       }
+      return Promise.reject(error);
     }
-  }
-  if (code === 'SERVER_ERROR') {
-    return toast.error('서버 오류 입니다. 잠시 후 다시 시도해주세요.');
   }
   return Promise.reject(error);
 }

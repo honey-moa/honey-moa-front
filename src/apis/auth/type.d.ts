@@ -12,6 +12,7 @@ export interface RegisterReturn {
 export interface LoginRequest {
   email: string;
   password: string;
+  isAutoLogin?: boolean;
 }
 
 export interface LoginReturn {

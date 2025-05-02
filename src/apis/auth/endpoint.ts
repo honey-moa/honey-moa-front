@@ -8,6 +8,7 @@ import {
   RegisterReturn,
   ReissueAccessTokenReturn,
 } from './type';
+import axios from 'axios';
 
 //로그인 api
 export async function postToken(loginInfo: LoginRequest): Promise<LoginReturn> {
@@ -74,14 +75,17 @@ export async function putChangePassword({
   return response.data;
 }
 
-export async function reissueAccessToken(): Promise<ReissueAccessTokenReturn> {
-  const refreshToken = window.localStorage.getItem('refreshToken');
-  const response = await commonInstance.post(
-    '/auth/reissue/access-token',
+export async function reissueAccessToken(
+  token: string | null
+): Promise<ReissueAccessTokenReturn> {
+  const response = await axios.post(
+    `${import.meta.env.BASE_URL}/api/v1/auth/reissue/access-token`,
     {},
     {
       headers: {
-        Authorization: `Bearer ${refreshToken}`,
+        'X-Api-Key': import.meta.env.VITE_API_KEY,
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
     }
   );
