@@ -4,8 +4,10 @@ import { Suspense } from 'react';
 import { Header, SideNavigate } from '@/components/Layouts';
 import { Loading } from '@/components';
 import PublicBlogList from '@/components/Blog/publicBlog/PublicBlogList';
+import { useTitle } from '@/hook/useTitle';
 
 export default function PublicBlog() {
+  useTitle('꿀모아 | 블로그 공개글');
   const { visible } = useScrollPosition();
 
   return (

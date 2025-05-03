@@ -10,8 +10,8 @@ const ChangePassword = lazy(() => import('@/components/Auth/ChangePassword'));
 const CreatePost = lazy(() => import('@/components/Blog/create/Post'));
 const EditPost = lazy(() => import('@/components/Blog/create/EditBlogPost'));
 const BlogPost = lazy(() => import('@/pages/blog/Post'));
-const Setting = lazy(() => import('@/components/Setting/Setting'));
-const Support = lazy(() => import('@/components/Setting/Support'));
+const Setting = lazy(() => import('@/pages/setting/Setting'));
+const Support = lazy(() => import('@/pages/setting/Support'));
 const NotFound = lazy(() => import('@/components/Error/NotFound'));
 
 export default function ValidationRoute() {
