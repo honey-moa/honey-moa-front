@@ -3,7 +3,7 @@ import { Header } from '../Layouts';
 import { toast } from 'react-toastify';
 import { Tooltip } from '../PopUp';
 
-export default function Support() {
+export default function SupportWithEmail() {
   const onClickCopyEmail = () => {
     navigator.clipboard.writeText('honeymoa7069@gmail.com');
     toast.success('이메일이 복사되었습니다!');

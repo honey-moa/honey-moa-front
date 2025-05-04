@@ -5,8 +5,10 @@ import { Suspense } from 'react';
 import { Loading } from '@/components';
 import MappingBlog from '@/components/Blog/MappingBlog';
 import MappingProfile from '@/components/Blog/MappingProfile';
+import { useTitle } from '@/hook/useTitle';
 
 export default function Blog() {
+  useTitle('꿀모아 | 블로그');
   const { visible } = useScrollPosition();
 
   return (

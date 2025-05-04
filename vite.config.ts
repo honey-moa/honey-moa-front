@@ -1,10 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import react from '@vitejs/plugin-react-swc';
 import path from 'path';
-
+import { ViteFaviconsPlugin } from 'vite-plugin-favicon';
 // https://vite.dev/config/
 export default {
-  plugins: [react()],
+  plugins: [
+    react(),
+    ViteFaviconsPlugin({
+      logo: './public/images/siteLogo.jpg', // svg works too!
+      favicons: {
+        appName: '꿀모아',
+        appDescription: '커플의 프라이빗 블로그',
+      },
+    }),
+  ],
   test: {
     browser: {
       provider: 'webdriverio',

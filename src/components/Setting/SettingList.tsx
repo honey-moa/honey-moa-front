@@ -15,7 +15,7 @@ import { toast } from 'react-toastify';
 import { UserEndPoint } from '@/apis/user';
 import { useNavigate } from 'react-router-dom';
 
-export default function Setting() {
+export default function SettingList() {
   const theme = useTheme();
   const navigate = useNavigate();
   const [isOpenModal, setIsOpenModal] = useState(false);
