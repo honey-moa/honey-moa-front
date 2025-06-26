@@ -98,6 +98,9 @@ export const IconWrapper = styled.div`
 
 export const SendIconButton = styled.button`
   margin: 3px;
+  border: none;
+  background-color: inherit;
+  cursor: pointer;
 `;
 
 export const ChatMessage = styled.div`
