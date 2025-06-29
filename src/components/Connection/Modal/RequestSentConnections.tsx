@@ -15,6 +15,8 @@ export default function RequestSentConnections({
     info => info.status === 'PENDING'
   );
 
+  console.log(getRequestListWithoutAccepted);
+
   const onChangeStatusConnectionHandler = (
     id: string,
     status: ConnectionStatus,
@@ -41,7 +43,7 @@ export default function RequestSentConnections({
             <S.CoupleConnectionButtonModalWrapper>
               <div>
                 <Image
-                  src="/images/introImage.jpg"
+                  src={connectionItem.requested?.profileImageUrl}
                   alt="프로필사진"
                   width="25px"
                   height="25px"

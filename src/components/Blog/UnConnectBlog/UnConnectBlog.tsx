@@ -18,10 +18,14 @@ export default function UnConnectBlog() {
   const getBlogInfo = BlogQueries.GetSingleBlogQuery(getMyInfo?.id);
 
   useEffect(() => {
-    if (connectionInfo && connectionInfo?.contents.length > 0) {
+    if (
+      connectionInfo &&
+      connectionInfo.contents.length > 0 &&
+      connectionInfo.contents[0].status === 'ACCEPTED'
+    ) {
       setIsCreateBlogModal(true);
     }
-  }, [connectionInfo?.contents]);
+  }, [connectionInfo]);
 
   if (getBlogInfo) {
     return <Navigate to={`/blog/${getBlogInfo.id}`} />;

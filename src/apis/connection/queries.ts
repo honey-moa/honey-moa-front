@@ -62,6 +62,7 @@ export function GetConnectionListPaginationQuery(
   const { data, isError, error } = useQuery({
     queryKey: ['connection-list-pagination', params.type],
     queryFn: () => ConnectionEndPoint.getConnectionListPagination(params),
+    staleTime: 0,
     refetchOnWindowFocus: false,
   });
   if (isError && axios.isAxiosError(error)) {
