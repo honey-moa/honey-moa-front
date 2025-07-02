@@ -43,18 +43,12 @@ export interface GetConnectionReturn {
   contents: ConnectionListContent[];
 }
 
-export type ConnectionUserType = {
+export type BaseConnectionUserInfo = {
   id: string;
   createdAt: string;
   updatedAt: string;
   nickname: string;
-};
-
-export type ConnectionFeature = {
-  id: string;
-  createdAt: string;
-  updatedAt: string;
-  name: string;
+  profileImageUrl: string;
 };
 
 export type ConnectionStatus =
@@ -77,9 +71,9 @@ export interface ConnectionListContent {
   id: string;
   createdAt: string;
   updatedAt: string;
-  requester?: ConnectionUserType;
+  requester?: BaseConnectionUserInfo;
   requesterId: string;
-  requested?: ConnectionUserType;
+  requested?: BaseConnectionUserInfo;
   requestedId: string;
   status: ConnectionStatus;
   blog?: ConnectionFeature;
