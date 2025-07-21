@@ -19,6 +19,7 @@ jobs:
             --build-arg VITE_BASE_URL=${{secrets.VITE_BASE_URL}} \
             --build-arg VITE_CHANGE_PW_URL=${{secrets.VITE_CHANGE_PW_URL}} \
             --build-arg VITE_API_KEY=${{secrets.VITE_API_KEY}} \
+            --build-arg VITE_SOCKET_SERVER_URL=${{secrets.VITE_SOCKET_SERVER_URL}} \
             -t ${{secrets.DOCKERHUB_REPO}} .
           docker tag ${{secrets.DOCKERHUB_REPO}}:latest ${{secrets.DOCKERHUB_USERNAME}}/${{secrets.DOCKERHUB_REPO}}:latest
           docker push ${{secrets.DOCKERHUB_USERNAME}}/${{secrets.DOCKERHUB_REPO}}:latest
