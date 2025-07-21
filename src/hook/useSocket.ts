@@ -1,20 +1,27 @@
 import { useEffect, useRef } from 'react';
 import { io, Socket } from 'socket.io-client';
-import useLocalStorage from './useLocalStorage';
 import { toast } from 'react-toastify';
+import useSessionStorage from './useSessionStorage';
+import useLocalStorage from './useLocalStorage';
 
 const CHAT_SERVER_URL = import.meta.env.VITE_SOCKET_SERVER_URL;
 
 export const useSocket = () => {
   const socket = useRef<Socket | null>(null); // 소켓 상태 추가
-  const { value: token } = useLocalStorage('accessToken');
+  const { value: localToken } = useLocalStorage('accessToken');
+  const { value: sessionToken } = useSessionStorage('accessToken');
 
   useEffect(() => {
+    const accessToken = sessionToken
+      ? JSON.parse(sessionToken)
+      : localToken
+      ? JSON.parse(localToken)
+      : null;
     socket.current = io(`${CHAT_SERVER_URL}/chats`, {
       path: '/socket.io',
       autoConnect: false,
       extraHeaders: {
-        authorization: `Bearer ${token}`,
+        authorization: `Bearer ${accessToken}`,
       },
     });
     socket.current.connect(); // 수동 연결

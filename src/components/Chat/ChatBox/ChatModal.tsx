@@ -110,10 +110,10 @@ export default function ChatRoomModal({
         roomId: belongToChatRoom?.id,
         message: chatInfo.message,
       },
-      (res: ChatAckResponse) => {
+      (res: { sentMessage: ChatAckResponse }) => {
         setIsAtBottom(true);
         scrollToBottom(scrollToBottomRef);
-        onMessageReceived(res);
+        onMessageReceived(res.sentMessage);
       }
     );
     setChatInfo({ message: '' });
