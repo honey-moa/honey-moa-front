@@ -79,5 +79,5 @@ export const useMessageListener = ({
       socket?.off('enter_chat_room');
       socket?.off('receive_message', receivingAction);
     };
-  }, [socket]);
+  }, [socket, roomId]);
 };
