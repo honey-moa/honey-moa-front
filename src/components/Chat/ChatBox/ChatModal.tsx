@@ -104,21 +104,16 @@ export default function ChatRoomModal({
 
   const sendMessageToServer: React.FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
-    console.log('Sending message:', {
-      roomId: belongToChatRoom?.id,
-      message: chatInfo.message,
-    });
     socket?.emit(
       'send_message',
       {
         roomId: belongToChatRoom?.id,
         message: chatInfo.message,
       },
-      (res: ChatAckResponse) => {
-        console.log('Received ack:', res);
+      (res: { sentMessage: ChatAckResponse }) => {
         setIsAtBottom(true);
         scrollToBottom(scrollToBottomRef);
-        onMessageReceived(res);
+        onMessageReceived(res.sentMessage);
       }
     );
     setChatInfo({ message: '' });
