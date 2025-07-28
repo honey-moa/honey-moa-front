@@ -1,4 +1,4 @@
-import styled, { css, keyframes } from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 interface HeaderProps {
   $visible?: boolean;
@@ -6,19 +6,19 @@ interface HeaderProps {
 
 const headerAnimation = keyframes`
   from {
-    top: -100px;
+    transform: translateY(-100%);
   }
   to {
-    top: 0;
+    transform: translateY(0);
   }
 `;
 
 const headerAnimationReverse = keyframes`
   from {
-    top: 0;
+    transform: translateY(0);
   }
   to {
-    top: -100px;
+    transform: translateY(-100%);
   }
 `;
 
@@ -32,16 +32,11 @@ export const BlogHeaderWrapper = styled.div<HeaderProps>`
   background-color: ${({ theme }) => theme.bg.primary};
   position: fixed;
   z-index: 77;
-  ${({ $visible }) =>
-    $visible
-      ? css`
-          top: 0;
-          animation: ${headerAnimation} 0.5s forwards;
-        `
-      : css`
-          top: -100px;
-          animation: ${headerAnimationReverse} 0.5s forwards;
-        `}
+  transform: translateY(${({ $visible }) => ($visible ? '0' : '-100%')});
+  animation: ${({ $visible }) =>
+      $visible ? headerAnimation : headerAnimationReverse}
+    0.5s forwards;
+  will-change: transform;
 `;
 
 export const HeaderWrapper = styled.div`
